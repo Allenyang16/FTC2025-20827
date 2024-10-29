@@ -21,12 +21,11 @@ public class SuperStructure {
     public static PIDCoefficients slidePidConf = new PIDCoefficients(0.0025, 0.00011, 0.00013);
     private final PIDFController slidePidCtrl;
 
-    private Servo mIntake = null; // continuous
+    private Servo mMarm = null; // continuous
     private Servo mClaw = null;
     private Servo mWristVertical = null;
     private Servo mWristHorizontal = null;
 
-    public double CONTINUOUS_SPIN = 1, CONTINUOUS_STOP = 0.5, CONTINUOUS_SPIN_OPPOSITE = -0.5;
     public static int SLIDE_MAX = 573, SLIDE_MIN = 0;
     public static int ARM_INTAKE_FAR = 600, ARM_INTAKE_LOW = 0;
     public static int ARM_RELEASE_BOX_HIGH = 3000, ARM_RELEASE_BOX_LOW = 2000;
@@ -53,7 +52,7 @@ public class SuperStructure {
         mArm = hardwareMap.get(DcMotorEx.class,"Arm");
         mSlideLeft = hardwareMap.get(DcMotorEx.class,"slideLeft");
         mSlideRight = hardwareMap.get(DcMotorEx.class,"slideRight");
-        mIntake = hardwareMap.get(Servo.class,"intake");
+        mMarm = hardwareMap.get(Servo.class,"miniArm");
         mClaw = hardwareMap.get(Servo.class,"claw");
         mWristHorizontal = hardwareMap.get(Servo.class,"wristHorizontal");
         mWristVertical = hardwareMap.get(Servo.class,"wristVertical");
@@ -69,24 +68,12 @@ public class SuperStructure {
         mSlideRight.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
         mSlideLeft.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
         mArm.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
-
-        //mIntake.setDirection(Servo.Direction.REVERSE);
     }
 
-    // Intake & Outtake part
-    public void setIntakeSpin(double value){
-        mIntake.setPosition(value);
+    // Small arm part
+    public void setmArmSpin(double value){
+        mMarm.setPosition(value);
     }
-    public void intakeSpin(){
-        setIntakeSpin(CONTINUOUS_SPIN);
-    }
-    public void intakeStop(){
-        setIntakeSpin(CONTINUOUS_STOP);
-    }
-    public void intakeSpinOpposite(){
-        setIntakeSpin(CONTINUOUS_SPIN_OPPOSITE);
-    }
-
     // Arm
     private int armTargetPosition;
     public void setArmPosition(int pos){
