@@ -2,8 +2,8 @@ package org.firstinspires.ftc.teamcode.uppersystems;
 
 import com.acmerobotics.dashboard.config.Config;
 import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
-//import com.acmerobotics.roadrunner.control.PIDCoefficients;
-//import com.acmerobotics.roadrunner.control.PIDFController;
+import com.acmerobotics.roadrunner.control.PIDCoefficients;
+import com.acmerobotics.roadrunner.control.PIDFController;
 import com.qualcomm.robotcore.hardware.DcMotor;
 import com.qualcomm.robotcore.hardware.DcMotorEx;
 import com.qualcomm.robotcore.hardware.HardwareMap;
@@ -11,7 +11,7 @@ import com.qualcomm.robotcore.hardware.Servo;
 
 @Config
 public class SuperStructure {
-    /*private DcMotorEx mArm = null;
+    private DcMotorEx mArm = null;
     private DcMotorEx mSlideLeft = null;
     private DcMotorEx mSlideRight = null;
 
@@ -147,6 +147,6 @@ public class SuperStructure {
         setArmPosition(ARM_RELEASE_BOX_LOW);
         mWristVertical.setPosition(WRIST_RELEASE_BOX_LOW);
         setSlidePosition(SLIDE_MIN);
-    }*/
+    }
 
 }
