@@ -1,17 +1,16 @@
 package org.firstinspires.ftc.teamcode.uppersystems;
 
 import com.acmerobotics.dashboard.config.Config;
-import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
 import com.acmerobotics.roadrunner.control.PIDCoefficients;
 import com.acmerobotics.roadrunner.control.PIDFController;
+import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
 import com.qualcomm.robotcore.hardware.DcMotor;
 import com.qualcomm.robotcore.hardware.DcMotorEx;
 import com.qualcomm.robotcore.hardware.HardwareMap;
 import com.qualcomm.robotcore.hardware.Servo;
 
-// TODO: 测所有的数和位置！！！！ 别不测数就跑
 @Config
-public class SuperStructure {
+public class SuperStructure_PID {
     private DcMotorEx mArm = null;
     private DcMotorEx mSlideLeft = null;
     private DcMotorEx mSlideRight = null;
@@ -28,7 +27,6 @@ public class SuperStructure {
     private Servo mWristHorizontal = null;
 
     public static int SLIDE_MAX = 573, SLIDE_MIN = 0;
-    // TODO: 需要考虑一下把ARM的初始值设为什么
     public static int ARM_INTAKE_FAR = 600, ARM_INTAKE_LOW = 0;
     public static int ARM_RELEASE_BOX_HIGH = 3000, ARM_RELEASE_BOX_LOW = 2000;
     public static int ARM_RELEASE_CHAMBER_HIGH = 1000, ARM_RELEASE_CHAMBER_LOW = 800;
@@ -45,7 +43,7 @@ public class SuperStructure {
         this.updateRunnable = updateRunnable;
     }
 
-    public SuperStructure (LinearOpMode opMode){
+    public SuperStructure_PID(LinearOpMode opMode){
         this.opMode = opMode;
         HardwareMap hardwareMap = opMode.hardwareMap;
         armPidCtrl = new PIDFController(armPidConf);
@@ -81,35 +79,28 @@ public class SuperStructure {
 
     // TODO: PID 测数等YBX回来再试
     public void setArmPosition(int pos){
-        mArm.setTargetPosition(pos);
-        mArm.setMode(DcMotor.RunMode.RUN_TO_POSITION);
-
-        if(mArm.getCurrentPosition()<=400&&pos<=mArm.getCurrentPosition()){
-            mArm.setPower(0.3);
-        }else if(mArm.getCurrentPosition()<1300&&pos>=mArm.getCurrentPosition()){
-            mArm.setPower(1);
-        }else if(pos>=mArm.getCurrentPosition()){
-            mArm.setPower(0.6);
-        }else{
-            mArm.setPower(1);
-        }
+        armTargetPosition = pos;
+        mArm.setMode(DcMotor.RunMode.RUN_WITHOUT_ENCODER);
+        armPidCtrl.setOutputBounds(-0.9,0.9);
     }
     // TODO: update change to null
     public void update() {
+        mArm.setPower(armPidCtrl.update(mArm.getCurrentPosition() - armTargetPosition));
+        mArm.setMode(DcMotor.RunMode.RUN_WITHOUT_ENCODER);
 
+        mSlideRight.setPower(slidePidCtrl.update(mSlideRight.getCurrentPosition()-slideTargetPosition));
+        mSlideLeft.setPower(slidePidCtrl.update(mSlideLeft.getCurrentPosition()-slideTargetPosition));
+        mSlideRight.setMode(DcMotor.RunMode.RUN_WITHOUT_ENCODER);
+        mSlideLeft.setMode(DcMotor.RunMode.RUN_WITHOUT_ENCODER);
     }
 
     //Slide
     public int slideTargetPosition;
-    // TODO: 先跑SlideTest, 将滑轨拉出来，试一下读数，如果有负的就需要Reverse
     public void setSlidePosition(int pos){
-        mSlideLeft.setTargetPosition(pos);
-        mSlideRight.setTargetPosition(pos);
-        mSlideLeft.setMode(DcMotor.RunMode.RUN_TO_POSITION);
-        mSlideRight.setMode(DcMotor.RunMode.RUN_TO_POSITION);
-
-        mSlideRight.setPower(0.9);
-        mSlideLeft.setPower(0.9);
+        slideTargetPosition = pos;
+        mSlideLeft.setMode(DcMotor.RunMode.RUN_WITHOUT_ENCODER);
+        mSlideRight.setMode(DcMotor.RunMode.RUN_WITHOUT_ENCODER);
+        slidePidCtrl.setOutputBounds(-1,1);
     }
 
     //Intake Action

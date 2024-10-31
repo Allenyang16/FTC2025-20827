@@ -40,7 +40,6 @@ import com.qualcomm.robotcore.hardware.VoltageSensor;
 import com.qualcomm.robotcore.hardware.configuration.typecontainers.MotorConfigurationType;
 import com.qualcomm.robotcore.util.Range;
 
-import org.firstinspires.ftc.robotcore.external.Telemetry;
 import org.firstinspires.ftc.robotcore.external.navigation.AngleUnit;
 import org.firstinspires.ftc.teamcode.gobildapinpoint.GoBildaPinpointDriver;
 import org.firstinspires.ftc.teamcode.trajectorysequence.TrajectorySequence;
@@ -60,7 +59,6 @@ import XCYOS.TaskChainBuilder;
  */
 @Config
 public class NewMecanumDrive extends MecanumDrive implements Component {
-    Telemetry telemetry;
     public static PIDCoefficients TRANSLATIONAL_PID = new PIDCoefficients(10, 0, 0);
     public static PIDCoefficients HEADING_PID = new PIDCoefficients(8, 0, 1); //8
 
@@ -76,7 +74,6 @@ public class NewMecanumDrive extends MecanumDrive implements Component {
     private static final TrajectoryAccelerationConstraint ACCEL_CONSTRAINT = getAccelerationConstraint(MAX_ACCEL);
 
     private final TrajectoryFollower follower;
-
     private DcMotorEx leftFront, leftRear, rightRear, rightFront;
 
     private List<DcMotorEx> motors;
@@ -95,10 +92,12 @@ public class NewMecanumDrive extends MecanumDrive implements Component {
 
         follower = new HolonomicPIDVAFollower(TRANSLATIONAL_PID, TRANSLATIONAL_PID, HEADING_PID,
                 new Pose2d(0.5, 0.5, Math.toRadians(5.0)), 0.5);
+
     }
 
     @Override
     public void setUp(HardwareMap hardwareMap) {
+        odo = hardwareMap.get(GoBildaPinpointDriver.class,"odo");
         leftFront = hardwareMap.get(DcMotorEx.class, "leftFront");
         leftRear = hardwareMap.get(DcMotorEx.class, "leftBack");
         rightRear = hardwareMap.get(DcMotorEx.class, "rightBack");
@@ -109,6 +108,7 @@ public class NewMecanumDrive extends MecanumDrive implements Component {
             motorConfigurationType.setAchieveableMaxRPMFraction(1.0);
             motor.setMotorType(motorConfigurationType);
         }
+
         leftFront.setDirection(DcMotorSimple.Direction.REVERSE);
         leftRear.setDirection(DcMotorSimple.Direction.REVERSE);
         rightFront.setDirection(DcMotorSimple.Direction.FORWARD);
@@ -293,19 +293,24 @@ public class NewMecanumDrive extends MecanumDrive implements Component {
     }
 
     public void setGlobalPower(double x, double y, double rx) {
-        double botHeading = odo.getHeading();
+        //double botHeading = odo.getHeading();
+        //double rotX = x * Math.cos(-botHeading) - y * Math.sin(-botHeading);
+        //double rotY = x * Math.sin(-botHeading) + y * Math.cos(-botHeading);
+        //rotX = rotX * 1.1;
+        // double denominator = Math.max(Math.abs(rotY) + Math.abs(rotX) + Math.abs(rx), 1);
 
+        double driveCoefficient = 0.2;
 
-        double rotX = x * Math.cos(-botHeading) - y * Math.sin(-botHeading);
-        double rotY = x * Math.sin(-botHeading) + y * Math.cos(-botHeading);
+        y = y * -driveCoefficient;
+        x = x * -driveCoefficient;
+        rx = rx * -driveCoefficient;
 
-        rotX = rotX * 1.1;
+        setMode(DcMotor.RunMode.RUN_USING_ENCODER);
 
-        double denominator = Math.max(Math.abs(rotY) + Math.abs(rotX) + Math.abs(rx), 1);
-        double frontLeftPower = (rotY + rotX + rx) / denominator;
-        double backLeftPower = (rotY - rotX + rx) / denominator;
-        double frontRightPower = (rotY - rotX - rx) / denominator;
-        double backRightPower = (rotY + rotX - rx) / denominator;
+        double frontLeftPower = (y + x + rx);// denominator;
+        double backLeftPower = (y - x + rx); // denominator;
+        double frontRightPower = (y - x - rx); // denominator;
+        double backRightPower = (y + x - rx); // denominator;
 
         leftFront.setPower(frontLeftPower);
         leftRear.setPower(backLeftPower);
@@ -317,6 +322,7 @@ public class NewMecanumDrive extends MecanumDrive implements Component {
     @Override
     public List<Double> getWheelPositions() {
         return Arrays.asList(
+//                0.0,0.0
                 mmToInches(odo.getPosX()),
                 mmToInches(odo.getPosY())
         );
@@ -408,7 +414,7 @@ public class NewMecanumDrive extends MecanumDrive implements Component {
 
     public void stopTrajectory() {
         trajectorySequenceRunner.followTrajectorySequenceAsync(null);
-        simpleMoveIsActivate=false;
+        simpleMoveIsActivate = false;
     }
 
     public void initSimpleMove(Pose2d pos) {
@@ -526,4 +532,5 @@ public class NewMecanumDrive extends MecanumDrive implements Component {
     private double clamp(double val, double range) {
         return Range.clip(val, -range, range);
     }
+
 }
