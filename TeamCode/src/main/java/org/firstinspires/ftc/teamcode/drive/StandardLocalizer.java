@@ -10,6 +10,8 @@ import com.qualcomm.robotcore.eventloop.opmode.Disabled;
 import com.qualcomm.robotcore.hardware.HardwareMap;
 
 import com.acmerobotics.roadrunner.geometry.Pose2d;
+
+import org.firstinspires.ftc.robotcore.external.navigation.Pose2D;
 import org.firstinspires.ftc.teamcode.gobildapinpoint.GoBildaPinpointDriver;
 
 /*
@@ -64,7 +66,7 @@ public class StandardLocalizer implements Localizer {
 
     @Override
     public void update() {
-        Pose2d current_pos = odometry.getPosition();
+        Pose2D current_pos = odometry.getPosition();
         poseEstimate = new Pose2d(mmToInches(odometry.getPosX()),mmToInches(odometry.getPosY()), odometry.getHeading());
         poseVelocity = new Pose2d(mmToInches(odometry.getVelX()), mmToInches(odometry.getVelY()), odometry.getHeadingVelocity());
         odometry.update();

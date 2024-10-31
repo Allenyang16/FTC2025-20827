@@ -24,7 +24,6 @@ package org.firstinspires.ftc.teamcode.gobildapinpoint;
 
 import static com.qualcomm.robotcore.util.TypeConversion.byteArrayToInt;
 
-import com.acmerobotics.roadrunner.geometry.Pose2d;
 import com.qualcomm.hardware.lynx.LynxI2cDeviceSynch;
 import com.qualcomm.robotcore.hardware.I2cAddr;
 import com.qualcomm.robotcore.hardware.I2cDeviceSynchDevice;
@@ -494,7 +493,7 @@ public class GoBildaPinpointDriver extends I2cDeviceSynchDevice<I2cDeviceSynchSi
     /**
      * @return a Pose2D containing the estimated position of the robot
      */
-    public Pose2d getPosition(){
+    public Pose2D getPosition(){
         return new Pose2D(DistanceUnit.MM,
                 xPosition,
                 yPosition,
