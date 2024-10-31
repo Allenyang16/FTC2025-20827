@@ -63,7 +63,7 @@ public class MotorTest extends LinearOpMode {
                     motor0.setPower(max_power);
                 }
                 telemetry_M.addData("is busy_1", motor0.isBusy());
-//                telemetry_M.addData("encoder_1", motor0.getCurrentPosition());
+//                telemetry_M.addData("encoder_1", motor1.getCurrentPosition());
 //                telemetry_M.addData("is busy_3", motor1.isBusy());
 //                telemetry_M.addData("encoder_2", motor1.getCurrentPosition());
             }
