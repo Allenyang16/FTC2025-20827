@@ -23,8 +23,8 @@ public class SuperStructure_PID {
 
     private Servo mMinorArm = null; // continuous
     private Servo mClaw = null;
-    private Servo mWristVertical = null;
-    private Servo mWristHorizontal = null;
+    private Servo mLeftWrist = null;
+    private Servo mRightWrist = null;
 
     public static int SLIDE_MAX = 573, SLIDE_MIN = 0;
     public static int ARM_INTAKE_FAR = 600, ARM_INTAKE_LOW = 0;
@@ -54,8 +54,8 @@ public class SuperStructure_PID {
         mSlideRight = hardwareMap.get(DcMotorEx.class,"slideRight");
         mMinorArm = hardwareMap.get(Servo.class,"miniArm");
         mClaw = hardwareMap.get(Servo.class,"claw");
-        mWristHorizontal = hardwareMap.get(Servo.class,"wristHorizontal");
-        mWristVertical = hardwareMap.get(Servo.class,"wristVertical");
+        mLeftWrist = hardwareMap.get(Servo.class,"leftWrist");
+        mRightWrist = hardwareMap.get(Servo.class,"rightWrist");
 
         mArm.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
         mSlideLeft.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
@@ -106,12 +106,14 @@ public class SuperStructure_PID {
     //Intake Action
     public void intakeFar(){
         setArmPosition(ARM_INTAKE_FAR);
-        mWristVertical.setPosition(WRIST_INTAKE_FAR);
+        mLeftWrist.setPosition(WRIST_INTAKE_FAR);
+        mRightWrist.setPosition(WRIST_INTAKE_FAR);
         setSlidePosition(SLIDE_MAX);
     }
     public void intakeNear(){
         setArmPosition(ARM_INTAKE_LOW);
-        mWristVertical.setPosition(WRIST_INTAKE_NEAR);
+        mLeftWrist.setPosition(WRIST_INTAKE_NEAR);
+        mRightWrist.setPosition(WRIST_INTAKE_NEAR);
         setSlidePosition(SLIDE_MIN);
     }
 
@@ -119,23 +121,27 @@ public class SuperStructure_PID {
     // Chamber
     public void chamberHigh() {
         setArmPosition(ARM_RELEASE_CHAMBER_HIGH);
-        mWristVertical.setPosition(WRIST_RELEASE_CHAMBER_HIGH);
+        mLeftWrist.setPosition(WRIST_RELEASE_CHAMBER_HIGH);
+        mRightWrist.setPosition(WRIST_RELEASE_CHAMBER_HIGH);
         setSlidePosition(SLIDE_MAX);
     }
     public void chamberLow() {
         setArmPosition(ARM_RELEASE_CHAMBER_LOW);
-        mWristVertical.setPosition(WRIST_RELEASE_CHAMBER_LOW);
+        mLeftWrist.setPosition(WRIST_RELEASE_CHAMBER_LOW);
+        mRightWrist.setPosition(WRIST_RELEASE_CHAMBER_LOW);
         setSlidePosition(SLIDE_MIN);
     }
     //Box
     public void boxHigh() {
         setArmPosition(ARM_RELEASE_BOX_HIGH);
-        mWristVertical.setPosition(WRIST_RELEASE_BOX_HIGH);
+        mLeftWrist.setPosition(WRIST_RELEASE_BOX_HIGH);
+        mRightWrist.setPosition(WRIST_RELEASE_BOX_HIGH);
         setSlidePosition(SLIDE_MAX);
     }
     public void boxLow() {
         setArmPosition(ARM_RELEASE_BOX_LOW);
-        mWristVertical.setPosition(WRIST_RELEASE_BOX_LOW);
+        mLeftWrist.setPosition(WRIST_RELEASE_BOX_LOW);
+        mRightWrist.setPosition(WRIST_RELEASE_BOX_LOW);
         setSlidePosition(SLIDE_MIN);
     }
 
