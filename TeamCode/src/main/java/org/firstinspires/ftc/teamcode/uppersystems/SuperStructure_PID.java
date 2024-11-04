@@ -21,15 +21,17 @@ public class SuperStructure_PID {
     public static PIDCoefficients slidePidConf = new PIDCoefficients(0.0025, 0.00011, 0.00013);
     private final PIDFController slidePidCtrl;
 
-    private Servo mMinorArm = null; // continuous
+    private Servo mMinorArm = null;
     private Servo mClaw = null;
     private Servo mLeftWrist = null;
     private Servo mRightWrist = null;
 
-    public static int SLIDE_MAX = 573, SLIDE_MIN = 0;
-    public static int ARM_INTAKE_FAR = 600, ARM_INTAKE_LOW = 0;
-    public static int ARM_RELEASE_BOX_HIGH = 3000, ARM_RELEASE_BOX_LOW = 2000;
-    public static int ARM_RELEASE_CHAMBER_HIGH = 1000, ARM_RELEASE_CHAMBER_LOW = 800;
+    public static int SLIDE_BOX_MAX = 3100, SLIDE_BOX_MIN = 2200;
+    public static int SLIDE_CHAMBER_MAX = 1400, SLIDE_CHAMBER_MIN = 0;
+    public static int SLIDE_INTAKE_MAX = 2000, SLIDE_INTAKE_MIN = 0;
+    // TODO: 需要考虑一下把ARM的初始值设为什么
+    public static int ARM_INTAKE = 1400;
+    public static int ARM_RELEASE = 0;
     // WRIST
     public static double WRIST_ORIGIN = 0;
     public static double WRIST_INTAKE_FAR = 0.7, WRIST_INTAKE_NEAR = 0.5;
@@ -105,44 +107,44 @@ public class SuperStructure_PID {
 
     //Intake Action
     public void intakeFar(){
-        setArmPosition(ARM_INTAKE_FAR);
+        setArmPosition(ARM_INTAKE);
         mLeftWrist.setPosition(WRIST_INTAKE_FAR);
         mRightWrist.setPosition(WRIST_INTAKE_FAR);
-        setSlidePosition(SLIDE_MAX);
+        setSlidePosition(SLIDE_INTAKE_MAX);
     }
     public void intakeNear(){
-        setArmPosition(ARM_INTAKE_LOW);
+        setArmPosition(ARM_INTAKE);
         mLeftWrist.setPosition(WRIST_INTAKE_NEAR);
         mRightWrist.setPosition(WRIST_INTAKE_NEAR);
-        setSlidePosition(SLIDE_MIN);
+        setSlidePosition(SLIDE_INTAKE_MIN);
     }
 
     // Release Action
     // Chamber
     public void chamberHigh() {
-        setArmPosition(ARM_RELEASE_CHAMBER_HIGH);
+        setArmPosition(ARM_RELEASE);
         mLeftWrist.setPosition(WRIST_RELEASE_CHAMBER_HIGH);
         mRightWrist.setPosition(WRIST_RELEASE_CHAMBER_HIGH);
-        setSlidePosition(SLIDE_MAX);
+        setSlidePosition(SLIDE_CHAMBER_MAX);
     }
     public void chamberLow() {
-        setArmPosition(ARM_RELEASE_CHAMBER_LOW);
+        setArmPosition(ARM_RELEASE);
         mLeftWrist.setPosition(WRIST_RELEASE_CHAMBER_LOW);
         mRightWrist.setPosition(WRIST_RELEASE_CHAMBER_LOW);
-        setSlidePosition(SLIDE_MIN);
+        setSlidePosition(SLIDE_CHAMBER_MIN);
     }
     //Box
     public void boxHigh() {
-        setArmPosition(ARM_RELEASE_BOX_HIGH);
+        setArmPosition(ARM_RELEASE);
         mLeftWrist.setPosition(WRIST_RELEASE_BOX_HIGH);
         mRightWrist.setPosition(WRIST_RELEASE_BOX_HIGH);
-        setSlidePosition(SLIDE_MAX);
+        setSlidePosition(SLIDE_BOX_MAX);
     }
     public void boxLow() {
-        setArmPosition(ARM_RELEASE_BOX_LOW);
+        setArmPosition(ARM_RELEASE);
         mLeftWrist.setPosition(WRIST_RELEASE_BOX_LOW);
         mRightWrist.setPosition(WRIST_RELEASE_BOX_LOW);
-        setSlidePosition(SLIDE_MIN);
+        setSlidePosition(SLIDE_BOX_MIN);
     }
 
 }
