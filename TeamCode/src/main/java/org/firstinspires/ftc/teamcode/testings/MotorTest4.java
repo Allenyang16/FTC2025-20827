@@ -26,10 +26,10 @@ public class MotorTest4 extends LinearOpMode {
             mRightBack.setPower(power);
             mLeftBack.setPower(power);
 
-            telemetry.addData("leftFront_power",mLeftFront.getPower());
-            telemetry.addData("leftBack_power",mLeftBack.getPower());
-            telemetry.addData("rightFront_power",mRightFront.getPower());
-            telemetry.addData("rightBack_power",mLeftFront.getPower());
+            telemetry.addData("leftFront_power", mLeftFront.getPower());
+            telemetry.addData("leftBack_power", mLeftBack.getPower());
+            telemetry.addData("rightFront_power", mRightFront.getPower());
+            telemetry.addData("rightBack_power", mLeftFront.getPower());
 
             telemetry.addData("leftFront_velocity",mLeftFront.getVelocity());
             telemetry.addData("leftBack_velocity",mLeftBack.getVelocity());

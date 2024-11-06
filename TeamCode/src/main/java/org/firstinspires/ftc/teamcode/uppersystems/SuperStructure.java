@@ -6,6 +6,7 @@ import com.acmerobotics.roadrunner.control.PIDCoefficients;
 import com.acmerobotics.roadrunner.control.PIDFController;
 import com.qualcomm.robotcore.hardware.DcMotor;
 import com.qualcomm.robotcore.hardware.DcMotorEx;
+import com.qualcomm.robotcore.hardware.DcMotorSimple;
 import com.qualcomm.robotcore.hardware.HardwareMap;
 import com.qualcomm.robotcore.hardware.Servo;
 
@@ -24,20 +25,30 @@ public class SuperStructure {
 
     private Servo mMinorArm = null; // continuous
     private Servo mClaw = null;
-    private Servo mLeftWrist = null;
-    private Servo mRightWrist = null;
+    private Servo mSpinWrist = null;
+    private Servo mWrist = null;
 
-    public static int SLIDE_BOX_MAX = 3100, SLIDE_BOX_MIN = 2200;
-    public static int SLIDE_CHAMBER_MAX = 1400, SLIDE_CHAMBER_MIN = 0;
-    public static int SLIDE_INTAKE_MAX = 2000, SLIDE_INTAKE_MIN = 0;
+    public static int SLIDE_BOX_HIGH = 3100, SLIDE_BOX_LOW = 2200;
+    public static int SLIDE_CHAMBER_HIGH = 1400, SLIDE_CHAMBER_LOW = 0;
+    public static int SLIDE_INTAKE_MAX = 2000, SLIDE_MIN = 0;
     // TODO: 需要考虑一下把ARM的初始值设为什么
-    public static int ARM_INTAKE = 1400;
+    public static int ARM_INTAKE = 1300;
     public static int ARM_RELEASE = 0;
     // WRIST
-    public static double WRIST_ORIGIN = 0;
-    public static double WRIST_INTAKE_FAR = 0.7, WRIST_INTAKE_NEAR = 0.5;
+    public static double WRIST_ORIGIN = 0.28;
+    public static double WRIST_INTAKE = 0.28;
     public static double WRIST_RELEASE_BOX_HIGH = 0.9, WRIST_RELEASE_BOX_LOW = 0.8;
     public static double WRIST_RELEASE_CHAMBER_HIGH = 0.9, WRIST_RELEASE_CHAMBER_LOW = 0.8;
+
+    // Spin Wrist TODO: 刷固件
+    public static double SPINWRIST_ORIGIN = 0;
+    public static double SPINWRIST_INTAKE = 0.9;
+    public static double SPINWRIST_RELEASE = 0;
+    
+    // Claw
+    public static double CLAW_OPEN = 0;
+    public static double CLAW_GRAB = 0.45;
+    public ClawState clawState = ClawState.GRAB;
 
     private final LinearOpMode opMode;
     private Runnable updateRunnable;
@@ -52,13 +63,15 @@ public class SuperStructure {
         armPidCtrl = new PIDFController(armPidConf);
         slidePidCtrl = new PIDFController(slidePidConf);
 
-        mArm = hardwareMap.get(DcMotorEx.class,"Arm");
+        mArm = hardwareMap.get(DcMotorEx.class,"arm");
         mSlideLeft = hardwareMap.get(DcMotorEx.class,"slideLeft");
         mSlideRight = hardwareMap.get(DcMotorEx.class,"slideRight");
         mMinorArm = hardwareMap.get(Servo.class,"miniArm");
         mClaw = hardwareMap.get(Servo.class,"claw");
-        mRightWrist = hardwareMap.get(Servo.class,"rightWrist");
-        mLeftWrist = hardwareMap.get(Servo.class,"leftWrist");
+        mWrist = hardwareMap.get(Servo.class,"wrist");
+        mSpinWrist = hardwareMap.get(Servo.class,"spinWrist");
+
+        mSlideLeft.setDirection(DcMotorSimple.Direction.REVERSE);
 
         mArm.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
         mSlideLeft.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
@@ -71,6 +84,50 @@ public class SuperStructure {
         mSlideRight.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
         mSlideLeft.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
         mArm.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
+    }
+
+    // init
+    public void initialize(){
+        mArm.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
+        mArm.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
+
+        mSlideRight.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
+        mSlideRight.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
+
+        mSlideLeft.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
+        mSlideLeft.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
+    }
+
+    // Claw
+    public enum ClawState{
+        OPEN(CLAW_OPEN),
+        GRAB(CLAW_GRAB);
+        private final double clawPosition;
+        ClawState(double clawPosition) {
+            this.clawPosition = clawPosition;
+        }
+    }
+
+    public void switchClawState(){
+        switch (clawState){
+            case GRAB:
+                clawState = ClawState.OPEN;
+                mClaw.setPosition(CLAW_OPEN);
+
+            case OPEN:
+                clawState = ClawState.GRAB;
+                mClaw.setPosition(CLAW_GRAB);
+        }
+    }
+
+    // Wrist
+    public void setWristIntake(){
+        mWrist.setPosition(WRIST_INTAKE);
+    }
+
+    // Spin Wrist
+    public void setSpinwristIntake(){
+        mSpinWrist.setPosition(SPINWRIST_INTAKE);
     }
 
     // Small arm part
@@ -116,43 +173,44 @@ public class SuperStructure {
     //Intake Action
     public void intakeFar(){
         setArmPosition(ARM_INTAKE);
-        mLeftWrist.setPosition(WRIST_INTAKE_FAR);
-        mRightWrist.setPosition(WRIST_INTAKE_FAR);
+        mSpinWrist.setPosition(WRIST_INTAKE);
+        mWrist.setPosition(WRIST_INTAKE);
         setSlidePosition(SLIDE_INTAKE_MAX);
     }
     public void intakeNear(){
         setArmPosition(ARM_INTAKE);
-        mLeftWrist.setPosition(WRIST_INTAKE_NEAR);
-        mRightWrist.setPosition(WRIST_INTAKE_NEAR);
-        setSlidePosition(SLIDE_INTAKE_MIN);
+        mSpinWrist.setPosition(WRIST_INTAKE);
+        mWrist.setPosition(WRIST_INTAKE);
+        setSlidePosition(SLIDE_MIN);
     }
 
     // Release Action
     // Chamber
     public void chamberHigh() {
         setArmPosition(ARM_RELEASE);
-        mLeftWrist.setPosition(WRIST_RELEASE_CHAMBER_HIGH);
-        mRightWrist.setPosition(WRIST_RELEASE_CHAMBER_HIGH);
-        setSlidePosition(SLIDE_CHAMBER_MAX);
+        mSpinWrist.setPosition(WRIST_RELEASE_CHAMBER_HIGH);
+        mWrist.setPosition(WRIST_RELEASE_CHAMBER_HIGH);
+        setSlidePosition(SLIDE_CHAMBER_HIGH);
     }
     public void chamberLow() {
         setArmPosition(ARM_RELEASE);
-        mLeftWrist.setPosition(WRIST_RELEASE_CHAMBER_LOW);
-        mRightWrist.setPosition(WRIST_RELEASE_CHAMBER_LOW);
-        setSlidePosition(SLIDE_CHAMBER_MIN);
+        mSpinWrist.setPosition(WRIST_RELEASE_CHAMBER_LOW);
+        mWrist.setPosition(WRIST_RELEASE_CHAMBER_LOW);
+        setSlidePosition(SLIDE_CHAMBER_LOW);
     }
     //Box
     public void boxHigh() {
         setArmPosition(ARM_RELEASE);
-        mLeftWrist.setPosition(WRIST_RELEASE_BOX_HIGH);
-        mRightWrist.setPosition(WRIST_RELEASE_BOX_HIGH);
-        setSlidePosition(SLIDE_BOX_MAX);
+        mSpinWrist.setPosition(WRIST_RELEASE_BOX_HIGH);
+        mWrist.setPosition(WRIST_RELEASE_BOX_HIGH);
+        setSlidePosition(SLIDE_BOX_HIGH);
     }
     public void boxLow() {
         setArmPosition(ARM_RELEASE);
-        mLeftWrist.setPosition(WRIST_RELEASE_BOX_LOW);
-        mRightWrist.setPosition(WRIST_RELEASE_BOX_LOW);
-        setSlidePosition(SLIDE_BOX_MIN);
+        mSpinWrist.setPosition(WRIST_RELEASE_BOX_LOW);
+        mWrist.setPosition(WRIST_RELEASE_BOX_LOW);
+        setSlidePosition(SLIDE_BOX_LOW);
     }
+
 
 }

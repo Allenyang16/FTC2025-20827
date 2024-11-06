@@ -18,7 +18,6 @@ public class SlideTest extends LinearOpMode {
     private final Telemetry telemetry_M = new MultipleTelemetry(telemetry, FtcDashboard.getInstance().getTelemetry());
     private DcMotorEx mSlideLeft = null;
     private DcMotorEx mSlideRight = null;
-    private double power = 1;
     public static int encoder_position = 1150;
     public static double max_power = 1;
     public static boolean read_only = true;
@@ -81,6 +80,7 @@ public class SlideTest extends LinearOpMode {
 
             telemetry_M.addData("right_velocity", mSlideRight.getVelocity());
             telemetry_M.addData("left_velocity", mSlideLeft.getVelocity());
+            telemetry_M.addData("power: ",-gamepad1.right_stick_y);
             telemetry_M.update();
         }
     }
