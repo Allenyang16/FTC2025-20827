@@ -27,8 +27,9 @@ public class SuperStructure {
     private Servo mClaw = null;
     private Servo mSpinWrist = null;
     private Servo mWrist = null;
+    private Servo mCalibrator = null;
 
-    public static int SLIDE_BOX_HIGH = 3100, SLIDE_BOX_LOW = 2200;
+    public static int SLIDE_BOX_HIGH = 2900, SLIDE_BOX_LOW = 2200;
     public static int SLIDE_CHAMBER_HIGH = 1400, SLIDE_CHAMBER_LOW = 0;
     public static int SLIDE_INTAKE_MAX = 2000, SLIDE_MIN = 0;
     // TODO: 需要考虑一下把ARM的初始值设为什么
@@ -36,18 +37,17 @@ public class SuperStructure {
     public static int ARM_RELEASE = 0;
     // WRIST
     public static double WRIST_ORIGIN = 0.28;
-    public static double WRIST_INTAKE = 0.28;
-    public static double WRIST_RELEASE_BOX_HIGH = 0.9, WRIST_RELEASE_BOX_LOW = 0.8;
-    public static double WRIST_RELEASE_CHAMBER_HIGH = 0.9, WRIST_RELEASE_CHAMBER_LOW = 0.8;
+    public static double WRIST_INTAKE = 0.58;
+    public static double WRIST_RELEASE_BOX_HIGH = 0.28, WRIST_RELEASE_BOX_LOW = 0.28;
+    public static double WRIST_RELEASE_CHAMBER_HIGH = 0.28, WRIST_RELEASE_CHAMBER_LOW = 0.8;
 
-    // Spin Wrist TODO: 刷固件
-    public static double SPINWRIST_ORIGIN = 0;
-    public static double SPINWRIST_INTAKE = 0.9;
-    public static double SPINWRIST_RELEASE = 0;
+    // Spin Wrist
+    public static double SPINWRIST_DEFAULT = 0.81;
+    public static double SPINWRIST_RELEASECLIP = 0;
     
     // Claw
-    public static double CLAW_OPEN = 0;
-    public static double CLAW_GRAB = 0.45;
+    public static double CLAW_OPEN = 0.4;
+    public static double CLAW_GRAB = 0.65;
     public ClawState clawState = ClawState.GRAB;
 
     private final LinearOpMode opMode;
@@ -66,12 +66,13 @@ public class SuperStructure {
         mArm = hardwareMap.get(DcMotorEx.class,"arm");
         mSlideLeft = hardwareMap.get(DcMotorEx.class,"slideLeft");
         mSlideRight = hardwareMap.get(DcMotorEx.class,"slideRight");
-        mMinorArm = hardwareMap.get(Servo.class,"miniArm");
         mClaw = hardwareMap.get(Servo.class,"claw");
         mWrist = hardwareMap.get(Servo.class,"wrist");
         mSpinWrist = hardwareMap.get(Servo.class,"spinWrist");
+        mCalibrator = hardwareMap.get(Servo.class,"ruler");
 
-        mSlideLeft.setDirection(DcMotorSimple.Direction.REVERSE);
+        mSlideRight.setDirection(DcMotorSimple.Direction.REVERSE);
+        mArm.setDirection(DcMotorSimple.Direction.REVERSE);
 
         mArm.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
         mSlideLeft.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
@@ -96,12 +97,17 @@ public class SuperStructure {
 
         mSlideLeft.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
         mSlideLeft.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
+
+        setSpinwristIntake();
+        setWristIntake();
+        setClawGrab();
     }
 
     // Claw
     public enum ClawState{
         OPEN(CLAW_OPEN),
         GRAB(CLAW_GRAB);
+
         private final double clawPosition;
         ClawState(double clawPosition) {
             this.clawPosition = clawPosition;
@@ -112,22 +118,34 @@ public class SuperStructure {
         switch (clawState){
             case GRAB:
                 clawState = ClawState.OPEN;
-                mClaw.setPosition(CLAW_OPEN);
+                setClawOpen();
 
             case OPEN:
                 clawState = ClawState.GRAB;
-                mClaw.setPosition(CLAW_GRAB);
+                setClawGrab();
         }
+    }
+    public void setClawOpen(){
+        mClaw.setPosition(CLAW_OPEN);
+    }
+    public void setClawGrab(){
+        mClaw.setPosition(CLAW_GRAB);
     }
 
     // Wrist
     public void setWristIntake(){
         mWrist.setPosition(WRIST_INTAKE);
     }
+    public void setWristReleaseBox(){
+        mWrist.setPosition(WRIST_RELEASE_BOX_HIGH);
+    }
 
     // Spin Wrist
     public void setSpinwristIntake(){
-        mSpinWrist.setPosition(SPINWRIST_INTAKE);
+        mSpinWrist.setPosition(SPINWRIST_DEFAULT);
+    }
+    public void setSpinwristReleaseclip(){
+        mSpinWrist.setPosition(SPINWRIST_RELEASECLIP);
     }
 
     // Small arm part
@@ -166,8 +184,8 @@ public class SuperStructure {
         mSlideLeft.setMode(DcMotor.RunMode.RUN_TO_POSITION);
         mSlideRight.setMode(DcMotor.RunMode.RUN_TO_POSITION);
 
-        mSlideRight.setPower(0.9);
-        mSlideLeft.setPower(0.9);
+        mSlideRight.setPower(0.75);
+        mSlideLeft.setPower(0.75);
     }
 
     //Intake Action

@@ -23,7 +23,6 @@ public class GobildaPinpointLocalizer extends TwoTrackingWheelLocalizer {
         odo.setOffsets(0,0);
         odo.setEncoderResolution(GoBildaPinpointDriver.GoBildaOdometryPods.goBILDA_4_BAR_POD);
         odo.setEncoderDirections(GoBildaPinpointDriver.EncoderDirection.FORWARD, GoBildaPinpointDriver.EncoderDirection.FORWARD);
-        odo.resetPosAndIMU();
         odo.update();
     }
 

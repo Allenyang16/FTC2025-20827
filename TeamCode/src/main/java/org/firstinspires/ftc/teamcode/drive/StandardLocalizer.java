@@ -43,9 +43,9 @@ public class StandardLocalizer implements Localizer {
     public StandardLocalizer(HardwareMap hardwareMap) {
         //this.odometry = odometry;
         odometry = hardwareMap.get(GoBildaPinpointDriver.class,"odo");
-        odometry.setOffsets(-85,110);
-        odometry.setEncoderResolution(GoBildaPinpointDriver.GoBildaOdometryPods.goBILDA_4_BAR_POD);
-        odometry.setEncoderDirections(GoBildaPinpointDriver.EncoderDirection.FORWARD, GoBildaPinpointDriver.EncoderDirection.FORWARD);
+        odometry.setOffsets(172.5,-130);
+        odometry.setEncoderResolution(GoBildaPinpointDriver.GoBildaOdometryPods.goBILDA_SWINGARM_POD);
+        odometry.setEncoderDirections(GoBildaPinpointDriver.EncoderDirection.REVERSED, GoBildaPinpointDriver.EncoderDirection.FORWARD);
         //odometry.resetPosAndIMU();
 
         time = NanoClock.system();
@@ -71,9 +71,14 @@ public class StandardLocalizer implements Localizer {
 
     @Override
     public void update() {
-        double current_x = mmToInches(odometry.getPosX());
-        double current_y = mmToInches(odometry.getPosY());
-        double rotation = odometry.getHeading();
+        Pose2D currentPos = odometry.getPosition();
+
+//        double current_x = mmToInches(odometry.getPosX());
+//        double current_y = mmToInches(odometry.getPosY());
+//        double rotation = odometry.getHeading();
+        double current_x = currentPos.getX(DistanceUnit.INCH);
+        double current_y = currentPos.getY(DistanceUnit.INCH);
+        double rotation = currentPos.getHeading(AngleUnit.RADIANS);
 
         double velocity_x = mmToInches(odometry.getVelX());
         double velocity_y = mmToInches(odometry.getVelY());

@@ -95,10 +95,10 @@ public class NewMecanumDrive extends MecanumDrive {
         batteryVoltageSensor = hardwareMap.voltageSensor.iterator().next();
 
         // TODO: adjust the names of the following hardware devices to match your configuration
-//        odo = hardwareMap.get(GoBildaPinpointDriver.class,"odo");
-//        odo.setOffsets(-85,110);
-//        odo.setEncoderResolution(GoBildaPinpointDriver.GoBildaOdometryPods.goBILDA_4_BAR_POD);
-//        odo.setEncoderDirections(GoBildaPinpointDriver.EncoderDirection.FORWARD, GoBildaPinpointDriver.EncoderDirection.FORWARD);
+        odo = hardwareMap.get(GoBildaPinpointDriver.class,"odo");
+        odo.setOffsets(172.5,-130);
+        odo.setEncoderResolution(GoBildaPinpointDriver.GoBildaOdometryPods.goBILDA_SWINGARM_POD);
+        odo.setEncoderDirections(GoBildaPinpointDriver.EncoderDirection.REVERSED, GoBildaPinpointDriver.EncoderDirection.FORWARD);
 //        odo.resetPosAndIMU();
 
         leftFront = hardwareMap.get(DcMotorEx.class, "leftFront");
@@ -129,6 +129,7 @@ public class NewMecanumDrive extends MecanumDrive {
         leftRear.setDirection(DcMotorSimple.Direction.REVERSE);
         rightFront.setDirection(DcMotorSimple.Direction.FORWARD);
         rightRear.setDirection(DcMotorSimple.Direction.FORWARD);
+
         List<Integer> lastTrackingEncPositions = new ArrayList<>();
         List<Integer> lastTrackingEncVels = new ArrayList<>();
 
@@ -257,6 +258,7 @@ public class NewMecanumDrive extends MecanumDrive {
         if (Math.abs(drivePower.getX()) + Math.abs(drivePower.getY())
                 + Math.abs(drivePower.getHeading()) > 1) {
             // re-normalize the powers according to the weights
+            //TODO: CHANGE THE SIGN OF X AND Y
             double denom = VX_WEIGHT * Math.abs(drivePower.getX())
                     + VY_WEIGHT * Math.abs(drivePower.getY())
                     + OMEGA_WEIGHT * Math.abs(drivePower.getHeading());
@@ -335,10 +337,10 @@ public class NewMecanumDrive extends MecanumDrive {
         return odo.getHeading();
     }
 
-//    @Override
-//    public Double getExternalHeadingVelocity() {
-//        //return (double) imu.getAngularVelocity(AngleUnit.RADIANS).zRotationRate;
-//    }
+    @Override
+    public Double getExternalHeadingVelocity() {
+        return (double) odo.getHeadingVelocity();
+    }
 
     public static TrajectoryVelocityConstraint getVelocityConstraint(double maxVel, double maxAngularVel, double trackWidth) {
         return new MinVelocityConstraint(Arrays.asList(

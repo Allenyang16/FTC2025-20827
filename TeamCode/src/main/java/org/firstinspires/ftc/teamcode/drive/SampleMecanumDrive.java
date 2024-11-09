@@ -102,16 +102,7 @@ public class SampleMecanumDrive extends MecanumDrive {
         }
 
         // TODO: adjust the names of the following hardware devices to match your configuration
-//        imu = hardwareMap.get(IMU.class, "imu");
-//        IMU.Parameters parameters = new IMU.Parameters(new RevHubOrientationOnRobot(
-//                DriveConstants.LOGO_FACING_DIR, DriveConstants.USB_FACING_DIR));
-//        imu.initialize(parameters);
 
-        imu = hardwareMap.get(BNO055IMU.class, "imu");
-        BNO055IMU.Parameters parameters = new BNO055IMU.Parameters();
-        parameters.angleUnit = BNO055IMU.AngleUnit.RADIANS;
-        imu.initialize(parameters);
-        BNO055IMUUtil.remapZAxis(imu, AxisDirection.POS_Y);
 
 
 
@@ -130,12 +121,6 @@ public class SampleMecanumDrive extends MecanumDrive {
         if (RUN_USING_ENCODER) {
             setMode(DcMotor.RunMode.RUN_USING_ENCODER);
         }
-//        leftFront.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
-//        leftRear.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
-//        rightFront.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
-//        leftFront.setMode(DcMotor.RunMode.RUN_WITHOUT_ENCODER);
-//        leftRear.setMode(DcMotor.RunMode.RUN_WITHOUT_ENCODER);
-//        rightFront.setMode(DcMotor.RunMode.RUN_WITHOUT_ENCODER);
         setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
 
         if (RUN_USING_ENCODER && MOTOR_VELO_PID != null) {

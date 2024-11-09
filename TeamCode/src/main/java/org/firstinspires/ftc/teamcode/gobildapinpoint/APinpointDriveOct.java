@@ -105,7 +105,7 @@ public class APinpointDriveOct extends LinearOpMode {
         If you're using another kind of odometry pod, uncomment setEncoderResolution and input the
         number of ticks per mm of your odometry pod.
          */
-        odo.setEncoderResolution(GoBildaPinpointDriver.GoBildaOdometryPods.goBILDA_4_BAR_POD);
+        odo.setEncoderResolution(GoBildaPinpointDriver.GoBildaOdometryPods.goBILDA_SWINGARM_POD);
         //odo.setEncoderResolution(13.26291192);
 
         /*
@@ -224,9 +224,9 @@ public class APinpointDriveOct extends LinearOpMode {
             /*
             gets the current Position (x & y in mm, and heading in degrees) of the robot, and prints it.
              */
-//            Pose2D pos = odo.getPosition();
-//            String data = String.format(Locale.US, "{X: %.3f, Y: %.3f, H: %.3f}", pos.getX(DistanceUnit.MM), pos.getY(DistanceUnit.MM), pos.getHeading(AngleUnit.DEGREES));
-//            telemetry.addData("Position", data);
+            Pose2D pos = odo.getPosition();
+            String data = String.format(Locale.US, "{X: %.3f, Y: %.3f, H: %.3f}", pos.getX(DistanceUnit.MM), pos.getY(DistanceUnit.MM), pos.getHeading(AngleUnit.DEGREES));
+            telemetry.addData("Position", data);
 //
 //            /*
 //            gets the current Velocity (x & y in mm/sec and heading in degrees/sec) and prints it.
