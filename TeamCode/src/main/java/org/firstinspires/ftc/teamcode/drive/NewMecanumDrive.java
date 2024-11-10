@@ -96,7 +96,7 @@ public class NewMecanumDrive extends MecanumDrive {
 
         // TODO: adjust the names of the following hardware devices to match your configuration
         odo = hardwareMap.get(GoBildaPinpointDriver.class,"odo");
-        odo.setOffsets(172.5,-130);
+        odo.setOffsets(172.5,130);
         odo.setEncoderResolution(GoBildaPinpointDriver.GoBildaOdometryPods.goBILDA_SWINGARM_POD);
         odo.setEncoderDirections(GoBildaPinpointDriver.EncoderDirection.REVERSED, GoBildaPinpointDriver.EncoderDirection.FORWARD);
 //        odo.resetPosAndIMU();
@@ -275,7 +275,6 @@ public class NewMecanumDrive extends MecanumDrive {
 
     public void setGlobalPower(double x, double y, double rx) {
         double botHeading = odo.getHeading();
-
         double rotX = x * Math.cos(-botHeading) - y * Math.sin(-botHeading);
         double rotY = x * Math.sin(-botHeading) + y * Math.cos(-botHeading);
 
@@ -293,6 +292,9 @@ public class NewMecanumDrive extends MecanumDrive {
         rightRear.setPower(backRightPower);
     }
 
+    public void resetHeading(){
+        odo.recalibrateIMU();
+    }
     @NonNull
     @Override
     public List<Double> getWheelPositions() {

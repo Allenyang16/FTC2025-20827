@@ -19,6 +19,7 @@ public class TestLocalizer extends LinearOpMode {
 
     private final Telemetry telemetry_M = new MultipleTelemetry(telemetry, FtcDashboard.getInstance().getTelemetry());
     public static  double x = 48, y = 0, heading = 0;
+    public static  double target_x = 48, target_y = 24, target_heading = 90;
     private static Pose2d startPos;
     @Override
     public void runOpMode(){
@@ -56,7 +57,7 @@ public class TestLocalizer extends LinearOpMode {
 //                );
 //            }
             if(gamepad1.a){
-                drive.initSimpleMove(new Pose2d(48,24,Math.toRadians(0)));
+                drive.initSimpleMove(new Pose2d(target_x,target_y,Math.toRadians(target_heading)));
             }
             if(gamepad1.b){
                 drive.stopTrajectory();

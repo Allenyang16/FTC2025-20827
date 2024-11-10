@@ -37,6 +37,7 @@ public class TeleOpTest extends LinearOpMode {
         XCYBoolean toOrigin = new XCYBoolean(()-> gamepad1.left_stick_button);
         XCYBoolean toHighRelease = new XCYBoolean(()-> gamepad1.dpad_up);
         XCYBoolean openClaw = new XCYBoolean(()-> gamepad1.left_bumper);
+        XCYBoolean resetHeading = new XCYBoolean(()-> gamepad1.back);
 
         upper.initialize();
         drive.setPoseEstimate(new Pose2d(12,-52,Math.toRadians(90)));
@@ -44,36 +45,36 @@ public class TeleOpTest extends LinearOpMode {
 
         while (opModeIsActive()){
 
+            if(resetHeading.toTrue()){
+                drive.resetHeading();
+            }
+
             if(intakeFar.toTrue()){
-                upper.setArmPosition(SuperStructure.ARM_INTAKE);
+                //upper.setArmPosition(SuperStructure.ARM_INTAKE);
                 upper.setClawOpen();
                 delay(1000);
                 upper.setSlidePosition(SuperStructure.SLIDE_INTAKE_MAX);
-                // miniArm
-                upper.setWristIntake();
-
+                upper.setWristIntake_ParallelToGround();
             }
 
             if(intakeNear.toTrue()){
-                upper.setArmPosition(SuperStructure.ARM_INTAKE);
+                //upper.setArmPosition(SuperStructure.ARM_INTAKE);
                 upper.setClawOpen();
                 delay(1000);
                 upper.setSlidePosition(SuperStructure.SLIDE_MIN);
                 delay(500);
-                upper.setWristIntake();
+                upper.setWristIntake_ParallelToGround();
             }
 
             if(grab.toTrue()){
-                upper.setClawGrab();
-            }
-            if(openClaw.toTrue()){
-                upper.setClawOpen();
+                upper.switchClawState();
             }
 
             if(toOrigin.toTrue()){
+                upper.setWristIntake_ParallelToGround();
                 upper.setSlidePosition(SuperStructure.SLIDE_MIN);
                 delay(1000);
-                upper.setArmPosition(SuperStructure.ARM_RELEASE);
+                //upper.setArmPosition(SuperStructure.ARM_RELEASE);
                 upper.setWristIntake();
             }
 
@@ -85,7 +86,7 @@ public class TeleOpTest extends LinearOpMode {
             String data = String.format(Locale.US, "{X: %.3f, Y: %.3f, H: %.3f}", drive.getPoseEstimate().getX(), drive.getPoseEstimate().getY(), drive.getPoseEstimate().getHeading());
             telemetry.addData("Position", data);
 
-            drive.setGlobalPower(-gamepad1.left_stick_y,-gamepad1.left_stick_x, 0.3 * gamepad1.right_stick_x);
+            drive.setGlobalPower(gamepad1.left_stick_y,gamepad1.left_stick_x, 0.5 * gamepad1.right_stick_x);
             update.run();
         }
     }

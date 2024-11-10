@@ -3,6 +3,7 @@ package org.firstinspires.ftc.teamcode.uppersystems;
 import com.acmerobotics.dashboard.config.Config;
 import com.acmerobotics.roadrunner.control.PIDCoefficients;
 import com.acmerobotics.roadrunner.control.PIDFController;
+import com.arcrobotics.ftclib.controller.wpilibcontroller.ArmFeedforward;
 import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
 import com.qualcomm.robotcore.hardware.DcMotor;
 import com.qualcomm.robotcore.hardware.DcMotorEx;
@@ -14,6 +15,9 @@ public class SuperStructure_PID {
     private DcMotorEx mArm = null;
     private DcMotorEx mSlideLeft = null;
     private DcMotorEx mSlideRight = null;
+
+    private ArmFeedforward armFeedforward = new ArmFeedforward(0,0,0,0);
+    private com.arcrobotics.ftclib.controller.PIDFController pidfController = new com.arcrobotics.ftclib.controller.PIDFController(0,0,0, armFeedforward.ks);
 
     public static PIDCoefficients armPidConf = new PIDCoefficients(0.0025, 0.00011, 0.00013);
     private final PIDFController armPidCtrl;
