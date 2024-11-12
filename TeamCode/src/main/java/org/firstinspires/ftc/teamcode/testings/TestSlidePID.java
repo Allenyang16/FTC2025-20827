@@ -28,6 +28,7 @@ public class TestSlidePID extends LinearOpMode {
         XCYBoolean a = new XCYBoolean(()->gamepad1.a);
         XCYBoolean b = new XCYBoolean(()->gamepad1.b);
         XCYBoolean y = new XCYBoolean(()->gamepad1.y);
+        XCYBoolean changeSlideState = new XCYBoolean(()-> gamepad1.dpad_down);
 
         Runnable update = ()->{
             drive.update();
@@ -42,6 +43,7 @@ public class TestSlidePID extends LinearOpMode {
         drive.update();
         superstructure.resetSlide();
         waitForStart();
+
         while (opModeIsActive()) {
             if (a.toTrue()) {
                 superstructure.setSlidePosition(SuperStructure.SLIDE_MIN);
@@ -52,6 +54,10 @@ public class TestSlidePID extends LinearOpMode {
             if(b.toTrue()) {
                 superstructure.setSlidePosition(SuperStructure.SLIDE_INTAKE_MAX);
             }
+            if(changeSlideState.toTrue()){
+                superstructure.switchSlideState();
+            }
+
 
             telemetry_M.addData("arm:", superstructure.getArmPosition());
             telemetry_M.addData("slideL: ",superstructure.getSlideLeftPosition());

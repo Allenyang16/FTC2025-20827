@@ -26,12 +26,10 @@ public class SuperStructure {
     public static PIDCoefficients armPidConf = new PIDCoefficients(0.0025, 0.00011, 0.00013);
     private final PIDFController armPidCtrl;
 
-
-
-    public static PIDCoefficients slidePidConf_Intake = new PIDCoefficients(0.0026, 0.00, 0.00);
-    private final PIDFController slidePidCtrl_Intake;
-    public static PIDCoefficients slidePidConf_Release = new PIDCoefficients(0.0026, 0.00, 0.00);
-    private final PIDFController slidePidCtrl_Release;
+    public static PIDCoefficients slidePidConf_Horizontal = new PIDCoefficients(0.0026, 0.00, 0.00);
+    private final PIDFController slidePidCtrl_Horizontal;
+    public static PIDCoefficients slidePidConf_Vertical = new PIDCoefficients(0.0026, 0.00, 0.00);
+    private final PIDFController slidePidCtrl_Vertical;
 
     private Servo mMinorArm = null; // continuous
     private Servo mClaw = null;
@@ -39,11 +37,12 @@ public class SuperStructure {
     private Servo mWrist = null;
     private Servo mCalibrator = null;
 
-    public static int SLIDE_BOX_HIGH = 2386, SLIDE_BOX_LOW = 1500;
+    public static int SLIDE_BOX_HIGH = 3200, SLIDE_BOX_LOW = 1500;
     public static int SLIDE_CHAMBER_HIGH = 1400, SLIDE_CHAMBER_LOW = 0;
     public static int SLIDE_INTAKE_MAX = 1500, SLIDE_MIN = 0;
     // TODO: 需要考虑一下把ARM的初始值设为什么
     public static int ARM_INTAKE = 1300;
+    public static int ARM_POST_INTAKE = 1000;
     public static int ARM_RELEASE = 0;
     // WRIST
     public static double WRIST_ORIGIN = 0.17;
@@ -56,9 +55,10 @@ public class SuperStructure {
     public static double SPINWRIST_RELEASECLIP = 0.81;
     
     // Claw
-    public static double CLAW_OPEN = 0.4;
-    public static double CLAW_GRAB = 0.65;
+    public static double CLAW_OPEN = 0;
+    public static double CLAW_GRAB = 0.33;
     public ClawState clawState = GRAB;
+    public SlideState slideState = SlideState.VERTICAL;
 
     private final LinearOpMode opMode;
     private Runnable updateRunnable;
@@ -71,8 +71,8 @@ public class SuperStructure {
         this.opMode = opMode;
         HardwareMap hardwareMap = opMode.hardwareMap;
         armPidCtrl = new PIDFController(armPidConf);
-        slidePidCtrl_Intake = new PIDFController(slidePidConf_Intake);
-        slidePidCtrl_Release = new PIDFController(slidePidConf_Release);
+        slidePidCtrl_Horizontal = new PIDFController(slidePidConf_Horizontal);
+        slidePidCtrl_Vertical = new PIDFController(slidePidConf_Vertical);
 
         mArm = hardwareMap.get(DcMotorEx.class,"arm");
         mSlideLeft = hardwareMap.get(DcMotorEx.class,"slideLeft");
@@ -149,6 +149,7 @@ public class SuperStructure {
                 break;
         }
     }
+
     public void setClawOpen(){
         mClaw.setPosition(CLAW_OPEN);
     }
@@ -205,22 +206,28 @@ public class SuperStructure {
         mArm.setPower(armPidCtrl.update(mArm.getCurrentPosition()));
         mArm.setMode(DcMotor.RunMode.RUN_WITHOUT_ENCODER);
 
-        mSlideRight.setPower(slidePidCtrl_Intake.update(mSlideRight.getCurrentPosition()));
-        mSlideLeft.setPower(slidePidCtrl_Intake.update(mSlideLeft.getCurrentPosition()));
+        if(slideState == SlideState.HORIZONTAL){
+            mSlideRight.setPower(slidePidCtrl_Horizontal.update(mSlideRight.getCurrentPosition()));
+            mSlideLeft.setPower(slidePidCtrl_Horizontal.update(mSlideLeft.getCurrentPosition()));
+        } else if (slideState == SlideState.VERTICAL) {
+            mSlideRight.setPower(slidePidCtrl_Vertical.update(mSlideRight.getCurrentPosition()));
+            mSlideLeft.setPower(slidePidCtrl_Vertical.update(mSlideLeft.getCurrentPosition()));
+        }
         mSlideRight.setMode(DcMotor.RunMode.RUN_WITHOUT_ENCODER);
         mSlideLeft.setMode(DcMotor.RunMode.RUN_WITHOUT_ENCODER);
 
         packet.put("Claw State", clawState.toString());
+        packet.put("Slide State", slideState.toString());
         FtcDashboard.getInstance().sendTelemetryPacket(packet);
     }
 
     //Slide
-
     public int slideTargetPosition;
 
     public void setSlidePosition(int pos){
         slideTargetPosition = pos;
-        slidePidCtrl_Intake.setTargetPosition(pos);
+        slidePidCtrl_Horizontal.setTargetPosition(slideTargetPosition);
+        slidePidCtrl_Vertical.setTargetPosition(slideTargetPosition);
     }
 
     public void resetSlide(){
@@ -238,6 +245,46 @@ public class SuperStructure {
         mSlideLeft.setPower(0);
         mSlideLeft.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
         mSlideLeft.setMode(DcMotor.RunMode.RUN_WITHOUT_ENCODER);
+    }
+
+    public enum SlideState{
+        HORIZONTAL(slidePidConf_Horizontal),
+        VERTICAL(slidePidConf_Vertical);
+
+        private final PIDCoefficients pidCoefficients;
+        SlideState(PIDCoefficients pidCoefficients) {
+            this.pidCoefficients = pidCoefficients;
+        }
+
+        @Override
+        public String toString(){
+            switch (this){
+                case HORIZONTAL:
+                    return "HORIZONTAL";
+                case VERTICAL:
+                    return "VERTICAL";
+                default:
+                    return "noo";
+            }
+        };
+    }
+    public void switchSlideState(){
+        switch (slideState){
+            case HORIZONTAL:
+                slideState = SlideState.VERTICAL;
+                break;
+            case VERTICAL:
+                slideState = SlideState.HORIZONTAL;
+                break;
+        }
+    }
+    public void setSlideState(SlideState slideState){
+        if(slideState == SlideState.HORIZONTAL){
+            this.slideState = slideState;
+        }
+        if(slideState == SlideState.VERTICAL){
+            this.slideState = slideState;
+        }
     }
 
     //Intake Action
@@ -304,6 +351,12 @@ public class SuperStructure {
     }
     public int getSlideTargetPosition(){
         return slideTargetPosition;
+    }
+    public double getSlideLeftPower(){
+        return mSlideLeft.getPower();
+    }
+    public double getSlideRightPower(){
+        return  mSlideRight.getPower();
     }
 
 
