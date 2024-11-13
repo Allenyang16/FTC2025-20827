@@ -58,18 +58,15 @@ public class TestArmPID extends LinearOpMode {
             if(armBack.toTrue()){
                 superstructure.setArmPosition(0);
             }
-            telemetry_M.addData("arm:", superstructure.getArmPosition());
-            telemetry.addData("slideLeft: ",superstructure.getSlideLeftPosition());
-            telemetry.addData("slideRight: ",superstructure.getSlideRightPosition());
-            telemetry_M.addData("armPower: ",superstructure.getArmPower());
-            telemetry_M.addData("Arm Error",superstructure.getArmPosition() - superstructure.getArmTargetPosition());
+            telemetry_M.addData("armLeftPower: ",superstructure.getArmPower());
 
+            telemetry_M.addData("armLeft:", superstructure.getArmLeftPosition());
+            telemetry_M.addData("armRight: ", superstructure.getArmRightPosition());
+
+            telemetry_M.addData("ArmLeft Error",superstructure.getArmLeftPosition() - superstructure.getArmTargetPosition());
+            telemetry_M.addData("ArmRight Error", superstructure.getArmRightPosition() - superstructure.getArmTargetPosition());
             update.run();
         }
-    }
-
-    private void drive_period() {
-        //there's nothing here
     }
 
     private void logic_period() {

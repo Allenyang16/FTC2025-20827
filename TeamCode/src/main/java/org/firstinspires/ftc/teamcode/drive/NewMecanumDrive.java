@@ -96,10 +96,9 @@ public class NewMecanumDrive extends MecanumDrive {
 
         // TODO: adjust the names of the following hardware devices to match your configuration
         odo = hardwareMap.get(GoBildaPinpointDriver.class,"odo");
-        odo.setOffsets(172.5,130);
+        odo.setOffsets(186.35,134.141);
         odo.setEncoderResolution(GoBildaPinpointDriver.GoBildaOdometryPods.goBILDA_SWINGARM_POD);
         odo.setEncoderDirections(GoBildaPinpointDriver.EncoderDirection.REVERSED, GoBildaPinpointDriver.EncoderDirection.FORWARD);
-//        odo.resetPosAndIMU();
 
         leftFront = hardwareMap.get(DcMotorEx.class, "leftFront");
         leftRear = hardwareMap.get(DcMotorEx.class, "leftBack");
@@ -219,7 +218,7 @@ public class NewMecanumDrive extends MecanumDrive {
     public boolean isBusy() {
         if (simpleMoveIsActivate) {
             Pose2d err = getSimpleMovePosition().minus(getPoseEstimate());
-            return err.vec().norm() > simpleMoveTranslationTolerance || Math.abs(AngleUnit.normalizeRadians(err.getHeading())) > simpleMoveRotationTolerance;
+            return  err.getX() > simpleMove_x_Tolerance || err.getY() > simpleMove_y_Tolerance || Math.abs(AngleUnit.normalizeRadians(err.getHeading())) > simpleMoveRotationTolerance;
         }
         return trajectorySequenceRunner.isBusy();
     }
@@ -365,12 +364,13 @@ public class NewMecanumDrive extends MecanumDrive {
 
     private static final double DEFAULT_TRANS_TOL = 1.25;
 
-    private double simpleMoveTranslationTolerance = 1.25, simpleMoveRotationTolerance = Math.toRadians(10);
+    private double simpleMove_x_Tolerance = 1.25, simpleMove_y_Tolerance = 1.25, simpleMoveRotationTolerance = Math.toRadians(10);
     private double simpleMovePower = 0.95;
     private boolean simpleMoveIsActivate = false;
 
-    public void setSimpleMoveTolerance(double translation, double rotation) {
-        simpleMoveTranslationTolerance = translation;
+    public void setSimpleMoveTolerance(double translation_x, double translation_y, double rotation) {
+        simpleMove_x_Tolerance = translation_x;
+        simpleMove_y_Tolerance = translation_y;
         simpleMoveRotationTolerance = rotation;
     }
 
@@ -423,7 +423,8 @@ public class NewMecanumDrive extends MecanumDrive {
                 atReqPos = toleranceRate<0;
                 initSimpleMove(pose);
                 simpleMovePower = power;
-                simpleMoveTranslationTolerance = DEFAULT_TRANS_TOL * toleranceRate;
+                simpleMove_x_Tolerance = DEFAULT_TRANS_TOL * toleranceRate;
+                simpleMove_y_Tolerance = DEFAULT_TRANS_TOL * toleranceRate;
                 endTime = System.currentTimeMillis() + time;
                 simpleMoveIsActivate = true;
             }
@@ -440,7 +441,8 @@ public class NewMecanumDrive extends MecanumDrive {
             @Override
             public void end() {
                 simpleMoveIsActivate = false;
-                simpleMoveTranslationTolerance = DEFAULT_TRANS_TOL;
+                simpleMove_x_Tolerance = DEFAULT_TRANS_TOL;
+                simpleMove_y_Tolerance = DEFAULT_TRANS_TOL;
             }
         };
     }
