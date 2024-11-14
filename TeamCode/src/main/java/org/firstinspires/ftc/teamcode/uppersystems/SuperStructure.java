@@ -16,6 +16,9 @@ import com.qualcomm.robotcore.hardware.DcMotorSimple;
 import com.qualcomm.robotcore.hardware.HardwareMap;
 import com.qualcomm.robotcore.hardware.Servo;
 
+import java.util.Arrays;
+import java.util.List;
+
 @Config
 public class SuperStructure {
     private TelemetryPacket packet = new TelemetryPacket();
@@ -28,27 +31,29 @@ public class SuperStructure {
     public static PIDCoefficients armPidConf = new PIDCoefficients(0.0025, 0.00011, 0.000);
     private final PIDFController armPidCtrl;
 
-    public static PIDCoefficients slideLeftPidConf_Horizontal = new PIDCoefficients(0.001, 0.00, 0.00);
+    public static PIDCoefficients slideLeftPidConf_Horizontal = new PIDCoefficients(0.0012, 0.00, 0.00);
     private final PIDFController slideLeftPidCtrl_Horizontal;
     public static PIDCoefficients slideLeftPidConf_Vertical = new PIDCoefficients(0.0032, 0.00, 0.00);
     private final PIDFController slideLeftPidCtrl_Vertical;
 
-    public static PIDCoefficients slideRightPidConf_Horizontal = new PIDCoefficients(0.0011, 0.00, 0.00);
+    public static PIDCoefficients slideRightPidConf_Horizontal = new PIDCoefficients(0.0012, 0.00, 0.00);
     private final PIDFController slideRightPidCtrl_Horizontal;
     public static PIDCoefficients slideRightPidConf_Vertical = new PIDCoefficients(0.0032, 0.00, 0.00);
     private final PIDFController slideRightPidCtrl_Vertical;
 
+    private List<PIDFController> slidePidCtrl;
     private Servo mClaw = null;
     private Servo mSpinWrist = null;
     private Servo mWrist = null;
 
     public static int SLIDE_BOX_HIGH = 3200, SLIDE_BOX_LOW = 1500;
-    public static int SLIDE_CHAMBER_HIGH = 1400, SLIDE_CHAMBER_LOW = 0;
+    public static int SLIDE_CHAMBER_HIGH = 1231, SLIDE_CHAMBER_LOW = 0,SLIDE_CHAMBER_DELTA = 400;
     public static int SLIDE_INTAKE_MAX = 1200, SLIDE_MIN = 0;
     // TODO: 需要考虑一下把ARM的初始值设为什么
     public static int ARM_INTAKE = 1300;
     public static int ARM_POST_INTAKE = 1000;
-    public static int ARM_RELEASE = -50;
+    public static int ARM_RELEASE = -75;
+    public static int ARM_CHAMBER = 50;
     // WRIST
     public static double WRIST_ORIGIN = 0.63;
     public static double WRIST_INTAKE = 0.17, WRIST_INTAKE_PARALLEL_GROUND = 0.4;
@@ -84,6 +89,8 @@ public class SuperStructure {
 
         slideRightPidCtrl_Horizontal = new PIDFController(slideRightPidConf_Horizontal);
         slideRightPidCtrl_Vertical = new PIDFController(slideRightPidConf_Vertical);
+
+        slidePidCtrl = Arrays.asList(slideLeftPidCtrl_Horizontal,slideLeftPidCtrl_Vertical,slideRightPidCtrl_Horizontal,slideRightPidCtrl_Vertical);
 
         mArmLeft = hardwareMap.get(DcMotorEx.class,"armLeft");
         mArmRight = hardwareMap.get(DcMotorEx.class, "armRight");
@@ -237,17 +244,24 @@ public class SuperStructure {
         slideTargetPosition = pos;
         slideLeftPidCtrl_Horizontal.setTargetPosition(slideTargetPosition);
         slideLeftPidCtrl_Vertical.setTargetPosition(slideTargetPosition);
+
         slideRightPidCtrl_Horizontal.setTargetPosition(slideTargetPosition);
         slideRightPidCtrl_Vertical.setTargetPosition(slideTargetPosition);
+
+        if(slideTargetPosition < getSlidePosition() && getSlidePosition() < 1000){
+            setSlideOutputBounds(0.5);
+        }else{
+            setSlideOutputBounds(1);
+        }
     }
 
     public void resetSlide(){
         mSlideRight.setMode(DcMotor.RunMode.RUN_WITHOUT_ENCODER);
-        mSlideRight.setPower(-0.3);
+        mSlideRight.setPower(-0.2);
         mSlideLeft.setMode(DcMotor.RunMode.RUN_WITHOUT_ENCODER);
-        mSlideLeft.setPower(-0.3);
+        mSlideLeft.setPower(-0.2);
 
-        delay(50);
+        delay(100);
 
         mSlideRight.setPower(0);
         mSlideRight.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
@@ -295,6 +309,11 @@ public class SuperStructure {
         }
         if(slideState == SlideState.VERTICAL){
             this.slideState = slideState;
+        }
+    }
+    public void setSlideOutputBounds(double bounds){
+        for(PIDFController pidfController: slidePidCtrl){
+            pidfController.setOutputBounds(-bounds,bounds);
         }
     }
 

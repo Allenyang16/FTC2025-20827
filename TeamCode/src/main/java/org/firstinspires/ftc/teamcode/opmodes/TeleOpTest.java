@@ -60,27 +60,35 @@ public class TeleOpTest extends LinearOpMode {
             }
 
             if(sequence == Sequence.RUN){
+                upper.setArmPosition(SuperStructure.ARM_INTAKE);
+
                 if(intakeFar.toTrue()){
-                    upper.setWristIntake_ParallelToGround();
-                    upper.setSpinwristIntake();
-                    upper.setSlideState(SuperStructure.SlideState.HORIZONTAL);
+                    if(intakeState == IntakeState.NEAR){
+                        upper.setSlidePosition(SuperStructure.SLIDE_INTAKE_MAX);
+                        intakeState = IntakeState.FAR;
 
-                    upper.setArmPosition(SuperStructure.ARM_INTAKE);
-                    upper.setClawOpen();
-                    delay(1000);
-                    upper.setSlidePosition(SuperStructure.SLIDE_INTAKE_MAX);
+                    }else {
+                        upper.setWristIntake_ParallelToGround();
+                        upper.setSpinwristIntake();
+                        upper.setSlideState(SuperStructure.SlideState.HORIZONTAL);
 
-                    intakeState = IntakeState.FAR;
+                        upper.setArmPosition(SuperStructure.ARM_INTAKE);
+                        upper.setClawOpen();
+                        delay(500);
+                        upper.setSlidePosition(SuperStructure.SLIDE_INTAKE_MAX);
+                        intakeState = IntakeState.FAR;
+                    }
                 }
+
                 if(intakeNear.toTrue()){
+                    upper.setSlidePosition(SuperStructure.SLIDE_MIN);
+
                     upper.setWristIntake_ParallelToGround();
                     upper.setSpinwristIntake();
                     upper.setSlideState(SuperStructure.SlideState.HORIZONTAL);
 
                     upper.setArmPosition(SuperStructure.ARM_INTAKE);
                     upper.setClawOpen();
-                    delay(1000);
-                    upper.setSlidePosition(SuperStructure.SLIDE_MIN);
                     delay(500);
 
                     intakeState = IntakeState.NEAR;
@@ -128,7 +136,7 @@ public class TeleOpTest extends LinearOpMode {
                     upper.setArmPosition(100);
                     delay(500);
                     upper.setSlidePosition(0);
-                    delay(1500);
+                    delay(1000);
                 }
             }
 
