@@ -15,6 +15,7 @@ import com.qualcomm.robotcore.hardware.DcMotorEx;
 import com.qualcomm.robotcore.hardware.DcMotorSimple;
 import com.qualcomm.robotcore.hardware.HardwareMap;
 import com.qualcomm.robotcore.hardware.Servo;
+import com.qualcomm.robotcore.hardware.TouchSensor;
 
 import java.util.Arrays;
 import java.util.List;
@@ -28,7 +29,7 @@ public class SuperStructure {
     private DcMotorEx mSlideLeft = null;
     private DcMotorEx mSlideRight = null;
     // TODO: change kD
-    public static PIDCoefficients armPidConf = new PIDCoefficients(0.0025, 0.00011, 0.000);
+    public static PIDCoefficients armPidConf = new PIDCoefficients(0.003, 0.00011, 0.000);
     private final PIDFController armPidCtrl;
 
     public static PIDCoefficients slideLeftPidConf_Horizontal = new PIDCoefficients(0.0012, 0.00, 0.00);
@@ -40,19 +41,21 @@ public class SuperStructure {
     private final PIDFController slideRightPidCtrl_Horizontal;
     public static PIDCoefficients slideRightPidConf_Vertical = new PIDCoefficients(0.0032, 0.00, 0.00);
     private final PIDFController slideRightPidCtrl_Vertical;
-
     private List<PIDFController> slidePidCtrl;
+
     private Servo mClaw = null;
     private Servo mSpinWrist = null;
     private Servo mWrist = null;
 
+    private TouchSensor armMag = null;
+
     public static int SLIDE_BOX_HIGH = 3200, SLIDE_BOX_LOW = 1500;
     public static int SLIDE_CHAMBER_HIGH = 1231, SLIDE_CHAMBER_LOW = 0,SLIDE_CHAMBER_DELTA = 400;
     public static int SLIDE_INTAKE_MAX = 1200, SLIDE_MIN = 0;
-    // TODO: 需要考虑一下把ARM的初始值设为什么
-    public static int ARM_INTAKE = 1300;
+    // TODO: all arm values recheck
+    public static int ARM_INTAKE = 1460;
     public static int ARM_POST_INTAKE = 1000;
-    public static int ARM_RELEASE = -75;
+    public static int ARM_RELEASE = -100;
     public static int ARM_CHAMBER = 50;
     // WRIST
     public static double WRIST_ORIGIN = 0.63;
@@ -61,9 +64,9 @@ public class SuperStructure {
     public static double WRIST_RELEASE_CHAMBER_HIGH = 0.28, WRIST_RELEASE_CHAMBER_LOW = 0.8;
 
     // Spin Wrist
-    public static double SPINWRIST_DEFAULT = 0;
+    public static double SPINWRIST_INTAKE = 0.295;
     // TODO: CHANGE THE VALUE
-    public static double SPINWRIST_RELEASECLIP = 0;
+    public static double SPINWRIST_RELEASECLIP = 0.63;
     
     // Claw
     // TODO: TEST Value
@@ -101,6 +104,8 @@ public class SuperStructure {
         mWrist = hardwareMap.get(Servo.class,"wrist");
         mSpinWrist = hardwareMap.get(Servo.class,"spinWrist");
 
+//        armMag = hardwareMap.get(TouchSensor.class,"armMag");
+
         mSlideLeft.setDirection(DcMotorSimple.Direction.REVERSE);
         mArmLeft.setDirection(DcMotorSimple.Direction.REVERSE);
         mArmRight.setDirection(DcMotorSimple.Direction.FORWARD);
@@ -121,6 +126,7 @@ public class SuperStructure {
         mArmRight.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
     }
 
+
     // init
     public void initialize(){
         mArmLeft.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
@@ -134,9 +140,32 @@ public class SuperStructure {
         mSlideLeft.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
         mSlideLeft.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
 
-        setSpinwristIntake();
-        setWristOrigin();
+        setSpinwristReleaseclip();
+        setWristIntake();
         setClawGrab();
+    }
+
+    //update
+    public void update() {
+        mArmLeft.setPower(armPidCtrl.update(mArmLeft.getCurrentPosition()));
+        mArmLeft.setMode(DcMotor.RunMode.RUN_WITHOUT_ENCODER);
+
+        mArmRight.setPower(armPidCtrl.update(getArmRightPosition()));
+        mArmRight.setMode(DcMotor.RunMode.RUN_WITHOUT_ENCODER);
+
+        if(slideState == SlideState.HORIZONTAL){
+            mSlideRight.setPower(slideRightPidCtrl_Horizontal.update(mSlideRight.getCurrentPosition()));
+            mSlideLeft.setPower(slideLeftPidCtrl_Horizontal.update(mSlideLeft.getCurrentPosition()));
+        } else if (slideState == SlideState.VERTICAL) {
+            mSlideRight.setPower(slideRightPidCtrl_Vertical.update(mSlideRight.getCurrentPosition()));
+            mSlideLeft.setPower(slideLeftPidCtrl_Vertical.update(mSlideLeft.getCurrentPosition()));
+        }
+        mSlideRight.setMode(DcMotor.RunMode.RUN_WITHOUT_ENCODER);
+        mSlideLeft.setMode(DcMotor.RunMode.RUN_WITHOUT_ENCODER);
+
+        packet.put("Claw State", clawState.toString());
+        packet.put("Slide State", slideState.toString());
+        FtcDashboard.getInstance().sendTelemetryPacket(packet);
     }
 
     // Claw
@@ -200,7 +229,7 @@ public class SuperStructure {
 
     // Spin Wrist
     public void setSpinwristIntake(){
-        mSpinWrist.setPosition(SPINWRIST_DEFAULT);
+        mSpinWrist.setPosition(SPINWRIST_INTAKE);
     }
     public void setSpinwristReleaseclip(){
         mSpinWrist.setPosition(SPINWRIST_RELEASECLIP);
@@ -213,27 +242,11 @@ public class SuperStructure {
         armPidCtrl.setTargetPosition(armTargetPosition);
 
     }
-
-    public void update() {
-        mArmLeft.setPower(armPidCtrl.update(mArmLeft.getCurrentPosition()));
-        mArmLeft.setMode(DcMotor.RunMode.RUN_WITHOUT_ENCODER);
-
-        mArmRight.setPower(armPidCtrl.update(getArmRightPosition()));
-        mArmRight.setMode(DcMotor.RunMode.RUN_WITHOUT_ENCODER);
-
-        if(slideState == SlideState.HORIZONTAL){
-            mSlideRight.setPower(slideRightPidCtrl_Horizontal.update(mSlideRight.getCurrentPosition()));
-            mSlideLeft.setPower(slideLeftPidCtrl_Horizontal.update(mSlideLeft.getCurrentPosition()));
-        } else if (slideState == SlideState.VERTICAL) {
-            mSlideRight.setPower(slideRightPidCtrl_Vertical.update(mSlideRight.getCurrentPosition()));
-            mSlideLeft.setPower(slideLeftPidCtrl_Vertical.update(mSlideLeft.getCurrentPosition()));
+    public void resetArm(){
+        if(armMag.isPressed()){
+            mArmRight.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
+            mArmLeft.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
         }
-        mSlideRight.setMode(DcMotor.RunMode.RUN_WITHOUT_ENCODER);
-        mSlideLeft.setMode(DcMotor.RunMode.RUN_WITHOUT_ENCODER);
-
-        packet.put("Claw State", clawState.toString());
-        packet.put("Slide State", slideState.toString());
-        FtcDashboard.getInstance().sendTelemetryPacket(packet);
     }
 
     //Slide
@@ -339,8 +352,11 @@ public class SuperStructure {
         return (getSlideLeftPosition() + getSlideRightPosition()) / 2;
     }
 
-    public double getArmPower(){
+    public double getArmLeftPower(){
         return mArmLeft.getPower();
+    }
+    public double getArmRightPower(){
+        return mArmRight.getPower();
     }
 
     public int getArmTargetPosition(){

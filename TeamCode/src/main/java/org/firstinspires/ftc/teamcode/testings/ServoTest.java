@@ -28,7 +28,7 @@ public class ServoTest extends LinearOpMode {
         if (reverse){
             servo0.setDirection(Servo.Direction.REVERSE);
         }
-        
+
         waitForStart();
         while (opModeIsActive()) {
             if (!read_only) {

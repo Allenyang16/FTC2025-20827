@@ -58,7 +58,8 @@ public class TestArmPID extends LinearOpMode {
             if(armBack.toTrue()){
                 superstructure.setArmPosition(0);
             }
-            telemetry_M.addData("armLeftPower: ",superstructure.getArmPower());
+            telemetry_M.addData("armLeftPower: ",superstructure.getArmLeftPower());
+            telemetry_M.addData("armRightPower: ", superstructure.getArmRightPower());
 
             telemetry_M.addData("armLeft:", superstructure.getArmLeftPosition());
             telemetry_M.addData("armRight: ", superstructure.getArmRightPosition());

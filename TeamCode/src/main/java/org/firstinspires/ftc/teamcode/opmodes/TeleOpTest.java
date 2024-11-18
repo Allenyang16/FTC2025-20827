@@ -16,7 +16,7 @@ public class TeleOpTest extends LinearOpMode {
         RUN, RELEASE
     }
     enum IntakeState{
-        FAR, NEAR
+        FAR, NEAR, POST
     }
     private Sequence sequence;
     private IntakeState intakeState;
@@ -32,16 +32,20 @@ public class TeleOpTest extends LinearOpMode {
             upper.update();
             XCYBoolean.bulkRead();
             telemetry.update();
+            // TODO: CHECK WHETHER THIS CAN WORK
+            drive.setGlobalPower(gamepad1.left_stick_y, gamepad1.left_stick_x, 0.5 * gamepad1.right_stick_x);
         };
         drive.setUpdateRunnable(update);
         upper.setUpdateRunnable(update);
 
         XCYBoolean intakeFar = new XCYBoolean(()-> gamepad1.y);
         XCYBoolean intakeNear = new XCYBoolean(()-> gamepad1.a);
-        XCYBoolean toReleaseHighChamber = new XCYBoolean(()-> gamepad1.y);
-        XCYBoolean toReleaseLowChamber = new XCYBoolean(()-> gamepad1.a);
+
+        XCYBoolean toReleaseHighChamber = new XCYBoolean(()-> sequence == Sequence.RELEASE && gamepad1.y);
+        XCYBoolean toReleaseLowChamber = new XCYBoolean(()-> sequence == Sequence.RELEASE && gamepad1.a);
+
         XCYBoolean grab = new XCYBoolean(()-> gamepad1.right_bumper);
-        XCYBoolean toOrigin = new XCYBoolean(()-> gamepad1.left_stick_button);
+        XCYBoolean toOrigin = new XCYBoolean(()-> intakeState == IntakeState.POST && gamepad1.left_stick_button);
         XCYBoolean intakeToOrigin = new XCYBoolean(()-> gamepad1.right_stick_button);
         XCYBoolean toHighRelease = new XCYBoolean(()-> gamepad1.dpad_up);
         XCYBoolean downWrist = new XCYBoolean(()-> gamepad1.left_bumper);
@@ -62,11 +66,13 @@ public class TeleOpTest extends LinearOpMode {
             if(sequence == Sequence.RUN){
                 upper.setArmPosition(SuperStructure.ARM_INTAKE);
 
+                if(downWrist.toTrue()){
+                    upper.setWristIntake();
+                }
                 if(intakeFar.toTrue()){
                     if(intakeState == IntakeState.NEAR){
                         upper.setSlidePosition(SuperStructure.SLIDE_INTAKE_MAX);
                         intakeState = IntakeState.FAR;
-
                     }else {
                         upper.setWristIntake_ParallelToGround();
                         upper.setSpinwristIntake();
@@ -97,26 +103,24 @@ public class TeleOpTest extends LinearOpMode {
                 if(grab.toTrue()){
                     upper.switchClawState();
                 }
-                if(downWrist.toTrue()){
-                    upper.setWristIntake();
+
+
+                if(intakeToOrigin.toTrue()){
+                    if(intakeState == IntakeState.FAR){
+                        upper.setWristIntake_ParallelToGround();
+                        upper.setSlidePosition(SuperStructure.SLIDE_MIN);
+                        delay(500);
+                    }else{
+                        upper.setArmPosition(SuperStructure.ARM_POST_INTAKE);
+                        upper.setWristIntake_ParallelToGround();
+                    }
+                    intakeState = IntakeState.POST;
                 }
 
                 if(toOrigin.toTrue()){
-                    // TODO: ONLY RED NOW
-//                    if(current_pos.getY() < -30){
-//                        drive.moveTo(new Pose2d(current_pos.getX(),current_pos.getY()-5, current_pos.getHeading()),100);
-//                    }
-                    upper.setWristIntake_ParallelToGround();
-                    upper.setSlidePosition(SuperStructure.SLIDE_MIN);
-                    delay(1500);
                     upper.setArmPosition(SuperStructure.ARM_RELEASE);
-//                    upper.setWristIntake();
                     upper.setSlideState(SuperStructure.SlideState.VERTICAL);
                     sequence = Sequence.RELEASE;
-                }
-                if(intakeToOrigin.toTrue()){
-                    upper.setArmPosition(SuperStructure.ARM_POST_INTAKE);
-                    upper.setWristIntake_ParallelToGround();
                 }
 
             }
@@ -136,17 +140,20 @@ public class TeleOpTest extends LinearOpMode {
                     upper.setArmPosition(100);
                     delay(500);
                     upper.setSlidePosition(0);
-                    delay(1000);
+                    delay(500);
+                }
+
+                if(toReleaseHighChamber.toTrue()){
+
                 }
             }
 
 
-            String data = String.format(Locale.US, "{X: %.3f, Y: %.3f, H: %.3f}", drive.getPoseEstimate().getX(), drive.getPoseEstimate().getY(), Math.toDegrees(drive.getPoseEstimate().getHeading()));
-            telemetry.addData("Position", data);
-            telemetry.addData("Sequence", sequence);
+            String data = String.format(Locale.US, "{X: %.3f, Y: %.3f, H: %.3f}", current_pos.getX(), current_pos.getY(), Math.toDegrees(current_pos.getHeading()));
+            telemetry.addData("Position: ", data);
+            telemetry.addData("Sequence: ", sequence);
+            telemetry.addData("rightSlide_encoder: ", upper.getSlideRightPosition());
 
-
-            //
             drive.setGlobalPower(gamepad1.left_stick_y, gamepad1.left_stick_x, 0.5 * gamepad1.right_stick_x);
 
             update.run();

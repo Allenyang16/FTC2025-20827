@@ -38,7 +38,6 @@ public class TestReleaseSpecimen extends LinearOpMode {
                 upper.setClawGrab();
                 upper.setSlidePosition(SuperStructure.SLIDE_CHAMBER_HIGH);
                 upper.setArmPosition(SuperStructure.ARM_CHAMBER);
-
             }
             if(down.toTrue()){
                 upper.setSlidePosition(SuperStructure.SLIDE_CHAMBER_HIGH - SuperStructure.SLIDE_CHAMBER_DELTA);

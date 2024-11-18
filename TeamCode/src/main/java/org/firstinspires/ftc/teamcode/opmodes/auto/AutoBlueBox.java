@@ -5,11 +5,11 @@ import com.qualcomm.robotcore.eventloop.opmode.Autonomous;
 import org.firstinspires.ftc.teamcode.AutoMaster;
 
 @Autonomous
-public class AutoRedBox extends AutoMaster {
+public class AutoBlueBox extends AutoMaster {
     @Override
     public void runOpMode() throws InterruptedException {
-        side_color = RED;
-        startSide = NEGATIVE;
+        side_color = BLUE;
+        startSide = POSITIVE;
 
         // TODO: Check the init of positions
         initHardware();
@@ -25,10 +25,10 @@ public class AutoRedBox extends AutoMaster {
         moveToDrop_sample();
 
         // TODO: Test the values later
-        intakeSample_2();
-        moveToDrop_sample();
-
-        intakeSample_3();
-        moveToDrop_sample();
+//        intakeSample_2();
+//        moveToDrop_sample();
+//
+//        intakeSample_3();
+//        moveToDrop_sample();
     }
 }
