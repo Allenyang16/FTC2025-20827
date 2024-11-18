@@ -15,8 +15,6 @@ import org.firstinspires.ftc.robotcore.external.navigation.Pose2D;
 import org.firstinspires.ftc.teamcode.gobildapinpoint.GoBildaPinpointDriver;
 import org.firstinspires.ftc.teamcode.util.GeomUtil;
 
-import kotlin.ExtensionFunctionType;
-
 /*
  * Tracking wheel localizer implementation assuming the standard configuration:
  *
