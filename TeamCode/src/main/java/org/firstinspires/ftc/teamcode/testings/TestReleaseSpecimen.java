@@ -36,11 +36,11 @@ public class TestReleaseSpecimen extends LinearOpMode {
             if(up.toTrue()){
                 upper.setWristIntake();
                 upper.setClawGrab();
-                upper.setSlidePosition(SuperStructure.SLIDE_BOX_HIGH);
+                upper.setSlidePosition(SuperStructure.SLIDE_CHAMBER_HIGH);
                 upper.setArmPosition(SuperStructure.ARM_CHAMBER);
             }
             if(down.toTrue()){
-                upper.setSlidePosition(SuperStructure.SLIDE_CHAMBER_LOW);
+                upper.setSlidePosition(SuperStructure.SLIDE_CHAMBER_HIGH - SuperStructure.SLIDE_CHAMBER_DELTA);
             }
             if(grab.toTrue()){
                 upper.switchClawState();
