@@ -29,7 +29,7 @@ public class SuperStructure {
     private DcMotorEx mSlideLeft = null;
     private DcMotorEx mSlideRight = null;
     // TODO: change kD
-    public static PIDCoefficients armPidConf = new PIDCoefficients(0.003, 0.00011, 0.000);
+    public static PIDCoefficients armPidConf = new PIDCoefficients(0.0045, 0.00011, 0.000);
     private final PIDFController armPidCtrl;
 
     public static PIDCoefficients slideLeftPidConf_Horizontal = new PIDCoefficients(0.0012, 0.00, 0.00);
@@ -55,12 +55,13 @@ public class SuperStructure {
     // TODO: all arm values recheck
     public static int ARM_INTAKE = 1460;
     public static int ARM_POST_INTAKE = 1000;
-    public static int ARM_RELEASE = -100;
+    public static int ARM_RELEASE = -180;
     public static int ARM_CHAMBER = 50;
     // WRIST
-    public static double WRIST_ORIGIN = 0.63;
-    public static double WRIST_INTAKE = 0.17, WRIST_INTAKE_PARALLEL_GROUND = 0.4;
-    public static double WRIST_RELEASE_BOX_HIGH = 0.55, WRIST_RELEASE_BOX_LOW = 0.28;
+    public static double WRIST_ORIGIN = 0.17;
+    public static double WRIST_INTAKE = 0.86, WRIST_INTAKE_PARALLEL_GROUND = 0.4;
+    // TODO: Retest
+    public static double WRIST_RELEASE_BOX_HIGH = 0.4, WRIST_RELEASE_BOX_LOW = 0.28;
     public static double WRIST_RELEASE_CHAMBER_HIGH = 0.28, WRIST_RELEASE_CHAMBER_LOW = 0.8;
 
     // Spin Wrist
@@ -163,8 +164,12 @@ public class SuperStructure {
         mSlideRight.setMode(DcMotor.RunMode.RUN_WITHOUT_ENCODER);
         mSlideLeft.setMode(DcMotor.RunMode.RUN_WITHOUT_ENCODER);
 
-        packet.put("Claw State", clawState.toString());
-        packet.put("Slide State", slideState.toString());
+//        packet.put("Claw State", clawState.toString());
+//        packet.put("Slide State", slideState.toString());
+        packet.put("rightSlide_encoder: ", getSlideRightPosition());
+        packet.put("leftSlide_encoder: ", getSlideRightPosition());
+        packet.put("rightArm_pos: ", getArmRightPosition());
+        packet.put("leftArm_pos: ",getArmLeftPosition());
         FtcDashboard.getInstance().sendTelemetryPacket(packet);
     }
 

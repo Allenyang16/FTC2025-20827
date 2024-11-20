@@ -17,7 +17,7 @@ public class TeleOp20827 extends LinearOpMode {
         RUN, RELEASE
     }
     enum IntakeState{
-        FAR, NEAR
+        FAR, NEAR, POST
     }
     private Sequence sequence;
     private IntakeState intakeState;
@@ -46,7 +46,7 @@ public class TeleOp20827 extends LinearOpMode {
         XCYBoolean toReleaseLowChamber = new XCYBoolean(()-> sequence == Sequence.RELEASE && gamepad1.a);
 
         XCYBoolean grab = new XCYBoolean(()-> gamepad1.right_bumper);
-        XCYBoolean toOrigin = new XCYBoolean(()-> gamepad1.left_stick_button);
+        XCYBoolean toOrigin = new XCYBoolean(()-> intakeState == IntakeState.POST && gamepad1.left_stick_button);
         XCYBoolean intakeToOrigin = new XCYBoolean(()-> gamepad1.right_stick_button);
         XCYBoolean toHighRelease = new XCYBoolean(()-> gamepad1.dpad_up);
         XCYBoolean downWrist = new XCYBoolean(()-> gamepad1.left_bumper);
@@ -66,6 +66,7 @@ public class TeleOp20827 extends LinearOpMode {
 
             if(sequence == Sequence.RUN){
                 upper.setArmPosition(SuperStructure.ARM_INTAKE);
+
                 if(downWrist.toTrue()){
                     upper.setWristIntake();
                 }
@@ -80,7 +81,6 @@ public class TeleOp20827 extends LinearOpMode {
 
                         upper.setArmPosition(SuperStructure.ARM_INTAKE);
                         upper.setClawOpen();
-                        delay(500);
                         upper.setSlidePosition(SuperStructure.SLIDE_INTAKE_MAX);
                         intakeState = IntakeState.FAR;
                     }
@@ -105,16 +105,19 @@ public class TeleOp20827 extends LinearOpMode {
                 }
 
 
-                if(toOrigin.toTrue()){
+                if(intakeToOrigin.toTrue()){
                     if(intakeState == IntakeState.FAR){
                         upper.setWristIntake_ParallelToGround();
                         upper.setSlidePosition(SuperStructure.SLIDE_MIN);
                         delay(500);
-                        intakeState = IntakeState.NEAR;
                     }else{
                         upper.setArmPosition(SuperStructure.ARM_POST_INTAKE);
                         upper.setWristIntake_ParallelToGround();
                     }
+                    intakeState = IntakeState.POST;
+                }
+
+                if(toOrigin.toTrue()){
                     upper.setArmPosition(SuperStructure.ARM_RELEASE);
                     upper.setSlideState(SuperStructure.SlideState.VERTICAL);
                     sequence = Sequence.RELEASE;

@@ -17,18 +17,21 @@ public class AutoRedBox extends AutoMaster {
         while(opModeInInit()){
 
         }
-
-        moveToDrop_sample();
+        moveToDropFirst_sample();
         toOrigin();
 
         intakeSample_1();
         moveToDrop_sample();
+        toOrigin();
 
         // TODO: Test the values later
         intakeSample_2();
         moveToDrop_sample();
+        toOrigin();
 
         intakeSample_3();
         moveToDrop_sample();
+        toOrigin();
+        moveToStartPos();
     }
 }
