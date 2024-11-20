@@ -21,6 +21,8 @@ public class TeleOp20827 extends LinearOpMode {
     }
     private Sequence sequence;
     private IntakeState intakeState;
+    private boolean dpadLeftPressed = false;
+    private boolean dpadRightPressed = false;
 
     @Override
     public void runOpMode() throws InterruptedException {
@@ -51,6 +53,8 @@ public class TeleOp20827 extends LinearOpMode {
         XCYBoolean toHighRelease = new XCYBoolean(()-> gamepad1.dpad_up);
         XCYBoolean downWrist = new XCYBoolean(()-> gamepad1.left_bumper);
         XCYBoolean resetHeading = new XCYBoolean(()-> gamepad1.back);
+        XCYBoolean spinWristClockwise = new XCYBoolean(()-> gamepad1.dpad_right);
+        XCYBoolean spinWristAnticlockwise = new XCYBoolean(()-> gamepad1.dpad_left);
 
         upper.initialize();
         drive.setPoseEstimate(new Pose2d(12,-52,Math.toRadians(90)));
@@ -122,7 +126,14 @@ public class TeleOp20827 extends LinearOpMode {
                     upper.setSlideState(SuperStructure.SlideState.VERTICAL);
                     sequence = Sequence.RELEASE;
                 }
-
+                if(spinWristAnticlockwise.toTrue()){
+                    upper.adjustWrist(false);
+                    dpadLeftPressed = true;
+                }
+                if(spinWristClockwise.toTrue()){
+                    upper.adjustWrist(true);
+                    dpadRightPressed = true;
+                }
             }
 
             if(sequence == Sequence.RELEASE){

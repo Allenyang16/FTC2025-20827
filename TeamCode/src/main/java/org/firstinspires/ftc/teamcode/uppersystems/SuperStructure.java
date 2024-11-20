@@ -65,10 +65,28 @@ public class SuperStructure {
     public static double WRIST_RELEASE_CHAMBER_HIGH = 0.28, WRIST_RELEASE_CHAMBER_LOW = 0.8;
 
     // Spin Wrist
-    public static double SPINWRIST_INTAKE = 0.295;
+    public static double SPINWRIST_INTAKE = 0.29;
+    public double spinwristPosition = 0.29;
     // TODO: CHANGE THE VALUE
     public static double SPINWRIST_RELEASECLIP = 0.63;
-    
+    public static double SPINWRIST_MAX = 0.46;
+    public static double SPINWRIST_MIN = 0.21;
+    public static double SPINWRIST_STEP = 0.08;
+    public void setWristPosition(double position) {
+        spinwristPosition = Math.max(SPINWRIST_MIN, Math.min(SPINWRIST_MAX, position));
+        mSpinWrist.setPosition(spinwristPosition);
+    }
+    public double getWristPosition() {
+        return spinwristPosition;
+    }
+    public void adjustWrist(boolean clockwise) {
+        if (clockwise) {
+            setWristPosition(spinwristPosition + SPINWRIST_STEP);
+        } else {
+            setWristPosition(spinwristPosition - SPINWRIST_STEP);
+        }
+    }
+
     // Claw
     // TODO: TEST Value
     public static double CLAW_OPEN = 0.6;
