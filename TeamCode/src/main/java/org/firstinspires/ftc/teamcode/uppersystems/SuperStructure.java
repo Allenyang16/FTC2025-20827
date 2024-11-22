@@ -14,6 +14,7 @@ import com.qualcomm.robotcore.hardware.DcMotor;
 import com.qualcomm.robotcore.hardware.DcMotorEx;
 import com.qualcomm.robotcore.hardware.DcMotorSimple;
 import com.qualcomm.robotcore.hardware.HardwareMap;
+import com.qualcomm.robotcore.hardware.PIDFCoefficients;
 import com.qualcomm.robotcore.hardware.Servo;
 import com.qualcomm.robotcore.hardware.TouchSensor;
 
@@ -29,8 +30,11 @@ public class SuperStructure {
     private DcMotorEx mSlideLeft = null;
     private DcMotorEx mSlideRight = null;
     // TODO: change kD
-    public static PIDCoefficients armPidConf = new PIDCoefficients(0.0045, 0.00011, 0.000);
-    private final PIDFController armPidCtrl;
+    public static PIDCoefficients armLeftPidConf = new PIDCoefficients(0.005, 0.00, 0.00);
+    private final PIDFController armLeftPidCtrl;
+
+    public static PIDCoefficients armRightPidConf = new PIDCoefficients(0.003, 0.00, 0.00);
+    private final PIDFController armRightPidCtrl;
 
     public static PIDCoefficients slideLeftPidConf_Horizontal = new PIDCoefficients(0.0012, 0.00, 0.00);
     private final PIDFController slideLeftPidCtrl_Horizontal;
@@ -94,7 +98,8 @@ public class SuperStructure {
     public SuperStructure (LinearOpMode opMode){
         this.opMode = opMode;
         HardwareMap hardwareMap = opMode.hardwareMap;
-        armPidCtrl = new PIDFController(armPidConf);
+        armLeftPidCtrl = new PIDFController(armLeftPidConf);
+        armRightPidCtrl = new PIDFController(armRightPidConf);
 
         slideLeftPidCtrl_Horizontal = new PIDFController(slideLeftPidConf_Horizontal);
         slideLeftPidCtrl_Vertical = new PIDFController(slideLeftPidConf_Vertical);
@@ -156,10 +161,10 @@ public class SuperStructure {
 
     //update
     public void update() {
-        mArmLeft.setPower(armPidCtrl.update(mArmLeft.getCurrentPosition()));
+        mArmLeft.setPower(armLeftPidCtrl.update(mArmLeft.getCurrentPosition()));
         mArmLeft.setMode(DcMotor.RunMode.RUN_WITHOUT_ENCODER);
 
-        mArmRight.setPower(armPidCtrl.update(getArmRightPosition()));
+        mArmRight.setPower(armRightPidCtrl.update(getArmRightPosition()));
         mArmRight.setMode(DcMotor.RunMode.RUN_WITHOUT_ENCODER);
 
         if(slideState == SlideState.HORIZONTAL){
@@ -297,7 +302,8 @@ public class SuperStructure {
     private int armTargetPosition;
     public void setArmPosition(int pos){
         armTargetPosition = pos;
-        armPidCtrl.setTargetPosition(armTargetPosition);
+        armLeftPidCtrl.setTargetPosition(armTargetPosition);
+        armRightPidCtrl.setTargetPosition(armTargetPosition);
 
     }
     public void resetArm(){
