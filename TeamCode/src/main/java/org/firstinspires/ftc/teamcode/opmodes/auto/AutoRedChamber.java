@@ -11,10 +11,12 @@ public class AutoRedChamber extends AutoMaster {
         startSide = POSITIVE;
 
         initHardware();
-
         while(opModeInInit()){
 
         }
+
+        dropSpecimen();
+
 
 
     }

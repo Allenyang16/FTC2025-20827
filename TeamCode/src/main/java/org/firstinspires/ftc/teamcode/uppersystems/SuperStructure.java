@@ -50,24 +50,31 @@ public class SuperStructure {
     private TouchSensor armMag = null;
 
     public static int SLIDE_BOX_HIGH = 3200, SLIDE_BOX_LOW = 1500;
-    public static int SLIDE_CHAMBER_HIGH = 1231, SLIDE_CHAMBER_LOW = 0,SLIDE_CHAMBER_DELTA = 400;
+    public static int SLIDE_CHAMBER_HIGH = 1231, SLIDE_CHAMBER_LOW = 0;
+    public static int SLIDE_CHAMBER_HIGH_DOWN = 700;
     public static int SLIDE_INTAKE_MAX = 1200, SLIDE_MIN = 0;
-    // TODO: all arm values recheck
-    public static int ARM_INTAKE = 1460;
+
+    public static int ARM_INTAKE = 1500;
     public static int ARM_POST_INTAKE = 1000;
-    public static int ARM_RELEASE = -180;
-    public static int ARM_CHAMBER = 50;
+    // TODO: CHECK THIS VALUE
+    public static int ARM_INTAKE_SPECIMEN = -1000;
+    public static int ARM_RELEASE_BOX = -180;
+    public static int ARM_RELEASE_CHAMBER = 50;
     // WRIST
     public static double WRIST_ORIGIN = 0.17;
     public static double WRIST_INTAKE = 0.86, WRIST_INTAKE_PARALLEL_GROUND = 0.4;
+    public static double WRIST_INTAKE_SPECIMEN = 0.4;
+
     // TODO: Retest
     public static double WRIST_RELEASE_BOX_HIGH = 0.4, WRIST_RELEASE_BOX_LOW = 0.28;
-    public static double WRIST_RELEASE_CHAMBER_HIGH = 0.28, WRIST_RELEASE_CHAMBER_LOW = 0.8;
+    public static double WRIST_RELEASE_CHAMBER_HIGH = 0.85, WRIST_RELEASE_CHAMBER_LOW = 0.8;
 
     // Spin Wrist
-    public static double SPINWRIST_INTAKE = 0.295;
+    public static double SPINWRIST_INTAKE = 0.82;
+    public static double SPINWRIST_INTAKE_CLOCKWISE = 0.72;
+    public static double SPINWRIST_INTAKE_COUNTERCLOCKWISE = 0.9;
     // TODO: CHANGE THE VALUE
-    public static double SPINWRIST_RELEASECLIP = 0.63;
+    public static double SPINWRIST_RELEASE_SPECIMEN = 0.36;
     
     // Claw
     // TODO: TEST Value
@@ -75,6 +82,7 @@ public class SuperStructure {
     public static double CLAW_GRAB = 0.275;
     public ClawState clawState = GRAB;
     public SlideState slideState = SlideState.VERTICAL;
+    public WristIntakeState wristIntakeState = WristIntakeState.INTAKE;
 
     private final LinearOpMode opMode;
     private Runnable updateRunnable;
@@ -141,7 +149,7 @@ public class SuperStructure {
         mSlideLeft.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
         mSlideLeft.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
 
-        setSpinwristReleaseclip();
+        setSpinWristRelease_specimen();
         setWristIntake();
         setClawGrab();
     }
@@ -221,24 +229,69 @@ public class SuperStructure {
     // Wrist
     public void setWristIntake_ParallelToGround(){
         mWrist.setPosition(WRIST_INTAKE_PARALLEL_GROUND);
+        wristIntakeState = WristIntakeState.INTAKE_PARALLEL_GROUND;
     }
     public void setWristIntake(){
         mWrist.setPosition(WRIST_INTAKE);
+        wristIntakeState = WristIntakeState.INTAKE;
     }
+    public void setWristIntakeSpecimen(){
+        mWrist.setPosition(WRIST_INTAKE_SPECIMEN);
+    }
+
     public void setWristReleaseBox(){
         mWrist.setPosition(WRIST_RELEASE_BOX_HIGH);
     }
-    public void setWristOrigin(){
-        mWrist.setPosition(WRIST_ORIGIN);
+
+    public enum WristIntakeState {
+        INTAKE(WRIST_INTAKE),
+        INTAKE_PARALLEL_GROUND(WRIST_INTAKE_PARALLEL_GROUND);
+
+        private final double wristPosition;
+        WristIntakeState(double wristPosition) {
+            this.wristPosition = wristPosition;
+        }
+        @Override
+        public String toString(){
+            switch (this){
+                case INTAKE:
+                    return "INTAKE";
+                case INTAKE_PARALLEL_GROUND:
+                    return "PARALLEL_GROUND";
+                default:
+                    return "none";
+            }
+        };
     }
 
+    public void switchWristIntakeState(){
+        switch (wristIntakeState){
+            case INTAKE:
+                wristIntakeState = WristIntakeState.INTAKE_PARALLEL_GROUND;
+                setWristIntake_ParallelToGround();
+                break;
+            case INTAKE_PARALLEL_GROUND:
+                wristIntakeState = WristIntakeState.INTAKE;
+                setWristIntake();
+                break;
+        }
+    }
+
+
     // Spin Wrist
-    public void setSpinwristIntake(){
+    public void setSpinWristIntake(){
         mSpinWrist.setPosition(SPINWRIST_INTAKE);
     }
-    public void setSpinwristReleaseclip(){
-        mSpinWrist.setPosition(SPINWRIST_RELEASECLIP);
+    public void setSpinWristRelease_specimen(){
+        mSpinWrist.setPosition(SPINWRIST_RELEASE_SPECIMEN);
     }
+    public void setSpinWristIntake_spinClockwise(){
+        mSpinWrist.setPosition(SPINWRIST_INTAKE_CLOCKWISE);
+    }
+    public void setSpinWristIntake_spinCounterClockwise(){
+        mSpinWrist.setPosition(SPINWRIST_INTAKE_COUNTERCLOCKWISE);
+    }
+
 
     // Arm
     private int armTargetPosition;
