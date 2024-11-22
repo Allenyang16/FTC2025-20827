@@ -19,7 +19,6 @@ public class MotorTest4 extends LinearOpMode {
         mRightFront = hardwareMap.get(DcMotorEx.class,"rightFront");
         waitForStart();
 
-
         while(opModeIsActive()){
             mRightFront.setPower(power);
             mLeftFront.setPower(power);
