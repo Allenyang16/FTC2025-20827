@@ -73,7 +73,7 @@ public class Solo extends LinearOpMode {
             }
 
             if(sequence == Sequence.RUN){
-                upper.setArmPosition(SuperStructure.ARM_INTAKE);
+                //upper.setArmPosition(SuperStructure.ARM_INTAKE);
 
 
                 if(downWrist.toTrue()){
@@ -88,7 +88,7 @@ public class Solo extends LinearOpMode {
                 }
 
                 if(intakeFar.toTrue()){
-                    heading_coefficient = 0.2;
+                    heading_coefficient = 0.35;
                     if(intakeState == IntakeState.NEAR){
                         upper.setSlidePosition(SuperStructure.SLIDE_INTAKE_MAX);
                         intakeState = IntakeState.FAR;
@@ -105,7 +105,7 @@ public class Solo extends LinearOpMode {
                 }
 
                 if(intakeNear.toTrue()){
-                    heading_coefficient = 0.2;
+                    heading_coefficient = 0.5;
                     upper.setSlidePosition(SuperStructure.SLIDE_MIN);
                     upper.setSpinWristIntake();
                     upper.setWristIntake_ParallelToGround();
@@ -145,7 +145,8 @@ public class Solo extends LinearOpMode {
                 }
 
                 if(toOrigin.toTrue()){
-                    heading_coefficient = 0.5;
+                    heading_coefficient = 0.6;
+                    upper.setSpinWristIntake();
                     upper.setArmPosition(SuperStructure.ARM_RELEASE_BOX);
                     upper.setSlideState(SuperStructure.SlideState.VERTICAL);
                     if(intakeState == IntakeState.SPECIMEN){
@@ -171,8 +172,7 @@ public class Solo extends LinearOpMode {
                     upper.setArmPosition(100);
                     delay(500);
                     upper.setSlidePosition(0);
-                    delay(500);
-
+                    delay(1000);
                 }
             }
 
