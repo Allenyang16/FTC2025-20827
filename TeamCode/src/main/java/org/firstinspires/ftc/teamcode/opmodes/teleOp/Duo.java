@@ -50,6 +50,9 @@ public class Duo extends LinearOpMode {
         XCYBoolean grab = new XCYBoolean(()-> gamepad2.right_bumper);
         XCYBoolean spinWristClockwise = new XCYBoolean(()-> gamepad2.right_trigger > 0);
         XCYBoolean spinWristCounterClockwise = new XCYBoolean(()-> gamepad2.left_trigger > 0);
+        XCYBoolean intakeSpecimenPosition = new XCYBoolean(()-> gamepad2.x);
+        XCYBoolean intakeSpecimen = new XCYBoolean(()-> gamepad2.left_stick_button);
+        XCYBoolean releaseChamber = new XCYBoolean(()-> gamepad2.right_stick_button);
 
         upper.initialize();
         drive.setPoseEstimate(new Pose2d(12,-52,Math.toRadians(90)));
@@ -129,6 +132,19 @@ public class Duo extends LinearOpMode {
                     sequence = Sequence.RELEASE;
                 }
 
+                if(intakeSpecimenPosition.toTrue()){
+                    upper.setArmPosition(SuperStructure.ARM_INTAKE_SPECIMEN);
+                    upper.setSlidePosition(SuperStructure.SLIDE_MIN);
+                    upper.setClawOpen();
+                    upper.setWristIntakeSpecimen();
+                }
+                if(intakeSpecimen.toTrue()){
+                    upper.setClawGrab();
+                    upper.setArmPosition(SuperStructure.ARM_RELEASE_CHAMBER);
+                    upper.setSlidePosition(SuperStructure.SLIDE_CHAMBER_HIGH);
+                    sequence = Sequence.RELEASE;
+                }
+
             }
 
             if(sequence == Sequence.RELEASE){
@@ -146,6 +162,17 @@ public class Duo extends LinearOpMode {
                     upper.setArmPosition(100);
                     delay(500);
                     upper.setSlidePosition(0);
+                    delay(500);
+                }
+                if(releaseChamber.toTrue()){
+                    upper.setSlidePosition(SuperStructure.SLIDE_CHAMBER_HIGH_DOWN);
+                    delay(500);
+                    upper.setClawOpen();
+                    sequence = Sequence.RUN;
+
+                    upper.setArmPosition(SuperStructure.ARM_RELEASE_BOX);
+                    delay(500);
+                    upper.setSlidePosition(SuperStructure.SLIDE_MIN);
                     delay(500);
                 }
 
