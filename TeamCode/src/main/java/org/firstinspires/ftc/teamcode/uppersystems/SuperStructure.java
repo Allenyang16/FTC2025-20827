@@ -29,8 +29,10 @@ public class SuperStructure {
     private DcMotorEx mSlideLeft = null;
     private DcMotorEx mSlideRight = null;
     // TODO: change kD
-    public static PIDCoefficients armPidConf = new PIDCoefficients(0.0045, 0.00011, 0.000);
-    private final PIDFController armPidCtrl;
+    public static PIDCoefficients armLeftPidConf = new PIDCoefficients(0.006, 0.00011, 0.000);
+    private final PIDFController armLeftPidCtrl;
+    public static PIDCoefficients armRightPidConf = new PIDCoefficients(0.006, 0.00011, 0.000);
+    private final PIDFController armRightPidCtrl;
 
     public static PIDCoefficients slideLeftPidConf_Horizontal = new PIDCoefficients(0.0012, 0.00, 0.00);
     private final PIDFController slideLeftPidCtrl_Horizontal;
@@ -60,6 +62,8 @@ public class SuperStructure {
     public static int ARM_INTAKE_SPECIMEN = -1000;
     public static int ARM_RELEASE_BOX = -180;
     public static int ARM_RELEASE_CHAMBER = 50;
+
+    public static boolean setArmByPower = false;
     // WRIST
     public static double WRIST_ORIGIN = 0.17;
     public static double WRIST_INTAKE = 0.86, WRIST_INTAKE_PARALLEL_GROUND = 0.4;
@@ -94,7 +98,8 @@ public class SuperStructure {
     public SuperStructure (LinearOpMode opMode){
         this.opMode = opMode;
         HardwareMap hardwareMap = opMode.hardwareMap;
-        armPidCtrl = new PIDFController(armPidConf);
+        armLeftPidCtrl = new PIDFController(armLeftPidConf);
+        armRightPidCtrl = new PIDFController(armRightPidConf);
 
         slideLeftPidCtrl_Horizontal = new PIDFController(slideLeftPidConf_Horizontal);
         slideLeftPidCtrl_Vertical = new PIDFController(slideLeftPidConf_Vertical);
@@ -156,11 +161,15 @@ public class SuperStructure {
 
     //update
     public void update() {
-        mArmLeft.setPower(armPidCtrl.update(mArmLeft.getCurrentPosition()));
-        mArmLeft.setMode(DcMotor.RunMode.RUN_WITHOUT_ENCODER);
 
-        mArmRight.setPower(armPidCtrl.update(getArmRightPosition()));
-        mArmRight.setMode(DcMotor.RunMode.RUN_WITHOUT_ENCODER);
+        if(!setArmByPower){
+            mArmLeft.setPower(armLeftPidCtrl.update(mArmLeft.getCurrentPosition()));
+            mArmLeft.setMode(DcMotor.RunMode.RUN_WITHOUT_ENCODER);
+
+            mArmRight.setPower(armRightPidCtrl.update(getArmRightPosition()));
+            mArmRight.setMode(DcMotor.RunMode.RUN_WITHOUT_ENCODER);
+        }
+
 
         if(slideState == SlideState.HORIZONTAL){
             mSlideRight.setPower(slideRightPidCtrl_Horizontal.update(mSlideRight.getCurrentPosition()));
@@ -296,10 +305,24 @@ public class SuperStructure {
     // Arm
     private int armTargetPosition;
     public void setArmPosition(int pos){
+        setArmByPower = false;
         armTargetPosition = pos;
-        armPidCtrl.setTargetPosition(armTargetPosition);
-
+        armLeftPidCtrl.setTargetPosition(armTargetPosition);
+        armRightPidCtrl.setTargetPosition(armTargetPosition);
     }
+
+    public void setArmPosition_byPower(int pos){
+        setArmByPower = true;
+        armTargetPosition = pos;
+
+        mArmLeft.setTargetPosition(pos);
+        mArmRight.setTargetPosition(pos);
+        mArmLeft.setMode(DcMotor.RunMode.RUN_TO_POSITION);
+        mArmRight.setMode(DcMotor.RunMode.RUN_TO_POSITION);
+        mArmLeft.setPower(0.9);
+        mArmRight.setPower(0.9);
+    }
+
     public void resetArm(){
         if(armMag.isPressed()){
             mArmRight.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
@@ -393,6 +416,7 @@ public class SuperStructure {
     public int getArmLeftPosition(){
         return mArmLeft.getCurrentPosition();
     }
+
     public int getArmRightPosition(){
         return mArmRight.getCurrentPosition();
     }
