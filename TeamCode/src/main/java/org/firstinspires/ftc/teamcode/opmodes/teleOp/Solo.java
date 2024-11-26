@@ -117,8 +117,6 @@ public class Solo extends LinearOpMode {
 
                     upper.setArmPosition(SuperStructure.ARM_INTAKE);
                     upper.setClawOpen();
-                    // TODO:试一下能不能把delay给去掉
-                    delay(500);
                     intakeState = IntakeState.NEAR;
                 }
 

@@ -54,8 +54,8 @@ public class SuperStructure {
     private TouchSensor armMag = null;
 
     public static int SLIDE_BOX_HIGH = 3200, SLIDE_BOX_LOW = 1500;
-    public static int SLIDE_CHAMBER_HIGH = 1300, SLIDE_CHAMBER_LOW = 0;
-    public static int SLIDE_CHAMBER_HIGH_DOWN = 700;
+    public static int SLIDE_CHAMBER_HIGH = 1380, SLIDE_CHAMBER_LOW = 0;
+    public static int SLIDE_CHAMBER_HIGH_DOWN = 880;
     public static int SLIDE_INTAKE_MAX = 1200, SLIDE_MIN = 0;
 
     public static int ARM_INTAKE = 1400;
@@ -63,7 +63,7 @@ public class SuperStructure {
     // TODO: CHECK THIS VALUE
     public static int ARM_INTAKE_SPECIMEN = -1000;
     public static int ARM_RELEASE_BOX = -180;
-    public static int ARM_RELEASE_CHAMBER = 200;
+    public static int ARM_RELEASE_CHAMBER = 300;
     // WRIST
     public static double WRIST_INTAKE = 0.86, WRIST_INTAKE_PARALLEL_GROUND = 0.4;
     public static double WRIST_INTAKE_SPECIMEN = 0.4;
@@ -154,7 +154,7 @@ public class SuperStructure {
         mSlideLeft.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
         mSlideLeft.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
 
-        setSpinWristRelease_specimen();
+        setSpinWristIntake_specimen();
         setWristIntake();
         setClawGrab();
     }
@@ -224,10 +224,12 @@ public class SuperStructure {
 
     public void setClawOpen(){
         mClaw.setPosition(CLAW_OPEN);
+        delay(200);
         clawState = OPEN;
     }
     public void setClawGrab(){
         mClaw.setPosition(CLAW_GRAB);
+        delay(200);
         clawState = GRAB;
     }
 
@@ -328,9 +330,11 @@ public class SuperStructure {
         slideRightPidCtrl_Horizontal.setTargetPosition(slideTargetPosition);
         slideRightPidCtrl_Vertical.setTargetPosition(slideTargetPosition);
 
-        if(slideTargetPosition < getSlidePosition() && getSlidePosition() < 1000){
+        if(slideTargetPosition < getSlidePosition() && getSlidePosition() < 200){
             setSlideOutputBounds(0.5);
-        }else{
+        } else if (slideTargetPosition < getSlidePosition() && getSlidePosition() < 800) {
+            setSlideOutputBounds(0.8);
+        } else{
             setSlideOutputBounds(1);
         }
     }

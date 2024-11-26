@@ -15,9 +15,25 @@ public class AutoRedChamber extends AutoMaster {
 
         }
 
-        dropSpecimen();
+        releaseSpecimen();
+        dropSpecimen_toOrigin();
 
+        intakeSample_1();
+        dropSampleToHP();
+        intakeSpecimen();
+        releaseSpecimen();
+        dropSpecimen_toOrigin();
 
+        intakeSample_2();
+        dropSampleToHP();
+        intakeSpecimen();
+        releaseSpecimen();
+        dropSpecimen_toOrigin();
 
+        intakeSample_3();
+        dropSampleToHP();
+        intakeSpecimen();
+        releaseSpecimen();
+        dropSpecimen_toOrigin();
     }
 }
