@@ -23,21 +23,21 @@ public abstract class AutoMaster extends LinearOpMode {
     private SuperStructure upper;
     private Runnable update;
 
-    public static int correcting_time = 1000, correcting_time2 = 500;
+    public static int correcting_time = 500, correcting_time2 = 0;
 
     Pose2d startPos;
     public static double startPos_x = 15, startPos_y = 59.5, startPos_heading = -90;
 
     Pose2d boxPos;
-    public static double box_x = 55.5, box_y = 52.5, box_heading = -45;
+    public static double box_x = 54, box_y = 52.5, box_heading = -45;
 
     Pose2d chamberPos;
 
     // TODO: TEST VALUE of all these poses
     Pose2d intakeSamplePos_1;
-    public static double intake_samplePos1_x = 49, intake_samplePos1_y = 38, intake_samplePos1_heading = -90; // Degree
+    public static double intake_samplePos1_x = 49, intake_samplePos1_y = 37, intake_samplePos1_heading = -90; // Degree
     Pose2d intakeSamplePos_2;
-    public static double intake_samplePos2_x = 59, intake_samplePos2_y = 37, intake_samplePos2_heading = -90;
+    public static double intake_samplePos2_x = 58, intake_samplePos2_y = 37, intake_samplePos2_heading = -90;
     Pose2d intakeSamplePos_3;
     public static double intake_samplePos3_x = 60, intake_samplePos3_y = 35.5, intake_samplePos3_heading = -120;
 
@@ -98,13 +98,35 @@ public abstract class AutoMaster extends LinearOpMode {
     }
 
     protected void moveToDropFirst_sample(){
-        drive.setSimpleMoveTolerance(2,2,Math.toRadians(5));
+        drive.setSimpleMoveTolerance(0.8,0.8,Math.toRadians(5));
         drive.setSimpleMovePower(0.9);
 
         upper.setArmPosition(SuperStructure.ARM_RELEASE_BOX);
         drive.moveTo(boxPos,correcting_time);
         // Drop
         dropSample();
+    }
+    // TODO: Test the control system
+    protected void moveToDrop(){
+        drive.setSimpleMoveTolerance(2,2,Math.toRadians(5));
+        drive.setSimpleMovePower(0.9);
+
+        drive.moveTo(boxPos,correcting_time);
+    }
+    protected boolean isAtCorrectPos(){
+        return  drive.isBusy();
+    }
+    protected void moveToIntake1(){
+        drive.moveTo(intakeSamplePos_1,correcting_time2);
+    }
+    protected void moveToIntake2(){
+        drive.moveTo(intakeSamplePos_2,correcting_time2);
+    }
+    protected void moveToIntake3(){
+        drive.moveTo(intakeSamplePos_3,correcting_time2);
+    }
+    protected double getMotorPower(){
+        return drive.getLeftFrontMotorPower();
     }
 
     protected void moveToDrop_sample(){

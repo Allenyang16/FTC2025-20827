@@ -30,6 +30,7 @@ import org.firstinspires.ftc.teamcode.util.GeomUtil;
  */
 @Config
 public class StandardLocalizer implements Localizer {
+    public double xOffset = 169, yOffset = 133;
     private Pose2d poseEstimate = new Pose2d(0, 0, 0);
     private Pose2d poseVelocity = new Pose2d(0, 0, 0);
 
@@ -42,7 +43,7 @@ public class StandardLocalizer implements Localizer {
     public StandardLocalizer(HardwareMap hardwareMap) {
         //this.odometry = odometry;
         odometry = hardwareMap.get(GoBildaPinpointDriver.class,"odo");
-        odometry.setOffsets(145,133); // 169
+        odometry.setOffsets(xOffset,yOffset); // 169
         odometry.setEncoderResolution(GoBildaPinpointDriver.GoBildaOdometryPods.goBILDA_SWINGARM_POD);
         odometry.setEncoderDirections(GoBildaPinpointDriver.EncoderDirection.REVERSED, GoBildaPinpointDriver.EncoderDirection.FORWARD);
         //odometry.resetPosAndIMU();

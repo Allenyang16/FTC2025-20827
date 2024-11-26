@@ -23,6 +23,7 @@ public class Solo extends LinearOpMode {
     private Sequence sequence;
     private IntakeState intakeState;
     private static double heading_coefficient = 0.5;
+    private static double translation_coefficient = 1.0;
 
     @Override
     public void runOpMode() throws InterruptedException {
@@ -36,7 +37,7 @@ public class Solo extends LinearOpMode {
             XCYBoolean.bulkRead();
             telemetry.update();
             // TODO: CHECK WHETHER THIS CAN WORK
-            drive.setGlobalPower(gamepad1.left_stick_y, gamepad1.left_stick_x, heading_coefficient * gamepad1.right_stick_x);
+            drive.setGlobalPower(translation_coefficient * gamepad1.left_stick_y, translation_coefficient * gamepad1.left_stick_x, heading_coefficient * gamepad1.right_stick_x);
         };
         drive.setUpdateRunnable(update);
         upper.setUpdateRunnable(update);
@@ -88,7 +89,9 @@ public class Solo extends LinearOpMode {
                 }
 
                 if(intakeFar.toTrue()){
-                    heading_coefficient = 0.35;
+                    heading_coefficient = 0.15;
+                    translation_coefficient = 0.3;
+
                     if(intakeState == IntakeState.NEAR){
                         upper.setSlidePosition(SuperStructure.SLIDE_INTAKE_MAX);
                         intakeState = IntakeState.FAR;
@@ -106,6 +109,7 @@ public class Solo extends LinearOpMode {
 
                 if(intakeNear.toTrue()){
                     heading_coefficient = 0.5;
+                    translation_coefficient = 0.7;
                     upper.setSlidePosition(SuperStructure.SLIDE_MIN);
                     upper.setSpinWristIntake();
                     upper.setWristIntake_ParallelToGround();
@@ -119,13 +123,17 @@ public class Solo extends LinearOpMode {
                 }
 
                 if(intakeSpecimen.toTrue()){
-                    // TODO: decide whether to change this with spinRelease
                     upper.setWristIntakeSpecimen();
-                    upper.setSpinWristIntake();
-                    upper.setClawOpen();
-                    upper.setArmPosition(SuperStructure.ARM_INTAKE_SPECIMEN);
+                    upper.setSpinWristIntake_specimen();
+                    upper.setClawGrab();
 
                     intakeState = IntakeState.SPECIMEN;
+                }
+
+                if(intakeState == IntakeState.SPECIMEN){
+                    upper.setArmPosition(SuperStructure.ARM_INTAKE_SPECIMEN);
+                }else{
+                    upper.setArmPosition(SuperStructure.ARM_INTAKE);
                 }
 
                 if(grab.toTrue()){
@@ -133,6 +141,9 @@ public class Solo extends LinearOpMode {
                 }
 
                 if(toPostIntake.toTrue()){
+                    translation_coefficient = 1;
+                    heading_coefficient = 0.5;
+
                     if(intakeState == IntakeState.FAR){
                         upper.setWristIntake_ParallelToGround();
                         upper.setSlidePosition(SuperStructure.SLIDE_MIN);
@@ -146,13 +157,20 @@ public class Solo extends LinearOpMode {
 
                 if(toOrigin.toTrue()){
                     heading_coefficient = 0.6;
-                    upper.setSpinWristIntake();
+                    upper.setSpinWristRelease_specimen();
                     upper.setArmPosition(SuperStructure.ARM_RELEASE_BOX);
                     upper.setSlideState(SuperStructure.SlideState.VERTICAL);
-                    if(intakeState == IntakeState.SPECIMEN){
+                    sequence = Sequence.RELEASE_SAMPLE;
+                }
+
+                if(intakeState == IntakeState.SPECIMEN){
+                    if(toReleaseHighChamber.toTrue()){
+                        upper.setWristIntake();
+                        upper.setArmPosition(SuperStructure.ARM_RELEASE_CHAMBER);
+                        upper.setSpinWristRelease_specimen();
+                        delay(1000);
+                        upper.setSlidePosition(SuperStructure.SLIDE_CHAMBER_HIGH);
                         sequence = Sequence.RELEASE_SPECIMEN;
-                    }else{
-                        sequence = Sequence.RELEASE_SAMPLE;
                     }
                 }
             }
@@ -170,30 +188,26 @@ public class Solo extends LinearOpMode {
                     delay(150);
                     sequence = Sequence.RUN;
                     upper.setArmPosition(100);
-                    delay(500);
+                    delay(300);
                     upper.setSlidePosition(0);
-                    delay(1000);
+                    delay(1500);
                 }
             }
 
             if(sequence == Sequence.RELEASE_SPECIMEN){
-                if(toReleaseHighChamber.toTrue()){
-                    upper.setWristIntake();
-                    upper.setArmPosition(SuperStructure.ARM_RELEASE_CHAMBER);
-                    upper.setSpinWristRelease_specimen();
-                    upper.setSlidePosition(SuperStructure.SLIDE_CHAMBER_HIGH);
-                }
                 if(toPullDownSpecimen.toTrue()){
                     upper.setSlidePosition(SuperStructure.SLIDE_CHAMBER_HIGH_DOWN);
                 }
 
                 if(grab.toTrue()){
                     upper.switchClawState();
+                    delay(200);
+                    upper.setSlidePosition(SuperStructure.SLIDE_MIN);
                     delay(500);
                     // TODO: 确保大臂下来不会撞到 chamber
                     sequence = Sequence.RUN;
+                    intakeState =IntakeState.NEAR;
                 }
-
             }
 
 

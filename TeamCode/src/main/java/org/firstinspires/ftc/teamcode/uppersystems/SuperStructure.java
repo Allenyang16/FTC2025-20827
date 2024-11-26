@@ -54,18 +54,17 @@ public class SuperStructure {
     private TouchSensor armMag = null;
 
     public static int SLIDE_BOX_HIGH = 3200, SLIDE_BOX_LOW = 1500;
-    public static int SLIDE_CHAMBER_HIGH = 1231, SLIDE_CHAMBER_LOW = 0;
+    public static int SLIDE_CHAMBER_HIGH = 1300, SLIDE_CHAMBER_LOW = 0;
     public static int SLIDE_CHAMBER_HIGH_DOWN = 700;
     public static int SLIDE_INTAKE_MAX = 1200, SLIDE_MIN = 0;
 
-    public static int ARM_INTAKE = 1320;
+    public static int ARM_INTAKE = 1400;
     public static int ARM_POST_INTAKE = 1000;
     // TODO: CHECK THIS VALUE
     public static int ARM_INTAKE_SPECIMEN = -1000;
     public static int ARM_RELEASE_BOX = -180;
-    public static int ARM_RELEASE_CHAMBER = 50;
+    public static int ARM_RELEASE_CHAMBER = 200;
     // WRIST
-    public static double WRIST_ORIGIN = 0.17;
     public static double WRIST_INTAKE = 0.86, WRIST_INTAKE_PARALLEL_GROUND = 0.4;
     public static double WRIST_INTAKE_SPECIMEN = 0.4;
 
@@ -78,7 +77,8 @@ public class SuperStructure {
     public static double SPINWRIST_INTAKE_CLOCKWISE = 0.72;
     public static double SPINWRIST_INTAKE_COUNTERCLOCKWISE = 0.9;
     // TODO: CHANGE THE VALUE
-    public static double SPINWRIST_RELEASE_SPECIMEN = 0.36;
+    public static double SPINWRIST_INTAKE_SPECIMEN = 0.36;
+    public static double SPINWRIST_RELEASE_SPECIMEN = 0.82;
     
     // Claw
     // TODO: TEST Value
@@ -286,6 +286,9 @@ public class SuperStructure {
     // Spin Wrist
     public void setSpinWristIntake(){
         mSpinWrist.setPosition(SPINWRIST_INTAKE);
+    }
+    public void setSpinWristIntake_specimen(){
+        mSpinWrist.setPosition(SPINWRIST_INTAKE_SPECIMEN);
     }
     public void setSpinWristRelease_specimen(){
         mSpinWrist.setPosition(SPINWRIST_RELEASE_SPECIMEN);
