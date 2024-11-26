@@ -132,7 +132,7 @@ public class NewMecanumDrive extends MecanumDrive {
         // TODO: if desired, use setLocalizer() to change the localization method
         // TODO: Use this former initialization
         odo = hardwareMap.get(GoBildaPinpointDriver.class,"odo");
-        odo.setOffsets(145,133);
+        odo.setOffsets(169,133);
         odo.setEncoderResolution(GoBildaPinpointDriver.GoBildaOdometryPods.goBILDA_SWINGARM_POD);
         odo.setEncoderDirections(GoBildaPinpointDriver.EncoderDirection.REVERSED, GoBildaPinpointDriver.EncoderDirection.FORWARD);
 
@@ -221,7 +221,7 @@ public class NewMecanumDrive extends MecanumDrive {
     public boolean isBusy() {
         if (simpleMoveIsActivate) {
             Pose2d err = getSimpleMovePosition().minus(getPoseEstimate());
-            return  err.getX() > simpleMove_x_Tolerance || err.getY() > simpleMove_y_Tolerance || Math.abs(AngleUnit.normalizeRadians(err.getHeading())) > simpleMoveRotationTolerance;
+            return  Math.abs(err.getX()) > simpleMove_x_Tolerance || Math.abs(err.getY()) > simpleMove_y_Tolerance || Math.abs(AngleUnit.normalizeRadians(err.getHeading())) > simpleMoveRotationTolerance;
         }
         return trajectorySequenceRunner.isBusy();
     }
@@ -498,5 +498,8 @@ public class NewMecanumDrive extends MecanumDrive {
     }
     public static double mmToInches(double mm) {
         return mm/25.4;
+    }
+    public double getLeftFrontMotorPower(){
+        return leftFront.getPower();
     }
 }

@@ -6,8 +6,10 @@ import com.acmerobotics.dashboard.telemetry.MultipleTelemetry;
 import com.acmerobotics.roadrunner.geometry.Pose2d;
 import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
 import com.qualcomm.robotcore.eventloop.opmode.TeleOp;
+import com.qualcomm.robotcore.hardware.DcMotorEx;
 
 import org.firstinspires.ftc.robotcore.external.Telemetry;
+import org.firstinspires.ftc.teamcode.AutoMaster;
 import org.firstinspires.ftc.teamcode.XCYBoolean;
 import org.firstinspires.ftc.teamcode.drive.NewMecanumDrive;
 
@@ -23,6 +25,7 @@ public class TestLocalizer extends LinearOpMode {
     private static Pose2d startPos;
     @Override
     public void runOpMode(){
+        DcMotorEx leftFront = hardwareMap.get(DcMotorEx.class,"leftFront");
         XCYBoolean testMove = new XCYBoolean(()-> gamepad1.b);
         drive = new NewMecanumDrive(hardwareMap);
         Runnable update = ()->{
@@ -57,7 +60,7 @@ public class TestLocalizer extends LinearOpMode {
 //                );
 //            }
             if(gamepad1.a){
-                drive.initSimpleMove(new Pose2d(target_x,target_y,Math.toRadians(target_heading)));
+                drive.moveTo(new Pose2d(target_x,target_y,Math.toRadians(target_heading)),AutoMaster.correcting_time);
             }
             if(gamepad1.b){
                 drive.stopTrajectory();
@@ -66,11 +69,14 @@ public class TestLocalizer extends LinearOpMode {
                 );
             }
             Pose2d error = drive.getLastError();
+
             telemetry.addData("Current X Position (in): ", "%.3f", standard_xPos);
             telemetry.addData("Current Y Position (in): ", "%.3f", standard_yPos);
             telemetry.addData("Current Heading: ", drive.getPoseEstimate().getHeading());
 
             telemetry.addData("Error: ", error);
+            telemetry.addData("boolean", drive.isBusy());
+            telemetry.addData("power", leftFront.getPower());
             telemetry.update();
             update.run();
         }
