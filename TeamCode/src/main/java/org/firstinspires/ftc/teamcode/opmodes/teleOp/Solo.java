@@ -178,17 +178,17 @@ public class Solo extends LinearOpMode {
                     upper.setArmPosition(SuperStructure.ARM_RELEASE_BOX);
                     upper.setSlidePosition(SuperStructure.SLIDE_BOX_HIGH);
                     upper.setWristReleaseBox();
-                    delay(1500);
+                    delay(500);
                 }
 
                 if(grab.toTrue()){
                     upper.switchClawState();
-                    delay(150);
+                    upper.setWristIntake();
                     sequence = Sequence.RUN;
                     upper.setArmPosition(100);
                     delay(300);
                     upper.setSlidePosition(0);
-                    delay(1500);
+                    delay(500);
                 }
             }
 
@@ -213,10 +213,6 @@ public class Solo extends LinearOpMode {
             telemetry.addData("Position: ", data);
             telemetry.addData("Sequence: ", sequence);
             telemetry.addData("Intake State: ", intakeState);
-
-            // TODO: CHECK whether this will work
-            //drive.setGlobalPower(gamepad1.left_stick_y, gamepad1.left_stick_x, headingPower_coefficient * gamepad1.right_stick_x);
-
             update.run();
         }
     }

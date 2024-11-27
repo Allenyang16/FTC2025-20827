@@ -115,8 +115,6 @@ public class Duo extends LinearOpMode {
 
                     upper.setArmPosition(SuperStructure.ARM_INTAKE);
                     upper.setClawOpen();
-                    // TODO:试一下能不能把delay给去掉
-                    delay(500);
                     intakeState = IntakeState.NEAR;
                 }
 
@@ -183,11 +181,12 @@ public class Duo extends LinearOpMode {
 
                 if(grab.toTrue()){
                     upper.switchClawState();
+                    upper.setWristIntake();
                     sequence = Sequence.RUN;
                     upper.setArmPosition(100);
                     delay(500);
                     upper.setSlidePosition(0);
-                    delay(1500);
+                    delay(500);
                 }
             }
 
@@ -199,7 +198,6 @@ public class Duo extends LinearOpMode {
                     sequence = Sequence.RUN;
                     intakeState = IntakeState.NEAR;
                 }
-
 //                if(grab.toTrue()){
 //                    upper.switchClawState();
 //                    delay(500);
@@ -214,10 +212,6 @@ public class Duo extends LinearOpMode {
             telemetry.addData("Position: ", data);
             telemetry.addData("Sequence: ", sequence);
             telemetry.addData("Intake State: ", intakeState);
-
-            // TODO: CHECK whether this will work
-            //drive.setGlobalPower(gamepad1.left_stick_y, gamepad1.left_stick_x, headingPower_coefficient * gamepad1.right_stick_x);
-
             update.run();
         }
     }

@@ -11,29 +11,32 @@ public class AutoRedChamber extends AutoMaster {
         startSide = POSITIVE;
 
         initHardware();
-        while(opModeInInit()){
+        while (opModeInInit()){
 
         }
 
-        releaseSpecimen();
-        dropSpecimen_toOrigin();
+        if(opModeIsActive()){
+            releaseSpecimen();
+            dropSpecimen_toOrigin();
 
-        intakeSample_1();
-        dropSampleToHP();
-        intakeSpecimen();
-        releaseSpecimen();
-        dropSpecimen_toOrigin();
+            intakeSample_1();
+            dropSampleToHP();
+            intakeSpecimen();
+            releaseSpecimen();
+            dropSpecimen_toOrigin();
 
-        intakeSample_2();
-        dropSampleToHP();
-        intakeSpecimen();
-        releaseSpecimen();
-        dropSpecimen_toOrigin();
+            intakeSample_2();
+            dropSampleToHP();
+            intakeSpecimen();
+            releaseSpecimen();
+            dropSpecimen_toOrigin();
 
-        intakeSample_3();
-        dropSampleToHP();
-        intakeSpecimen();
-        releaseSpecimen();
-        dropSpecimen_toOrigin();
+            intakeSample_3();
+            dropSampleToHP();
+            intakeSpecimen();
+            releaseSpecimen();
+            dropSpecimen_toOrigin();
+        }
+
     }
 }

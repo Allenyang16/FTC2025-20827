@@ -117,7 +117,7 @@ public abstract class AutoMaster extends LinearOpMode {
     }
 
     protected void moveToDropFirst_sample(){
-        drive.setSimpleMoveTolerance(0.8,0.8,Math.toRadians(5));
+        drive.setSimpleMoveTolerance(0.8,0.8,Math.toRadians(3));
         drive.setSimpleMovePower(0.9);
 
         upper.setArmPosition(SuperStructure.ARM_RELEASE_BOX);
@@ -127,7 +127,7 @@ public abstract class AutoMaster extends LinearOpMode {
     }
 
     protected void moveToDrop_sample(){
-        drive.setSimpleMoveTolerance(1,1,Math.toRadians(5));
+        drive.setSimpleMoveTolerance(1,1,Math.toRadians(3));
         drive.setSimpleMovePower(0.9);
 
         upper.setArmPosition(SuperStructure.ARM_RELEASE_BOX);
@@ -209,6 +209,10 @@ public abstract class AutoMaster extends LinearOpMode {
     protected void dropSpecimen_toOrigin(){
         upper.setSlidePosition(0);
         drive.moveTo(postChamberPos,0);
+    }
+
+    protected void dropSpecimen_toIntakeSpecimen() {
+
     }
 
     protected void delay(int millisecond) {
