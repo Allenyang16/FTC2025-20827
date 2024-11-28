@@ -65,6 +65,7 @@ public class Duo extends LinearOpMode {
         intakeState = IntakeState.NEAR;
         waitForStart();
 
+        // TODO: try to remove as much delay as possible
         while (opModeIsActive()){
             Pose2d current_pos = drive.getPoseEstimate();
 
@@ -73,7 +74,6 @@ public class Duo extends LinearOpMode {
             }
 
             if(sequence == Sequence.RUN){
-                //upper.setArmPosition(SuperStructure.ARM_INTAKE);
 
                 if(downWrist.toTrue()){
                     heading_coefficient = 0.1;
@@ -90,10 +90,12 @@ public class Duo extends LinearOpMode {
 
                 if(intakeFar.toTrue()){
                     if(intakeState == IntakeState.NEAR){
+                        upper.setWristPreIntake();
                         upper.setSlidePosition(SuperStructure.SLIDE_INTAKE_MAX);
+                        upper.setClawOpen();
                         intakeState = IntakeState.FAR;
                     }else {
-                        upper.setWristIntake_ParallelToGround();
+                        upper.setWristPreIntake();
                         upper.setSpinWristIntake();
                         upper.setSlideState(SuperStructure.SlideState.HORIZONTAL);
 
@@ -107,7 +109,7 @@ public class Duo extends LinearOpMode {
                 if(intakeNear.toTrue()){
                     upper.setSlidePosition(SuperStructure.SLIDE_MIN);
                     upper.setSpinWristIntake();
-                    upper.setWristIntake_ParallelToGround();
+                    upper.setWristPreIntake();
                     upper.setSlideState(SuperStructure.SlideState.HORIZONTAL);
 
                     upper.setArmPosition(SuperStructure.ARM_INTAKE);
@@ -140,12 +142,11 @@ public class Duo extends LinearOpMode {
                     heading_coefficient = 0.5;
 
                     if(intakeState == IntakeState.FAR){
-                        upper.setWristIntake_ParallelToGround();
+                        upper.setWristPreIntake();
                         upper.setSlidePosition(SuperStructure.SLIDE_MIN);
-                        delay(500);
                     }else{
                         upper.setArmPosition(SuperStructure.ARM_POST_INTAKE);
-                        upper.setWristIntake_ParallelToGround();
+                        upper.setWristPreIntake();
                     }
                     intakeState = IntakeState.POST;
                 }
@@ -161,10 +162,12 @@ public class Duo extends LinearOpMode {
 
                 if(intakeState == IntakeState.SPECIMEN){
                     if(toReleaseHighChamber.toTrue()){
+                        heading_coefficient = 0.5;
+                        translation_coefficient = 1.0;
                         upper.setWristIntake();
                         upper.setArmPosition(SuperStructure.ARM_RELEASE_CHAMBER);
                         upper.setSpinWristRelease_specimen();
-                        delay(1000);
+                        delay(300);
                         upper.setSlidePosition(SuperStructure.SLIDE_CHAMBER_HIGH);
                         sequence = Sequence.RELEASE_SPECIMEN;
                     }
@@ -176,44 +179,36 @@ public class Duo extends LinearOpMode {
                     upper.setArmPosition(SuperStructure.ARM_RELEASE_BOX);
                     upper.setSlidePosition(SuperStructure.SLIDE_BOX_HIGH);
                     upper.setWristReleaseBox();
-                    delay(200);
-                    heading_coefficient = 0.2;
-                    translation_coefficient = 0.4;
-                    delay(500);
+                    heading_coefficient = 0.5;
+                    // translation_coefficient = 0.4;
                 }
 
                 if(grab.toTrue()){
                     upper.switchClawState();
                     upper.setWristIntake();
                     sequence = Sequence.RUN;
-                    upper.setArmPosition(100);
-                    delay(500);
+                    upper.setArmPosition(0);
+                    delay(100);
                     upper.setSlidePosition(0);
-                    delay(150);
+                    delay(400);
                     heading_coefficient = 0.5;
                     translation_coefficient = 1.0;
-                    delay(500);
                 }
             }
 
             if(sequence == Sequence.RELEASE_SPECIMEN){
                 if(toPullDownSpecimen.toTrue()){
-                    heading_coefficient = 0.5;
-                    translation_coefficient = 1.0;
                     upper.setSlidePosition(SuperStructure.SLIDE_CHAMBER_HIGH_DOWN);
-                    delay(500);
-                    upper.setClawOpen();
-                    delay(800);
+                }
+
+                if(grab.toTrue()){
+                    upper.switchClawState();
+                    // TODO: 确保大臂下来不会撞到 chamber
                     sequence = Sequence.RUN;
                     intakeState = IntakeState.NEAR;
+                    upper.setSlidePosition(SuperStructure.SLIDE_MIN);
+                    delay(300);
                 }
-//                if(grab.toTrue()){
-//                    upper.switchClawState();
-//                    delay(500);
-//                    // TODO: 确保大臂下来不会撞到 chamber
-//                    sequence = Sequence.RUN;
-//                    intakeState = IntakeState.NEAR;
-//                }
             }
 
 

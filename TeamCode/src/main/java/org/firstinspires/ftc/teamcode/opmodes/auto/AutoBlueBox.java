@@ -13,22 +13,26 @@ public class AutoBlueBox extends AutoMaster {
 
         // TODO: Check the init of positions
         initHardware();
-
-        while(opModeInInit()){
+        while (opModeInInit()){
 
         }
 
-        moveToDrop_sample();
-        toOrigin();
+        if(opModeIsActive()){
+            moveToDropFirst_sample();
+            toOrigin();
 
-        intakeSample_1();
-        moveToDrop_sample();
+            intakeSample_1();
+            moveToDrop_sample();
+            toOrigin();
 
-        // TODO: Test the values later
-//        intakeSample_2();
-//        moveToDrop_sample();
-//
-//        intakeSample_3();
-//        moveToDrop_sample();
+            intakeSample_2();
+            moveToDrop_sample();
+            toOrigin();
+
+            intakeSample_3();
+            moveToDrop_sample();
+            toOrigin();
+            moveToStartPos();
+        }
     }
 }

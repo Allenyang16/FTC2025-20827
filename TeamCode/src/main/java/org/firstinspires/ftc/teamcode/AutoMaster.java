@@ -140,7 +140,7 @@ public abstract class AutoMaster extends LinearOpMode {
     }
 
     protected void intakeSample_1(){
-        upper.setWristIntake_ParallelToGround();
+        upper.setWristPreIntake();
         upper.setArmPosition(SuperStructure.ARM_INTAKE);
 
         drive.moveTo(intakeSamplePos_1, correcting_time2);

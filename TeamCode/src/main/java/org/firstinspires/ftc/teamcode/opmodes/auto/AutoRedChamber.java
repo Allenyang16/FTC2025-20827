@@ -37,6 +37,5 @@ public class AutoRedChamber extends AutoMaster {
             releaseSpecimen();
             dropSpecimen_toOrigin();
         }
-
     }
 }

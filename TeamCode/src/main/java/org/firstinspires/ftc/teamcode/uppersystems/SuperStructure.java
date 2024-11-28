@@ -14,7 +14,6 @@ import com.qualcomm.robotcore.hardware.DcMotor;
 import com.qualcomm.robotcore.hardware.DcMotorEx;
 import com.qualcomm.robotcore.hardware.DcMotorSimple;
 import com.qualcomm.robotcore.hardware.HardwareMap;
-import com.qualcomm.robotcore.hardware.PIDFCoefficients;
 import com.qualcomm.robotcore.hardware.Servo;
 import com.qualcomm.robotcore.hardware.TouchSensor;
 
@@ -54,7 +53,7 @@ public class SuperStructure {
     private TouchSensor armMag = null;
 
     public static int SLIDE_BOX_HIGH = 3200, SLIDE_BOX_LOW = 1500;
-    public static int SLIDE_CHAMBER_HIGH = 1380, SLIDE_CHAMBER_LOW = 0;
+    public static int SLIDE_CHAMBER_HIGH = 1450, SLIDE_CHAMBER_LOW = 0;
     public static int SLIDE_CHAMBER_HIGH_DOWN = 880;
     public static int SLIDE_INTAKE_MAX = 1200, SLIDE_MIN = 0;
 
@@ -62,15 +61,15 @@ public class SuperStructure {
     public static int ARM_POST_INTAKE = 1000;
     // TODO: CHECK THIS VALUE
     public static int ARM_INTAKE_SPECIMEN = -1000;
-    public static int ARM_RELEASE_BOX = -100;
+    public static int ARM_RELEASE_BOX = -180;
     public static int ARM_RELEASE_CHAMBER = 300;
     // WRIST
-    public static double WRIST_INTAKE = 0.86, WRIST_INTAKE_PARALLEL_GROUND = 0.4;
+    public static double WRIST_INTAKE = 0.86, WRIST_INTAKE_PARALLEL_GROUND = 0.35;
     public static double WRIST_INTAKE_SPECIMEN = 0.4;
 
     // TODO: Retest
-    public static double WRIST_RELEASE_BOX_HIGH = 0.4, WRIST_RELEASE_BOX_LOW = 0.28;
-    public static double WRIST_RELEASE_CHAMBER_HIGH = 0.85, WRIST_RELEASE_CHAMBER_LOW = 0.8;
+    public static double WRIST_RELEASE_BOX_HIGH = 0.35, WRIST_RELEASE_BOX_LOW = 0.28;
+    public static double WRIST_RELEASE_CHAMBER_HIGH = 0.7, WRIST_RELEASE_CHAMBER_LOW = 0.8;
 
     // Spin Wrist
     public static double SPINWRIST_INTAKE = 0.82;
@@ -234,7 +233,9 @@ public class SuperStructure {
     }
 
     // Wrist
-    public void setWristIntake_ParallelToGround(){
+
+    // TODO: Pre Intake Position
+    public void setWristPreIntake(){
         mWrist.setPosition(WRIST_INTAKE_PARALLEL_GROUND);
         wristIntakeState = WristIntakeState.INTAKE_PARALLEL_GROUND;
     }
@@ -248,6 +249,9 @@ public class SuperStructure {
 
     public void setWristReleaseBox(){
         mWrist.setPosition(WRIST_RELEASE_BOX_HIGH);
+    }
+    public void setWristReleaseChamber(){
+        mWrist.setPosition(WRIST_RELEASE_CHAMBER_HIGH);
     }
 
     public enum WristIntakeState {
@@ -275,12 +279,21 @@ public class SuperStructure {
         switch (wristIntakeState){
             case INTAKE:
                 wristIntakeState = WristIntakeState.INTAKE_PARALLEL_GROUND;
-                setWristIntake_ParallelToGround();
+                setWristPreIntake();
                 break;
             case INTAKE_PARALLEL_GROUND:
                 wristIntakeState = WristIntakeState.INTAKE;
                 setWristIntake();
                 break;
+        }
+    }
+    public double translation_coefficient(){
+        if(wristIntakeState == WristIntakeState.INTAKE){
+            return 1.0;
+        } else if (wristIntakeState == WristIntakeState.INTAKE_PARALLEL_GROUND) {
+            return 0.3;
+        }else{
+            return 1.0;
         }
     }
 
