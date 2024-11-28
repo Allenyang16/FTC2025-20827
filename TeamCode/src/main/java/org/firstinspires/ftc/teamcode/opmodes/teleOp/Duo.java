@@ -187,8 +187,8 @@ public class Duo extends LinearOpMode {
                     upper.switchClawState();
                     upper.setWristIntake();
                     sequence = Sequence.RUN;
-                    upper.setArmPosition(0);
-                    delay(100);
+                    upper.setArmPosition(100);
+                    delay(150);
                     upper.setSlidePosition(0);
                     delay(400);
                     heading_coefficient = 0.5;
