@@ -123,7 +123,7 @@ public class Duo extends LinearOpMode {
                     upper.setClawGrab();
                     translation_coefficient = 0.3;
                     heading_coefficient = 0.15;
-
+                    upper.setSlideState(SuperStructure.SlideState.VERTICAL);
                     intakeState = IntakeState.SPECIMEN;
                 }
 

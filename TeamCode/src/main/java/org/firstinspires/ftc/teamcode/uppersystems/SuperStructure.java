@@ -456,12 +456,10 @@ public class SuperStructure {
         return  mSlideRight.getPower();
     }
 
-
     protected void delay(int mm_time) {
         long end = System.currentTimeMillis() + mm_time;
         while (end > System.currentTimeMillis() && updateRunnable!=null) {
             updateRunnable.run();
         }
     }
-
 }

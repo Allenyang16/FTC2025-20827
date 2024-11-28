@@ -54,7 +54,7 @@ public class Solo extends LinearOpMode {
         // TODO: test the logic
         XCYBoolean toOrigin = new XCYBoolean(()-> (intakeState == IntakeState.POST || intakeState == IntakeState.SPECIMEN) && gamepad1.left_stick_button);
         XCYBoolean toPostIntake = new XCYBoolean(()-> (intakeState != IntakeState.SPECIMEN) && gamepad1.right_stick_button);
-        XCYBoolean toHighRelease = new XCYBoolean(()-> gamepad1.dpad_up);
+        XCYBoolean toHighRelease = new XCYBoolean(()-> intakeState == IntakeState.POST && gamepad1.left_stick_button);
         XCYBoolean downWrist = new XCYBoolean(()-> gamepad1.left_bumper);
 
         XCYBoolean spinWristClockwise = new XCYBoolean(()-> gamepad1.right_trigger > 0);
@@ -118,7 +118,7 @@ public class Solo extends LinearOpMode {
                     upper.setWristIntakeSpecimen();
                     upper.setSpinWristIntake_specimen();
                     upper.setClawGrab();
-
+                    upper.setSlideState(SuperStructure.SlideState.VERTICAL);
                     intakeState = IntakeState.SPECIMEN;
                 }
 
@@ -138,6 +138,7 @@ public class Solo extends LinearOpMode {
 
                     if(intakeState == IntakeState.FAR){
                         upper.setWristPreIntake();
+                        upper.setSpinWristIntake();
                         upper.setSlidePosition(SuperStructure.SLIDE_MIN);
                         delay(500);
                     }else{
@@ -147,11 +148,12 @@ public class Solo extends LinearOpMode {
                     intakeState = IntakeState.POST;
                 }
 
-                if(toOrigin.toTrue()){
-                    heading_coefficient = 0.6;
-                    upper.setSpinWristRelease_specimen();
-                    upper.setArmPosition(SuperStructure.ARM_RELEASE_BOX);
+                if(toHighRelease.toTrue()){
                     upper.setSlideState(SuperStructure.SlideState.VERTICAL);
+                    upper.setArmPosition(SuperStructure.ARM_RELEASE_BOX);
+                    delay(500);
+                    upper.setSlidePosition(SuperStructure.SLIDE_BOX_HIGH);
+                    upper.setWristReleaseBox();
                     sequence = Sequence.RELEASE_SAMPLE;
                 }
 

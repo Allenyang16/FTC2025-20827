@@ -29,7 +29,7 @@ public abstract class AutoMaster extends LinearOpMode {
     public static double startPos_x = 15, startPos_y = 62, startPos_heading = -90;
 
     Pose2d boxPos;
-    public static double box_x = 54, box_y = 55, box_heading = -45;
+    public static double box_x = 54, box_y = 56.5, box_heading = -45;
 
     Pose2d chamberPos;
     public static double chamber_x = 6, chamber_y = 38, chamber_heading = -90;
