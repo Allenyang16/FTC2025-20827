@@ -22,8 +22,6 @@ public class Duo extends LinearOpMode {
     }
     private Sequence sequence;
     private IntakeState intakeState;
-    private static double heading_coefficient = 0.5;
-    private static double translation_coefficient = 1.0;
 
     @Override
     public void runOpMode() throws InterruptedException {
@@ -37,7 +35,7 @@ public class Duo extends LinearOpMode {
             XCYBoolean.bulkRead();
             telemetry.update();
             // TODO: CHECK WHETHER THIS CAN WORK
-            drive.setGlobalPower(translation_coefficient * gamepad1.left_stick_y, translation_coefficient * gamepad1.left_stick_x, heading_coefficient * gamepad1.right_stick_x);
+            drive.setGlobalPower(upper.translation_coefficient() * gamepad1.left_stick_y, upper.translation_coefficient() * gamepad1.left_stick_x, upper.heading_coefficient() * gamepad1.right_stick_x);
         };
         drive.setUpdateRunnable(update);
         upper.setUpdateRunnable(update);
@@ -76,8 +74,6 @@ public class Duo extends LinearOpMode {
             if(sequence == Sequence.RUN){
 
                 if(downWrist.toTrue()){
-                    heading_coefficient = 0.1;
-                    translation_coefficient = 0.3;
                     upper.switchWristIntakeState();
                 }
 
@@ -121,8 +117,6 @@ public class Duo extends LinearOpMode {
                     upper.setWristIntakeSpecimen();
                     upper.setSpinWristIntake_specimen();
                     upper.setClawGrab();
-                    translation_coefficient = 0.3;
-                    heading_coefficient = 0.15;
                     upper.setSlideState(SuperStructure.SlideState.VERTICAL);
                     intakeState = IntakeState.SPECIMEN;
                 }
@@ -138,23 +132,18 @@ public class Duo extends LinearOpMode {
                 }
 
                 if(toPostIntake.toTrue()){
-                    translation_coefficient = 1;
-                    heading_coefficient = 0.5;
-
+                    upper.setWristPreIntake();
                     if(intakeState == IntakeState.FAR){
-                        upper.setWristPreIntake();
                         upper.setSlidePosition(SuperStructure.SLIDE_MIN);
                     }else{
                         upper.setArmPosition(SuperStructure.ARM_POST_INTAKE);
-                        upper.setWristPreIntake();
                     }
                     intakeState = IntakeState.POST;
                 }
 
                 if(toOrigin.toTrue()){
-                    translation_coefficient = 1.0;
-                    heading_coefficient = 0.6;
-                    upper.setSpinWristRelease_specimen();
+                    // TODO: Check the speed
+                    upper.setSpinWristIntake();
                     upper.setArmPosition(SuperStructure.ARM_RELEASE_BOX);
                     upper.setSlideState(SuperStructure.SlideState.VERTICAL);
                     sequence = Sequence.RELEASE_SAMPLE;
@@ -162,8 +151,6 @@ public class Duo extends LinearOpMode {
 
                 if(intakeState == IntakeState.SPECIMEN){
                     if(toReleaseHighChamber.toTrue()){
-                        heading_coefficient = 0.5;
-                        translation_coefficient = 1.0;
                         upper.setWristIntake();
                         upper.setArmPosition(SuperStructure.ARM_RELEASE_CHAMBER);
                         upper.setSpinWristRelease_specimen();
@@ -179,20 +166,17 @@ public class Duo extends LinearOpMode {
                     upper.setArmPosition(SuperStructure.ARM_RELEASE_BOX);
                     upper.setSlidePosition(SuperStructure.SLIDE_BOX_HIGH);
                     upper.setWristReleaseBox();
-                    heading_coefficient = 0.5;
-                    // translation_coefficient = 0.4;
                 }
 
                 if(grab.toTrue()){
                     upper.switchClawState();
-                    upper.setWristIntake();
+                    upper.setWristPostRelease();
                     sequence = Sequence.RUN;
                     upper.setArmPosition(100);
                     delay(150);
                     upper.setSlidePosition(0);
                     delay(400);
-                    heading_coefficient = 0.5;
-                    translation_coefficient = 1.0;
+                    // TODO: CHECK THE SPEED
                 }
             }
 
@@ -216,6 +200,8 @@ public class Duo extends LinearOpMode {
             telemetry.addData("Position: ", data);
             telemetry.addData("Sequence: ", sequence);
             telemetry.addData("Intake State: ", intakeState);
+            telemetry.addData("Trans coefficient", upper.translation_coefficient());
+            telemetry.addData("Heading coefficient", upper.heading_coefficient());
             update.run();
         }
     }

@@ -37,12 +37,12 @@ public class SuperStructure {
 
     public static PIDCoefficients slideLeftPidConf_Horizontal = new PIDCoefficients(0.0012, 0.00, 0.00);
     private final PIDFController slideLeftPidCtrl_Horizontal;
-    public static PIDCoefficients slideLeftPidConf_Vertical = new PIDCoefficients(0.0032, 0.00, 0.00);
+    public static PIDCoefficients slideLeftPidConf_Vertical = new PIDCoefficients(0.00578, 0.0001, 0.00);
     private final PIDFController slideLeftPidCtrl_Vertical;
 
     public static PIDCoefficients slideRightPidConf_Horizontal = new PIDCoefficients(0.0012, 0.00, 0.00);
     private final PIDFController slideRightPidCtrl_Horizontal;
-    public static PIDCoefficients slideRightPidConf_Vertical = new PIDCoefficients(0.0032, 0.00, 0.00);
+    public static PIDCoefficients slideRightPidConf_Vertical = new PIDCoefficients(0.00578, 0.0001, 0.00);
     private final PIDFController slideRightPidCtrl_Vertical;
     private List<PIDFController> slidePidCtrl;
 
@@ -72,12 +72,12 @@ public class SuperStructure {
     public static double WRIST_RELEASE_CHAMBER_HIGH = 0.7, WRIST_RELEASE_CHAMBER_LOW = 0.8;
 
     // Spin Wrist
-    public static double SPINWRIST_INTAKE = 0.82;
-    public static double SPINWRIST_INTAKE_CLOCKWISE = 0.72;
-    public static double SPINWRIST_INTAKE_COUNTERCLOCKWISE = 0.9;
+    public static double SPINWRIST_INTAKE = 0.34;
+    public static double SPINWRIST_INTAKE_CLOCKWISE = 0.2;
+    public static double SPINWRIST_INTAKE_COUNTERCLOCKWISE = 0.5;
     // TODO: CHANGE THE VALUE
-    public static double SPINWRIST_INTAKE_SPECIMEN = 0.36;
-    public static double SPINWRIST_RELEASE_SPECIMEN = 0.82;
+    public static double SPINWRIST_INTAKE_SPECIMEN = 0.34;
+    public static double SPINWRIST_RELEASE_SPECIMEN = 0.87;
     
     // Claw
     // TODO: TEST Value
@@ -85,7 +85,7 @@ public class SuperStructure {
     public static double CLAW_GRAB = 0.26;
     public ClawState clawState = GRAB;
     public SlideState slideState = SlideState.VERTICAL;
-    public WristIntakeState wristIntakeState = WristIntakeState.INTAKE;
+    public WristIntakeState wristIntakeState = WristIntakeState.PRE_INTAKE;
 
     private final LinearOpMode opMode;
     private Runnable updateRunnable;
@@ -153,8 +153,9 @@ public class SuperStructure {
         mSlideLeft.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
         mSlideLeft.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
 
+        resetSlide();
         setSpinWristIntake_specimen();
-        setWristIntake();
+        setWristPostRelease();
         setClawGrab();
     }
 
@@ -177,7 +178,8 @@ public class SuperStructure {
         mSlideLeft.setMode(DcMotor.RunMode.RUN_WITHOUT_ENCODER);
 
 //        packet.put("Claw State", clawState.toString());
-//        packet.put("Slide State", slideState.toString());
+        packet.put("Slide State", slideState.toString());
+        packet.put("Wrist state", wristIntakeState.toString());
         packet.put("rightSlide_encoder: ", getSlideRightPosition());
         packet.put("leftSlide_encoder: ", getSlideRightPosition());
         packet.put("rightArm_pos: ", getArmRightPosition());
@@ -237,7 +239,7 @@ public class SuperStructure {
     // TODO: Pre Intake Position
     public void setWristPreIntake(){
         mWrist.setPosition(WRIST_INTAKE_PARALLEL_GROUND);
-        wristIntakeState = WristIntakeState.INTAKE_PARALLEL_GROUND;
+        wristIntakeState = WristIntakeState.PRE_INTAKE;
     }
     public void setWristIntake(){
         mWrist.setPosition(WRIST_INTAKE);
@@ -245,10 +247,14 @@ public class SuperStructure {
     }
     public void setWristIntakeSpecimen(){
         mWrist.setPosition(WRIST_INTAKE_SPECIMEN);
+        wristIntakeState = WristIntakeState.INTAKE_SPECIMEN;
     }
-
+    public void setWristPostRelease(){
+        mWrist.setPosition(WRIST_INTAKE);
+    }
     public void setWristReleaseBox(){
         mWrist.setPosition(WRIST_RELEASE_BOX_HIGH);
+        wristIntakeState = WristIntakeState.RELEASE_SAMPLE;
     }
     public void setWristReleaseChamber(){
         mWrist.setPosition(WRIST_RELEASE_CHAMBER_HIGH);
@@ -256,7 +262,9 @@ public class SuperStructure {
 
     public enum WristIntakeState {
         INTAKE(WRIST_INTAKE),
-        INTAKE_PARALLEL_GROUND(WRIST_INTAKE_PARALLEL_GROUND);
+        PRE_INTAKE(WRIST_INTAKE_PARALLEL_GROUND),
+        INTAKE_SPECIMEN(WRIST_INTAKE_SPECIMEN),
+        RELEASE_SAMPLE(WRIST_RELEASE_CHAMBER_HIGH);
 
         private final double wristPosition;
         WristIntakeState(double wristPosition) {
@@ -267,8 +275,12 @@ public class SuperStructure {
             switch (this){
                 case INTAKE:
                     return "INTAKE";
-                case INTAKE_PARALLEL_GROUND:
-                    return "PARALLEL_GROUND";
+                case PRE_INTAKE:
+                    return "PRE_INTAKE";
+                case INTAKE_SPECIMEN:
+                    return "INTAKE_SPECIMEN";
+                case RELEASE_SAMPLE:
+                    return "RELEASE_SAMPLE";
                 default:
                     return "none";
             }
@@ -278,10 +290,10 @@ public class SuperStructure {
     public void switchWristIntakeState(){
         switch (wristIntakeState){
             case INTAKE:
-                wristIntakeState = WristIntakeState.INTAKE_PARALLEL_GROUND;
+                wristIntakeState = WristIntakeState.PRE_INTAKE;
                 setWristPreIntake();
                 break;
-            case INTAKE_PARALLEL_GROUND:
+            case PRE_INTAKE:
                 wristIntakeState = WristIntakeState.INTAKE;
                 setWristIntake();
                 break;
@@ -289,10 +301,27 @@ public class SuperStructure {
     }
     public double translation_coefficient(){
         if(wristIntakeState == WristIntakeState.INTAKE){
-            return 1.0;
-        } else if (wristIntakeState == WristIntakeState.INTAKE_PARALLEL_GROUND) {
             return 0.3;
-        }else{
+        } else if (wristIntakeState == WristIntakeState.PRE_INTAKE) {
+            return 1.0;
+        } else if (wristIntakeState == WristIntakeState.INTAKE_SPECIMEN) {
+            return 0.4;
+        } else if (wristIntakeState == WristIntakeState.RELEASE_SAMPLE) {
+            return 0.8;
+        } else{
+            return 1.0;
+        }
+    }
+    public double heading_coefficient(){
+        if(wristIntakeState == WristIntakeState.INTAKE){
+            return 0.3;
+        } else if (wristIntakeState == WristIntakeState.PRE_INTAKE) {
+            return 0.5;
+        } else if (wristIntakeState == WristIntakeState.INTAKE_SPECIMEN) {
+            return 0.3;
+        } else if (wristIntakeState == WristIntakeState.RELEASE_SAMPLE) {
+            return 0.3;
+        } else{
             return 1.0;
         }
     }
@@ -344,9 +373,9 @@ public class SuperStructure {
         slideRightPidCtrl_Vertical.setTargetPosition(slideTargetPosition);
 
         if(slideTargetPosition < getSlidePosition() && getSlidePosition() < 200){
-            setSlideOutputBounds(0.5);
+            setSlideOutputBounds(0.4);
         } else if (slideTargetPosition < getSlidePosition() && getSlidePosition() < 800) {
-            setSlideOutputBounds(0.8);
+            setSlideOutputBounds(0.7);
         } else{
             setSlideOutputBounds(1);
         }
@@ -354,11 +383,11 @@ public class SuperStructure {
 
     public void resetSlide(){
         mSlideRight.setMode(DcMotor.RunMode.RUN_WITHOUT_ENCODER);
-        mSlideRight.setPower(-0.2);
+        mSlideRight.setPower(-0.3);
         mSlideLeft.setMode(DcMotor.RunMode.RUN_WITHOUT_ENCODER);
-        mSlideLeft.setPower(-0.2);
+        mSlideLeft.setPower(-0.3);
 
-        delay(100);
+        delay(200);
 
         mSlideRight.setPower(0);
         mSlideRight.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
