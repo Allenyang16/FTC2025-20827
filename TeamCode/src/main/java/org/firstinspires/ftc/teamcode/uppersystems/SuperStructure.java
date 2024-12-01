@@ -29,10 +29,10 @@ public class SuperStructure {
     private DcMotorEx mSlideLeft = null;
     private DcMotorEx mSlideRight = null;
     // TODO: change kD
-    public static PIDCoefficients armLeftPidConf = new PIDCoefficients(0.005, 0.00, 0.00);
+    public static PIDCoefficients armLeftPidConf = new PIDCoefficients(0.007, 0.00, 0.00);
     private final PIDFController armLeftPidCtrl;
 
-    public static PIDCoefficients armRightPidConf = new PIDCoefficients(0.003, 0.00, 0.00);
+    public static PIDCoefficients armRightPidConf = new PIDCoefficients(0.0072, 0.00, 0.00);
     private final PIDFController armRightPidCtrl;
 
     public static PIDCoefficients slideLeftPidConf_Horizontal = new PIDCoefficients(0.0012, 0.00, 0.00);
@@ -60,16 +60,16 @@ public class SuperStructure {
     public static int ARM_INTAKE = 1400;
     public static int ARM_POST_INTAKE = 1000;
     // TODO: CHECK THIS VALUE
-    public static int ARM_INTAKE_SPECIMEN = -1000;
-    public static int ARM_RELEASE_BOX = -120;
+    public static int ARM_INTAKE_SPECIMEN = -920;
+    public static int ARM_RELEASE_BOX = -150;
     public static int ARM_RELEASE_CHAMBER = 300;
     // WRIST
     public static double WRIST_INTAKE = 0.86, WRIST_INTAKE_PARALLEL_GROUND = 0.35;
-    public static double WRIST_INTAKE_SPECIMEN = 0.4;
+    public static double WRIST_INTAKE_SPECIMEN = 0.39;
 
     // TODO: Retest
     public static double WRIST_RELEASE_BOX_HIGH = 0.35, WRIST_RELEASE_BOX_LOW = 0.28;
-    public static double WRIST_RELEASE_CHAMBER_HIGH = 0.7, WRIST_RELEASE_CHAMBER_LOW = 0.8;
+    public static double WRIST_RELEASE_CHAMBER_HIGH = 0.86, WRIST_RELEASE_CHAMBER_LOW = 0.8;
 
     // Spin Wrist
     public static double SPINWRIST_INTAKE = 0.34;
@@ -154,6 +154,7 @@ public class SuperStructure {
         mSlideLeft.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
 
         resetSlide();
+        setArmPosition(0);
         setSpinWristIntake_specimen();
         setWristPostRelease();
         setClawGrab();
@@ -245,6 +246,7 @@ public class SuperStructure {
         mWrist.setPosition(WRIST_INTAKE);
         wristIntakeState = WristIntakeState.INTAKE;
     }
+
     public void setWristIntakeSpecimen(){
         mWrist.setPosition(WRIST_INTAKE_SPECIMEN);
         wristIntakeState = WristIntakeState.INTAKE_SPECIMEN;
@@ -258,13 +260,15 @@ public class SuperStructure {
     }
     public void setWristReleaseChamber(){
         mWrist.setPosition(WRIST_RELEASE_CHAMBER_HIGH);
+        wristIntakeState = WristIntakeState.RELEASE_SPECIMEN;
     }
 
     public enum WristIntakeState {
         INTAKE(WRIST_INTAKE),
         PRE_INTAKE(WRIST_INTAKE_PARALLEL_GROUND),
         INTAKE_SPECIMEN(WRIST_INTAKE_SPECIMEN),
-        RELEASE_SAMPLE(WRIST_RELEASE_CHAMBER_HIGH);
+        RELEASE_SAMPLE(WRIST_RELEASE_BOX_HIGH),
+        RELEASE_SPECIMEN(WRIST_RELEASE_CHAMBER_HIGH);
 
         private final double wristPosition;
         WristIntakeState(double wristPosition) {
@@ -307,7 +311,13 @@ public class SuperStructure {
         } else if (wristIntakeState == WristIntakeState.INTAKE_SPECIMEN) {
             return 0.4;
         } else if (wristIntakeState == WristIntakeState.RELEASE_SAMPLE) {
-            return 0.8;
+            if(getSlidePosition() < 2500){
+                return 0.9;
+            }else{
+                return 0.5;
+            }
+        } else if (wristIntakeState == WristIntakeState.RELEASE_SPECIMEN) {
+            return 1.0;
         } else{
             return 1.0;
         }
@@ -320,7 +330,13 @@ public class SuperStructure {
         } else if (wristIntakeState == WristIntakeState.INTAKE_SPECIMEN) {
             return 0.3;
         } else if (wristIntakeState == WristIntakeState.RELEASE_SAMPLE) {
-            return 0.3;
+            if(getSlidePosition() < 2500){
+                return 0.5;
+            }else{
+                return 0.3;
+            }
+        } else if (wristIntakeState == WristIntakeState.RELEASE_SPECIMEN) {
+            return 0.5;
         } else{
             return 1.0;
         }

@@ -144,15 +144,16 @@ public class Duo extends LinearOpMode {
                 if(toOrigin.toTrue()){
                     // TODO: Check the speed
                     upper.setSpinWristIntake();
-                    upper.setArmPosition(SuperStructure.ARM_RELEASE_BOX);
+                    upper.setArmPosition(0);
                     upper.setSlideState(SuperStructure.SlideState.VERTICAL);
                     sequence = Sequence.RELEASE_SAMPLE;
                 }
 
                 if(intakeState == IntakeState.SPECIMEN){
                     if(toReleaseHighChamber.toTrue()){
-                        upper.setWristIntake();
+                        upper.setWristReleaseChamber();
                         upper.setArmPosition(SuperStructure.ARM_RELEASE_CHAMBER);
+                        delay(300);
                         upper.setSpinWristRelease_specimen();
                         delay(300);
                         upper.setSlidePosition(SuperStructure.SLIDE_CHAMBER_HIGH);
@@ -164,6 +165,7 @@ public class Duo extends LinearOpMode {
             if(sequence == Sequence.RELEASE_SAMPLE){
                 if(toHighRelease.toTrue()){
                     upper.setArmPosition(SuperStructure.ARM_RELEASE_BOX);
+                    delay(200);
                     upper.setSlidePosition(SuperStructure.SLIDE_BOX_HIGH);
                     upper.setWristReleaseBox();
                 }
@@ -192,6 +194,7 @@ public class Duo extends LinearOpMode {
                     intakeState = IntakeState.NEAR;
                     upper.setSlidePosition(SuperStructure.SLIDE_MIN);
                     delay(300);
+                    upper.setWristPreIntake();
                 }
             }
 

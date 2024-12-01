@@ -52,11 +52,8 @@ import java.util.List;
 
 import XCYOS.Task;
 
-/*
- * Simple mecanum drive hardware implementation for REV hardware.
- */
 @Config
-public class NewMecanumDrive extends MecanumDrive {
+public class NewMecanumDrive extends MecanumDrive{
     public static PIDCoefficients TRANSLATIONAL_PID = new PIDCoefficients(10, 0, 0);
     public static PIDCoefficients HEADING_PID = new PIDCoefficients(8, 0, 1); //8
 
