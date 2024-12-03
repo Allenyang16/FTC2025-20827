@@ -28,7 +28,7 @@ public class SuperStructure {
     private DcMotorEx mArmRight = null;
     private DcMotorEx mSlideLeft = null;
     private DcMotorEx mSlideRight = null;
-    // TODO: change kD
+
     public static PIDCoefficients armLeftPidConf = new PIDCoefficients(0.007, 0.00, 0.00);
     private final PIDFController armLeftPidCtrl;
 
@@ -57,12 +57,12 @@ public class SuperStructure {
     public static int SLIDE_CHAMBER_HIGH_DOWN = 880;
     public static int SLIDE_INTAKE_MAX = 1200, SLIDE_MIN = 0;
 
-    public static int ARM_INTAKE = 1400;
-    public static int ARM_POST_INTAKE = 1000;
+    public static int ARM_INTAKE = 910;
+    public static int ARM_POST_INTAKE = 820;
     // TODO: CHECK THIS VALUE
-    public static int ARM_INTAKE_SPECIMEN = -920;
-    public static int ARM_RELEASE_BOX = -150;
-    public static int ARM_RELEASE_CHAMBER = 300;
+    public static int ARM_INTAKE_SPECIMEN = -600;
+    public static int ARM_RELEASE_BOX = -50;
+    public static int ARM_RELEASE_CHAMBER = 150;
     // WRIST
     public static double WRIST_INTAKE = 0.86, WRIST_INTAKE_PARALLEL_GROUND = 0.35;
     public static double WRIST_INTAKE_SPECIMEN = 0.39;
@@ -465,6 +465,7 @@ public class SuperStructure {
         return mArmLeft.getCurrentPosition();
     }
     public int getArmRightPosition(){
+        // TODO: test validity
         return mArmRight.getCurrentPosition();
     }
     public int getArmPosition(){
