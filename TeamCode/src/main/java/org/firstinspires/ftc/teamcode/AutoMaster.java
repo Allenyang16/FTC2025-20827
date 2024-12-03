@@ -64,8 +64,8 @@ public abstract class AutoMaster extends LinearOpMode {
     Pose2d pushSamplePos_delta;
     Pose2d pushSamplePos_midpoint;
     Pose2d pushSamplePos_backward;
-    public static double pushSample1_x = 48, pushSample2_x = 58, pushSample3_x = 60, pushMidpoint_x = 40;
-    public static double pushSample_y = 5, pushSample_heading = -90, pushSample_delta_y = 40, pushMidpoint_y = 44;
+    public static double pushSample1_x = 48, pushSample2_x = 58, pushSample3_x = 63, pushMidpoint_x = 40;
+    public static double pushSample_y = 12, pushSample_heading = -90, pushSample_delta_y = 32, pushMidpoint_y = 12;
 
     Pose2d intakeSpecimenPos;
     public static double intakeSpecimen_x = 40, intakeSpecimen_y = 57.2, intakeSpecimen_heading = -90;
@@ -105,13 +105,12 @@ public abstract class AutoMaster extends LinearOpMode {
         preIntakeSpecimenPos = new Pose2d(intakeSpecimen_x * startSide, pre_intakeSpecimen_y * side_color, Math.toRadians(intakeSpecimen_heading * side_color));
         dropSampleToHPPos = new Pose2d(dropSampleToHP_x * startSide, pre_intakeSpecimen_y * side_color, Math.toRadians(intakeSpecimen_heading * side_color));
 
-        pushSamplePos_1 = new Pose2d(pushSample1_x * startSide, pushSample_y * side_color, Math.toRadians(pushSample_heading) );
-        pushSamplePos_2 = new Pose2d(pushSample2_x * startSide, pushSample_y * side_color, Math.toRadians(pushSample_heading) );
-        pushSamplePos_3 = new Pose2d(pushSample3_x * startSide, pushSample_y * side_color, Math.toRadians(pushSample_heading) );
+        pushSamplePos_1 = new Pose2d(pushSample1_x * startSide, pushSample_y * side_color, Math.toRadians(pushSample_heading * side_color) );
+        pushSamplePos_2 = new Pose2d(pushSample2_x * startSide, pushSample_y * side_color, Math.toRadians(pushSample_heading  * side_color) );
+        pushSamplePos_3 = new Pose2d(pushSample3_x * startSide, pushSample_y * side_color, Math.toRadians(pushSample_heading * side_color) );
         pushSamplePos_delta = new Pose2d(0, pushSample_delta_y * side_color, 0);
 
-        pushSamplePos_midpoint = new Pose2d(pushMidpoint_x * startSide, pushMidpoint_y * side_color, Math.toRadians(pushSample_heading));
-        pushSamplePos_backward = new Pose2d(postChamber_x * startSide, pre_intakeSpecimen_y * side_color, Math.toRadians(pushSample_heading));
+        pushSamplePos_midpoint = new Pose2d(pushMidpoint_x * startSide, pushMidpoint_y * side_color, Math.toRadians(pushSample_heading * side_color));
         telemetry.addLine("init: drive");
         telemetry.update();
         drive = new NewMecanumDrive(hardwareMap);
@@ -233,17 +232,16 @@ public abstract class AutoMaster extends LinearOpMode {
 
         upper.setWristIntake();
         upper.setArmPosition(SuperStructure.ARM_RELEASE_CHAMBER);
-        delay(200);
         upper.setSpinWristRelease_specimen();
         upper.setSlidePosition(SuperStructure.SLIDE_CHAMBER_HIGH);
         drive.moveTo(preChamberPos,0);
 
         if(count == 1){
-            drive.moveTo(chamberPos,200);
+            drive.moveTo(chamberPos,500);
         } else if (count == 2) {
-            drive.moveTo(chamberPos.plus(chamberPos_delta),200);
+            drive.moveTo(chamberPos.plus(chamberPos_delta),500);
         } else if (count == 3) {
-            drive.moveTo(chamberPos.plus(chamberPos_delta).plus(chamberPos_delta),200);
+            drive.moveTo(chamberPos.plus(chamberPos_delta).plus(chamberPos_delta),500);
         }
 
         upper.setSlidePosition(SuperStructure.SLIDE_CHAMBER_HIGH_DOWN);
@@ -262,6 +260,7 @@ public abstract class AutoMaster extends LinearOpMode {
 
     public void pushSample(){
         drive.setSimpleMovePower(1);
+        drive.setSimpleMoveTolerance(5,5,1);
         // Move to the first pre push pos
         drive.moveTo(postChamberPos,0);
         drive.moveTo(pushSamplePos_midpoint,0);
@@ -286,8 +285,7 @@ public abstract class AutoMaster extends LinearOpMode {
         drive.moveTo(preIntakeSpecimenPos,0);
 
         drive.setSimpleMovePower(0.2);
-        drive.moveTo(intakeSpecimenPos,500);
-        delay(300);
+        drive.moveTo(intakeSpecimenPos,200);
         upper.setClawGrab();
     }
 

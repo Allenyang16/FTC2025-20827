@@ -53,16 +53,16 @@ public class SuperStructure {
     private TouchSensor armMag = null;
 
     public static int SLIDE_BOX_HIGH = 3200, SLIDE_BOX_LOW = 1500;
-    public static int SLIDE_CHAMBER_HIGH = 1450, SLIDE_CHAMBER_LOW = 0;
+    public static int SLIDE_CHAMBER_HIGH = 1350, SLIDE_CHAMBER_LOW = 0;
     public static int SLIDE_CHAMBER_HIGH_DOWN = 880;
     public static int SLIDE_INTAKE_MAX = 1200, SLIDE_MIN = 0;
 
-    public static int ARM_INTAKE = 910;
+    public static int ARM_INTAKE = 950;
     public static int ARM_POST_INTAKE = 820;
     // TODO: CHECK THIS VALUE
-    public static int ARM_INTAKE_SPECIMEN = -600;
-    public static int ARM_RELEASE_BOX = -50;
-    public static int ARM_RELEASE_CHAMBER = 150;
+    public static int ARM_INTAKE_SPECIMEN = -630;
+    public static int ARM_RELEASE_BOX = -80;
+    public static int ARM_RELEASE_CHAMBER = 170;
     // WRIST
     public static double WRIST_INTAKE = 0.86, WRIST_INTAKE_PARALLEL_GROUND = 0.35;
     public static double WRIST_INTAKE_SPECIMEN = 0.39;
@@ -77,7 +77,7 @@ public class SuperStructure {
     public static double SPINWRIST_INTAKE_COUNTERCLOCKWISE = 0.5;
     // TODO: CHANGE THE VALUE
     public static double SPINWRIST_INTAKE_SPECIMEN = 0.34;
-    public static double SPINWRIST_RELEASE_SPECIMEN = 0.87;
+    public static double SPINWRIST_RELEASE_SPECIMEN = 0.9;
     
     // Claw
     // TODO: TEST Value
@@ -367,6 +367,13 @@ public class SuperStructure {
         armTargetPosition = pos;
         armLeftPidCtrl.setTargetPosition(armTargetPosition);
         armRightPidCtrl.setTargetPosition(armTargetPosition);
+        if(armTargetPosition > getArmPosition() && getArmPosition() > 700){
+            armRightPidCtrl.setOutputBounds(-0.5,0.5);
+            armLeftPidCtrl.setOutputBounds(-0.5,0.5);
+        }else{
+            armRightPidCtrl.setOutputBounds(-1,1);
+            armLeftPidCtrl.setOutputBounds(-1,1);
+        }
 
     }
     public void resetArm(){
@@ -391,7 +398,7 @@ public class SuperStructure {
         if(slideTargetPosition < getSlidePosition() && getSlidePosition() < 200){
             setSlideOutputBounds(0.4);
         } else if (slideTargetPosition < getSlidePosition() && getSlidePosition() < 800) {
-            setSlideOutputBounds(0.7);
+            setSlideOutputBounds(0.9);
         } else{
             setSlideOutputBounds(1);
         }

@@ -19,8 +19,6 @@ public class AutoRedChamber extends AutoMaster {
             releaseSpecimen(1);
             dropSpecimen_toOrigin();
 
-            pushSample();
-
             intakeSample_1();
             dropSampleToHP();
             intakeSpecimen();
@@ -30,7 +28,7 @@ public class AutoRedChamber extends AutoMaster {
             intakeSample_2();
             dropSampleToHP();
             intakeSpecimen();
-            releaseSpecimen(1);
+            releaseSpecimen(3);
             dropSpecimen_toOrigin();
 
             intakeSample_3();

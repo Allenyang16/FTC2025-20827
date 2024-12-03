@@ -355,7 +355,7 @@ public class NewMecanumDrive extends MecanumDrive{
         return new ProfileAccelerationConstraint(maxAccel);
     }
 
-    public static PIDCoefficients translationPid = new PIDCoefficients(0.1778, 0.000, 0.02286);
+    public static PIDCoefficients translationPid = new PIDCoefficients(0.22, 0.000, 0.02286);
     public static PIDCoefficients headingPid = new PIDCoefficients(1.5, 0, 0.2);
 
     private PIDFController transPID_x;

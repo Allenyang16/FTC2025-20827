@@ -20,8 +20,20 @@ public class AutoRedChamber_pushSample extends AutoMaster {
             releaseSpecimen(1);
             dropSpecimen_toOrigin();
             pushSample();
+
             intakeSpecimen();
             releaseSpecimen(2);
+
+            dropSpecimen_toIntakeSpecimen();
+            releaseSpecimen(3);
+
+            dropSpecimen_toIntakeSpecimen();
+            releaseSpecimen(1);
+
+            dropSpecimen_toIntakeSpecimen();
+            releaseSpecimen(2);
+
+            park();
         }
     }
 }
