@@ -60,9 +60,9 @@ public class SuperStructure {
     public static int ARM_INTAKE = 950;
     public static int ARM_POST_INTAKE = 820;
     // TODO: CHECK THIS VALUE
-    public static int ARM_INTAKE_SPECIMEN = -630;
-    public static int ARM_RELEASE_BOX = -90;
-    public static int ARM_RELEASE_CHAMBER = 170;
+    public static int ARM_INTAKE_SPECIMEN = -650;
+    public static int ARM_RELEASE_BOX = -100;
+    public static int ARM_RELEASE_CHAMBER = 180;
     // WRIST
     public static double WRIST_INTAKE = 0.86, WRIST_INTAKE_PARALLEL_GROUND = 0.35;
     public static double WRIST_INTAKE_SPECIMEN = 0.39;

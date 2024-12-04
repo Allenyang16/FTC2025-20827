@@ -40,10 +40,10 @@ public abstract class AutoMaster extends LinearOpMode {
     public static double chamber_delta_x = 0.5;
 
     Pose2d preChamberPos;
-    public static double preChamber_x = 6, preChamber_y = 50;
+    public static double preChamber_x = 6, preChamber_y = 48;
 
     Pose2d postChamberPos;
-    public static double postChamber_x = 2, postChamber_y = 45;
+    public static double postChamber_x = 33, postChamber_y = 45;
 
 
     Pose2d intakeSamplePos_1;
@@ -64,7 +64,7 @@ public abstract class AutoMaster extends LinearOpMode {
     Pose2d pushSamplePos_delta;
     Pose2d pushSamplePos_midpoint;
     Pose2d pushSamplePos_backward;
-    public static double pushSample1_x = 48, pushSample2_x = 58, pushSample3_x = 63, pushMidpoint_x = 32;
+    public static double pushSample1_x = 45, pushSample2_x = 58, pushSample3_x = 63, pushMidpoint_x = 33;
     public static double pushSample_y = 12, pushSample_heading = -90, pushSample_delta_y = 32, pushMidpoint_y = 12;
 
     Pose2d intakeSpecimenPos;
@@ -219,7 +219,7 @@ public abstract class AutoMaster extends LinearOpMode {
         upper.setArmPosition(SuperStructure.ARM_INTAKE_SPECIMEN);
         drive.moveTo(preIntakeSpecimenPos,0);
 
-        drive.setSimpleMovePower(0.3);
+        drive.setSimpleMovePower(0.5);
         drive.moveTo(intakeSpecimenPos,300);
         upper.setClawGrab();
     }
@@ -234,6 +234,7 @@ public abstract class AutoMaster extends LinearOpMode {
         upper.setSlidePosition(SuperStructure.SLIDE_CHAMBER_HIGH);
         drive.moveTo(preChamberPos,0);
 
+        drive.setSimpleMovePower(0.6);
         if(count == 1){
             drive.moveTo(chamberPos,400);
         } else if (count == 2) {
@@ -258,7 +259,9 @@ public abstract class AutoMaster extends LinearOpMode {
 
     public void pushSample(){
         drive.setSimpleMovePower(1);
-        drive.setSimpleMoveTolerance(5,5,1);
+        drive.setSimpleMoveTolerance(3,3,1);
+        upper.setSlidePosition(SuperStructure.SLIDE_MIN);
+        upper.setArmPosition(0);
         // Move to the first pre push pos
         drive.moveTo(postChamberPos,0);
         drive.moveTo(pushSamplePos_midpoint,0);
@@ -276,13 +279,15 @@ public abstract class AutoMaster extends LinearOpMode {
     }
 
     protected void dropSpecimen_toIntakeSpecimen() {
+        drive.setSimpleMovePower(0.95);
+
         upper.setWristIntakeSpecimen();
         upper.setSpinWristIntake_specimen();
         upper.setSlidePosition(SuperStructure.SLIDE_MIN);
         upper.setArmPosition(SuperStructure.ARM_INTAKE_SPECIMEN);
         drive.moveTo(preIntakeSpecimenPos,0);
 
-        drive.setSimpleMovePower(0.3);
+        drive.setSimpleMovePower(0.5);
         drive.moveTo(intakeSpecimenPos,200);
         upper.setClawGrab();
     }
