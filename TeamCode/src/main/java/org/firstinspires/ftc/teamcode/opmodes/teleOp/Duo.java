@@ -42,7 +42,7 @@ public class Duo extends LinearOpMode {
 
         XCYBoolean grab = new XCYBoolean(()-> gamepad2.right_bumper);
         // TODO: test the logic
-        XCYBoolean resetHeading = new XCYBoolean(()-> gamepad1.x);
+        XCYBoolean resetHeading = new XCYBoolean(()-> gamepad1.left_trigger > 0 && gamepad1.right_trigger > 0);
         XCYBoolean toOrigin = new XCYBoolean(()-> (intakeState == IntakeState.POST || intakeState == IntakeState.SPECIMEN) && gamepad1.left_stick_button);
         XCYBoolean toPostIntake = new XCYBoolean(()-> (intakeState != IntakeState.SPECIMEN) && gamepad1.right_stick_button);
 
@@ -55,6 +55,7 @@ public class Duo extends LinearOpMode {
         XCYBoolean spinWristCounterClockwise = new XCYBoolean(()-> gamepad2.left_trigger > 0);
         XCYBoolean toReleaseHighChamber = new XCYBoolean(()-> intakeState == IntakeState.SPECIMEN && gamepad2.dpad_up);
         XCYBoolean toPullDownSpecimen = new XCYBoolean(()-> intakeState == IntakeState.SPECIMEN && gamepad2.dpad_down);
+        XCYBoolean hang = new XCYBoolean(()-> gamepad2.x);
 
 
         upper.initialize();
@@ -69,6 +70,13 @@ public class Duo extends LinearOpMode {
 
             if(resetHeading.toTrue()){
                 drive.resetHeading();
+            }
+
+            if(hang.toTrue()){
+                upper.setArmPosition(SuperStructure.ARM_RELEASE_BOX);
+                upper.setSlidePosition(SuperStructure.SLIDE_BOX_HIGH);
+                delay(1000);
+                upper.setSlidePosition(SuperStructure.SLIDE_MIN);
             }
 
             if(sequence == Sequence.RUN){
