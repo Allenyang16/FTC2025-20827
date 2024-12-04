@@ -18,7 +18,6 @@ public class AutoRedChamber_pushSample extends AutoMaster {
 
         if(opModeIsActive()){
             releaseSpecimen(1);
-            dropSpecimen_toOrigin();
             pushSample();
 
             intakeSpecimen();
