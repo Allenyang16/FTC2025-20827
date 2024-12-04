@@ -33,14 +33,14 @@ public abstract class AutoMaster extends LinearOpMode {
     public static double box_x = 57, box_y = 57, box_heading = 45; // or 135 in blue
 
     Pose2d chamberPos;
-    public static double chamber_x = 6, chamber_y = 38, chamber_heading = -90;
+    public static double chamber_x = 6, chamber_y = 39, chamber_heading = -90;
     Pose2d chamberPos2;
     public static double chamber2_x = 8;
     Pose2d chamberPos_delta;
     public static double chamber_delta_x = 0.5;
 
     Pose2d preChamberPos;
-    public static double preChamber_x = 6, preChamber_y = 48;
+    public static double preChamber_x = 8, preChamber_y = 48;
 
     Pose2d postChamberPos;
     public static double postChamber_x = 33, postChamber_y = 45;
@@ -65,7 +65,7 @@ public abstract class AutoMaster extends LinearOpMode {
     Pose2d pushSamplePos_midpoint;
     Pose2d pushSamplePos_backward;
     public static double pushSample1_x = 45, pushSample2_x = 58, pushSample3_x = 63, pushMidpoint_x = 33;
-    public static double pushSample_y = 12, pushSample_heading = -90, pushSample_delta_y = 32, pushMidpoint_y = 12;
+    public static double pushSample_y = 15, pushSample_heading = -90, pushSample_delta_y = 32, pushMidpoint_y = 15;
 
     Pose2d intakeSpecimenPos;
     public static double intakeSpecimen_x = 40, intakeSpecimen_y = 57.2, intakeSpecimen_heading = -90;
@@ -229,22 +229,27 @@ public abstract class AutoMaster extends LinearOpMode {
         drive.setSimpleMovePower(0.95);
 
         upper.setWristIntake();
-        upper.setArmPosition(SuperStructure.ARM_RELEASE_CHAMBER);
+
         upper.setSpinWristRelease_specimen();
-        upper.setSlidePosition(SuperStructure.SLIDE_CHAMBER_HIGH);
+        upper.setArmPosition(0);
+        upper.setSlidePosition(SuperStructure.SLIDE_CHAMBER_HIGH_DOWN);
+
         drive.moveTo(preChamberPos,0);
+        upper.setArmPosition(SuperStructure.ARM_RELEASE_CHAMBER);
+        upper.setSlidePosition(SuperStructure.SLIDE_CHAMBER_HIGH);
 
         drive.setSimpleMovePower(0.6);
+
         if(count == 1){
-            drive.moveTo(chamberPos,400);
+            drive.moveTo(chamberPos,300);
         } else if (count == 2) {
-            drive.moveTo(chamberPos.plus(chamberPos_delta),400);
+            drive.moveTo(chamberPos.plus(chamberPos_delta),300);
         } else if (count == 3) {
-            drive.moveTo(chamberPos.plus(chamberPos_delta).plus(chamberPos_delta),400);
+            drive.moveTo(chamberPos.plus(chamberPos_delta).plus(chamberPos_delta),300);
         }
 
         upper.setSlidePosition(SuperStructure.SLIDE_CHAMBER_HIGH_DOWN);
-        delay(400);
+        delay(300);
         upper.setClawOpen();
     }
 
@@ -288,7 +293,7 @@ public abstract class AutoMaster extends LinearOpMode {
         drive.moveTo(preIntakeSpecimenPos,0);
 
         drive.setSimpleMovePower(0.5);
-        drive.moveTo(intakeSpecimenPos,200);
+        drive.moveTo(intakeSpecimenPos,400);
         upper.setClawGrab();
     }
 
