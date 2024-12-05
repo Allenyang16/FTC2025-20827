@@ -27,6 +27,7 @@ public abstract class AutoMaster extends LinearOpMode {
 
     Pose2d startPos;
     public static double startPos_x = 15, startPos_y = 62, startPos_heading = -90;
+    public static double startPos_chamber_x = 9;
 
 
     Pose2d boxPos;
@@ -53,10 +54,6 @@ public abstract class AutoMaster extends LinearOpMode {
     public static double intake_samplePos3_x = 60, intake_samplePos3_y = 37, intake_samplePos3_heading = -120;
     public static double sample3_positive_heading = -60;
 
-    Pose2d intake_blueSamplePos_1;
-    Pose2d intake_blueSamplePos_2;
-    Pose2d intake_blueSamplePos_3;
-
     Pose2d pushSamplePos_1;
     Pose2d pushSamplePos_2;
     Pose2d pushSamplePos_3;
@@ -76,7 +73,12 @@ public abstract class AutoMaster extends LinearOpMode {
 
 
     protected void initHardware() throws InterruptedException{
-        // TODO: must make sure that these poses are correct
+        if(side_color == RED && startSide == POSITIVE){
+            startPos_x = startPos_chamber_x;
+        } else if (side_color == BLUE && startSide == NEGATIVE) {
+            startPos_x = startPos_chamber_x;
+        }
+
         startPos = new Pose2d(startPos_x * startSide ,startPos_y * side_color,Math.toRadians(startPos_heading * side_color));
         if(side_color == RED){
             boxPos = new Pose2d(box_x * startSide, box_y * side_color, Math.toRadians(box_heading));
@@ -135,6 +137,16 @@ public abstract class AutoMaster extends LinearOpMode {
 
         telemetry.addLine("init: trajectory");
         telemetry.update();
+    }
+
+    public void resetPoseforTest(){
+        drive.setPoseEstimate(new Pose2d(48,-48,0));
+        drive.update();
+    }
+    public void strafe(){
+        drive.moveTo(new Pose2d(48,48,0),0);
+        delay(5000);
+        drive.moveTo(new Pose2d(48,-48,0),0);
     }
 
     protected void toOrigin(){

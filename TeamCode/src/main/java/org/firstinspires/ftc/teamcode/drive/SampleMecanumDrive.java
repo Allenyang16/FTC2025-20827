@@ -139,7 +139,7 @@ public class SampleMecanumDrive extends MecanumDrive {
         // TODO: if desired, use setLocalizer() to change the localization method
         //setLocalizer(new Localizer(hardwareMap,odo));
         //setLocalizer(new StandardTrackingWheelLocalizer(hardwareMap));
-        setLocalizer(new GobildaPinpointLocalizer(hardwareMap));
+        setLocalizer(new StandardLocalizer(hardwareMap));
 
         //GobildaLocalizer = new GobildaPinpointLocalizer(hardwareMap);
         trajectorySequenceRunner = new TrajectorySequenceRunner(

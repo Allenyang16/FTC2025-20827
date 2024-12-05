@@ -20,7 +20,7 @@ public class GobildaPinpointLocalizer extends TwoTrackingWheelLocalizer {
         super(Arrays.asList(new Pose2d(5,5,90),new Pose2d(-5,-5,0)));
 //        this.odo = odo;
         odo = hardwareMap.get(GoBildaPinpointDriver.class,"odo");
-        odo.setOffsets(0,0);
+        odo.setOffsets(169,133);
         odo.setEncoderResolution(GoBildaPinpointDriver.GoBildaOdometryPods.goBILDA_4_BAR_POD);
         odo.setEncoderDirections(GoBildaPinpointDriver.EncoderDirection.FORWARD, GoBildaPinpointDriver.EncoderDirection.FORWARD);
         odo.update();
