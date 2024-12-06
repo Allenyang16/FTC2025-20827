@@ -42,7 +42,8 @@ public class Duo extends LinearOpMode {
 
         XCYBoolean grab = new XCYBoolean(()-> gamepad2.right_bumper);
         // TODO: test the logic
-        XCYBoolean resetHeading = new XCYBoolean(()-> gamepad1.left_trigger > 0 && gamepad1.right_trigger > 0);
+        XCYBoolean resetUpper = new XCYBoolean(()-> gamepad1.left_trigger > 0 && gamepad1.right_trigger > 0);
+        XCYBoolean resetHeading = new XCYBoolean(()-> gamepad1.x);
         XCYBoolean toOrigin = new XCYBoolean(()-> (intakeState == IntakeState.POST || intakeState == IntakeState.SPECIMEN) && gamepad1.left_stick_button);
         XCYBoolean toPostIntake = new XCYBoolean(()-> (intakeState != IntakeState.SPECIMEN) && gamepad1.right_stick_button);
 
@@ -67,6 +68,16 @@ public class Duo extends LinearOpMode {
         // TODO: try to remove as much delay as possible
         while (opModeIsActive()){
             Pose2d current_pos = drive.getPoseEstimate();
+
+            if(resetUpper.toTrue()){
+                upper.setArmPosition(SuperStructure.ARM_INTAKE);
+                upper.setSlidePosition(SuperStructure.SLIDE_MIN);
+                upper.setClawOpen();
+                upper.setSpinWristIntake();
+                upper.setWristPreIntake();
+                upper.setSlideState(SuperStructure.SlideState.HORIZONTAL);
+                sequence = Sequence.RUN;
+            }
 
             if(resetHeading.toTrue()){
                 drive.resetHeading();
