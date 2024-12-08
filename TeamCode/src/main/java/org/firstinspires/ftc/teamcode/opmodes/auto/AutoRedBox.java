@@ -31,7 +31,7 @@ public class AutoRedBox extends AutoMaster {
             intakeSample_3();
             moveToDrop_sample();
             toOrigin();
-            moveToStartPos();
+            park_box();
         }
     }
 }

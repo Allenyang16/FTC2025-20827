@@ -68,7 +68,6 @@ public class SlideTest extends LinearOpMode {
                     mSlideLeft.setTargetPosition(encoder_position);
                     mSlideLeft.setMode(DcMotor.RunMode.RUN_TO_POSITION);
                     mSlideLeft.setPower(max_power);
-                    sleep(10000);
                 }
                 telemetry_M.addData("is busy_leftSlide", mSlideLeft.isBusy());
                 telemetry_M.addData("is busy_rightSlide", mSlideRight.isBusy());

@@ -26,8 +26,8 @@ public abstract class AutoMaster extends LinearOpMode {
     public static int correcting_time = 500, correcting_time2 = 200;
 
     Pose2d startPos;
-    public static double startPos_x = 15, startPos_y = 62, startPos_heading = -90;
-    public static double startPos_chamber_x = 9;
+    public static double startPos_x = 39, startPos_y = 62, startPos_heading = -90;
+    public static double startPos_chamber_x = 9, startPos_box_x = 39;
 
 
     Pose2d boxPos;
@@ -69,7 +69,9 @@ public abstract class AutoMaster extends LinearOpMode {
     Pose2d dropSampleToHPPos;
     public static double dropSampleToHP_x = 50;
 
-    public static Pose2d endPos = new Pose2d(12,-54.5, Math.toRadians(90));
+    public static Pose2d park_box = new Pose2d(-24,-10,Math.toRadians(90));
+    // TODO: CHANGE THE LOGIC
+    public static Pose2d endPos = park_box;
 
 
     protected void initHardware() throws InterruptedException{
@@ -77,6 +79,8 @@ public abstract class AutoMaster extends LinearOpMode {
             startPos_x = startPos_chamber_x;
         } else if (side_color == BLUE && startSide == NEGATIVE) {
             startPos_x = startPos_chamber_x;
+        } else{
+            startPos_x = startPos_box_x;
         }
 
         startPos = new Pose2d(startPos_x * startSide ,startPos_y * side_color,Math.toRadians(startPos_heading * side_color));
@@ -133,6 +137,7 @@ public abstract class AutoMaster extends LinearOpMode {
         drive.setUpdateRunnable(update);
         upper.setUpdateRunnable(update);
 
+        upper.reset();
         upper.initialize();
 
         telemetry.addLine("init: trajectory");
@@ -152,9 +157,9 @@ public abstract class AutoMaster extends LinearOpMode {
     protected void toOrigin(){
         upper.setWristIntake();
         upper.setArmPosition(0);
-        delay(500);
+        delay(200);
         upper.setSlidePosition(0);
-        delay(500);
+        delay(700);
     }
 
     protected void moveToDropFirst_sample(){
@@ -239,13 +244,12 @@ public abstract class AutoMaster extends LinearOpMode {
         drive.setSimpleMovePower(0.95);
 
         upper.setWristIntake();
-
         upper.setSpinWristRelease_specimen();
         upper.setArmPosition(0);
         upper.setSlidePosition(SuperStructure.SLIDE_CHAMBER_HIGH_DOWN);
 
         if(count != 1){
-            drive.moveTo(preChamberPos,0);
+            drive.moveTo(preChamberPos,100);
             upper.setArmPosition(SuperStructure.ARM_RELEASE_CHAMBER);
             upper.setSlidePosition(SuperStructure.SLIDE_CHAMBER_HIGH);
 
@@ -276,6 +280,7 @@ public abstract class AutoMaster extends LinearOpMode {
     }
     public void park(){
         upper.setArmPosition(0);
+        upper.setSlidePosition(SuperStructure.SLIDE_MIN);
         drive.moveTo(intakeSpecimenPos,500);
     }
 
@@ -298,18 +303,18 @@ public abstract class AutoMaster extends LinearOpMode {
 
     protected void dropSpecimen_toIntakeSpecimen() {
         drive.setSimpleMovePower(0.95);
-
         upper.setWristIntakeSpecimen();
         upper.setSpinWristIntake_specimen();
         upper.setSlidePosition(SuperStructure.SLIDE_MIN);
         upper.setArmPosition(SuperStructure.ARM_INTAKE_SPECIMEN);
-        drive.moveTo(preIntakeSpecimenPos,0);
-
-        drive.setSimpleMovePower(0.5);
+//        drive.moveTo(preIntakeSpecimenPos,0);
+//        drive.setSimpleMovePower(0.5);
         drive.moveTo(intakeSpecimenPos,500);
         upper.setClawGrab();
     }
-
+    public void park_box(){
+        drive.moveTo(park_box,100);
+    }
     protected void delay(int millisecond) {
         long end = System.currentTimeMillis() + millisecond;
         while (opModeIsActive() && end > System.currentTimeMillis() && update!=null) {

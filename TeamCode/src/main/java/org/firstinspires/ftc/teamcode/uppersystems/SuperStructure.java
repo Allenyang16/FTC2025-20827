@@ -61,7 +61,7 @@ public class SuperStructure {
     public static int ARM_POST_INTAKE = 820;
     // TODO: CHECK THIS VALUE
     public static int ARM_INTAKE_SPECIMEN = -700;
-    public static int ARM_RELEASE_BOX = -100;
+    public static int ARM_RELEASE_BOX = -80;
     public static int ARM_RELEASE_CHAMBER = 180;
     // WRIST
     public static double WRIST_INTAKE = 0.86, WRIST_INTAKE_PARALLEL_GROUND = 0.35;
@@ -127,37 +127,29 @@ public class SuperStructure {
         mArmRight.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
         mSlideLeft.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
         mSlideRight.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
-
-        mSlideRight.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
-        mSlideLeft.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
-        mArmLeft.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
-        mArmRight.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
-
-        mSlideRight.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
-        mSlideLeft.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
-        mArmLeft.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
-        mArmRight.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
     }
+
 
 
     // init
     public void initialize(){
-        mArmLeft.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
-        mArmLeft.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
-        mArmRight.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
-        mArmRight.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
-
-        mSlideRight.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
-        mSlideRight.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
-
-        mSlideLeft.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
-        mSlideLeft.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
-
-        resetSlide();
         setArmPosition(0);
+        setSlidePosition(SuperStructure.SLIDE_MIN);
         setSpinWristIntake_specimen();
         setWristPostRelease();
         setClawGrab();
+    }
+    public void reset(){
+        mArmLeft.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
+        mArmLeft.setMode(DcMotor.RunMode.RUN_WITHOUT_ENCODER);
+        mArmRight.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
+        mArmRight.setMode(DcMotor.RunMode.RUN_WITHOUT_ENCODER);
+
+        mSlideRight.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
+        mSlideRight.setMode(DcMotor.RunMode.RUN_WITHOUT_ENCODER);
+
+        mSlideLeft.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
+        mSlideLeft.setMode(DcMotor.RunMode.RUN_WITHOUT_ENCODER);
     }
 
     //update
@@ -183,6 +175,10 @@ public class SuperStructure {
         packet.put("Wrist state", wristIntakeState.toString());
         packet.put("rightSlide_encoder: ", getSlideRightPosition());
         packet.put("leftSlide_encoder: ", getSlideRightPosition());
+        packet.put("leftSlide_power:", getSlideLeftPower());
+        packet.put("rightSlide_power", getSlideRightPower());
+        packet.put("slideTargetPos:", getSlideTargetPosition());
+
         packet.put("rightArm_pos: ", getArmRightPosition());
         packet.put("leftArm_pos: ",getArmLeftPosition());
         FtcDashboard.getInstance().sendTelemetryPacket(packet);
@@ -377,10 +373,15 @@ public class SuperStructure {
 
     }
     public void resetArm(){
-        if(armMag.isPressed()){
-            mArmRight.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
-            mArmLeft.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
-        }
+        mArmLeft.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
+        mArmRight.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
+
+        mArmLeft.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
+        mArmRight.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
+//        if(armMag.isPressed()){
+//            mArmRight.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
+//            mArmLeft.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
+//        }
     }
 
     //Slide
