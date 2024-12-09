@@ -50,7 +50,7 @@ public class Solo extends LinearOpMode {
         XCYBoolean resetHeading = new XCYBoolean(()-> gamepad1.x);
         XCYBoolean toIntakeSpecimen = new XCYBoolean(()->gamepad1.b);
 
-        XCYBoolean toHighRelease_sample = new XCYBoolean(()-> intakeState == IntakeState.POST && gamepad1.dpad_up);
+        XCYBoolean toHighRelease_sample = new XCYBoolean(()-> intakeState == IntakeState.POST && (gamepad1.dpad_up || gamepad1.left_trigger > 0));
         XCYBoolean downWrist = new XCYBoolean(()-> gamepad1.left_bumper);
         XCYBoolean spinWristClockwise = new XCYBoolean(()-> gamepad1.right_trigger > 0);
         XCYBoolean spinWristCounterClockwise = new XCYBoolean(()-> gamepad1.left_trigger > 0);
@@ -62,7 +62,6 @@ public class Solo extends LinearOpMode {
         intakeState = IntakeState.NEAR;
         waitForStart();
 
-        // TODO: try to remove as much delay as possible
         while (opModeIsActive()){
             Pose2d current_pos = drive.getPoseEstimate();
             if(resetHeading.toTrue()){

@@ -16,7 +16,7 @@ import org.firstinspires.ftc.teamcode.gobildapinpoint.GoBildaPinpointDriver;
 import org.firstinspires.ftc.teamcode.util.GeomUtil;
 
 /*
- * Tracking wheel localizer implementation assuming the standard configuration:
+ * Tracking wheel localizer implementation assuming the configuration:
  *
  *    /--------------\
  *    |     ____     |
@@ -41,12 +41,10 @@ public class StandardLocalizer implements Localizer {
     GoBildaPinpointDriver odometry;
 
     public StandardLocalizer(HardwareMap hardwareMap) {
-        //this.odometry = odometry;
         odometry = hardwareMap.get(GoBildaPinpointDriver.class,"odo");
-        odometry.setOffsets(xOffset,yOffset); // 169
+        odometry.setOffsets(xOffset,yOffset);
         odometry.setEncoderResolution(GoBildaPinpointDriver.GoBildaOdometryPods.goBILDA_SWINGARM_POD);
         odometry.setEncoderDirections(GoBildaPinpointDriver.EncoderDirection.REVERSED, GoBildaPinpointDriver.EncoderDirection.FORWARD);
-        //odometry.resetPosAndIMU();
 
         time = NanoClock.system();
     }
@@ -85,12 +83,5 @@ public class StandardLocalizer implements Localizer {
         this.poseEstimate = poseEstimate;
         odometry.setPosition(new Pose2D(DistanceUnit.INCH,poseEstimate.getX(),poseEstimate.getY(),AngleUnit.RADIANS,poseEstimate.getHeading()));
         odometry.update();
-    }
-
-    public double getHeading_rad(){
-        return currentPos.getHeading(AngleUnit.RADIANS);
-    }
-    public double getHeadingVelocity_rad(){
-        return currentVelocity.getHeading(AngleUnit.RADIANS);
     }
 }

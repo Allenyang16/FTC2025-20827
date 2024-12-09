@@ -35,12 +35,12 @@ public class SuperStructure {
     public static PIDCoefficients armRightPidConf = new PIDCoefficients(0.0072, 0.00, 0.00);
     private final PIDFController armRightPidCtrl;
 
-    public static PIDCoefficients slideLeftPidConf_Horizontal = new PIDCoefficients(0.0012, 0.00, 0.00);
+    public static PIDCoefficients slideLeftPidConf_Horizontal = new PIDCoefficients(0.0015, 0.00, 0.00);
     private final PIDFController slideLeftPidCtrl_Horizontal;
     public static PIDCoefficients slideLeftPidConf_Vertical = new PIDCoefficients(0.00578, 0.0001, 0.00);
     private final PIDFController slideLeftPidCtrl_Vertical;
 
-    public static PIDCoefficients slideRightPidConf_Horizontal = new PIDCoefficients(0.0012, 0.00, 0.00);
+    public static PIDCoefficients slideRightPidConf_Horizontal = new PIDCoefficients(0.0015, 0.00, 0.00);
     private final PIDFController slideRightPidCtrl_Horizontal;
     public static PIDCoefficients slideRightPidConf_Vertical = new PIDCoefficients(0.00578, 0.0001, 0.00);
     private final PIDFController slideRightPidCtrl_Vertical;
@@ -60,7 +60,7 @@ public class SuperStructure {
     public static int ARM_INTAKE = 950;
     public static int ARM_POST_INTAKE = 820;
     // TODO: CHECK THIS VALUE
-    public static int ARM_INTAKE_SPECIMEN = -700;
+    public static int ARM_INTAKE_SPECIMEN = -680;
     public static int ARM_RELEASE_BOX = -80;
     public static int ARM_RELEASE_CHAMBER = 180;
     // WRIST
