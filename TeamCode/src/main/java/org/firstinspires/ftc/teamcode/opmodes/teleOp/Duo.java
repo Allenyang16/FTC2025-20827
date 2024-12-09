@@ -34,7 +34,6 @@ public class Duo extends LinearOpMode {
             upper.update();
             XCYBoolean.bulkRead();
             telemetry.update();
-            // TODO: CHECK WHETHER THIS CAN WORK
             drive.setGlobalPower(upper.translation_coefficient() * gamepad1.left_stick_y, upper.translation_coefficient() * gamepad1.left_stick_x, upper.heading_coefficient() * gamepad1.right_stick_x);
         };
         drive.setUpdateRunnable(update);
@@ -87,6 +86,10 @@ public class Duo extends LinearOpMode {
                 upper.setSlidePosition(SuperStructure.SLIDE_BOX_HIGH);
                 delay(5000);
                 upper.setSlidePosition(SuperStructure.SLIDE_MIN);
+            }
+
+            if(upper.getSlidePosition() < SuperStructure.SLIDE_INTAKE_MAX){
+
             }
 
             if(sequence == Sequence.RUN){

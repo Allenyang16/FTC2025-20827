@@ -35,12 +35,12 @@ public class SuperStructure {
     public static PIDCoefficients armRightPidConf = new PIDCoefficients(0.0072, 0.00, 0.00);
     private final PIDFController armRightPidCtrl;
 
-    public static PIDCoefficients slideLeftPidConf_Horizontal = new PIDCoefficients(0.0015, 0.00, 0.00);
+    public static PIDCoefficients slideLeftPidConf_Horizontal = new PIDCoefficients(0.0018, 0.00, 0.00);
     private final PIDFController slideLeftPidCtrl_Horizontal;
     public static PIDCoefficients slideLeftPidConf_Vertical = new PIDCoefficients(0.00578, 0.0001, 0.00);
     private final PIDFController slideLeftPidCtrl_Vertical;
 
-    public static PIDCoefficients slideRightPidConf_Horizontal = new PIDCoefficients(0.0015, 0.00, 0.00);
+    public static PIDCoefficients slideRightPidConf_Horizontal = new PIDCoefficients(0.0018, 0.00, 0.00);
     private final PIDFController slideRightPidCtrl_Horizontal;
     public static PIDCoefficients slideRightPidConf_Vertical = new PIDCoefficients(0.00578, 0.0001, 0.00);
     private final PIDFController slideRightPidCtrl_Vertical;
@@ -60,23 +60,23 @@ public class SuperStructure {
     public static int ARM_INTAKE = 950;
     public static int ARM_POST_INTAKE = 820;
     // TODO: CHECK THIS VALUE
-    public static int ARM_INTAKE_SPECIMEN = -680;
+    public static int ARM_INTAKE_SPECIMEN = -670;
     public static int ARM_RELEASE_BOX = -80;
-    public static int ARM_RELEASE_CHAMBER = 180;
+    public static int ARM_RELEASE_CHAMBER = 180; // 30 for teleOp
     // WRIST
-    public static double WRIST_INTAKE = 0.86, WRIST_INTAKE_PARALLEL_GROUND = 0.35;
+    public static double WRIST_INTAKE = 0.88, WRIST_INTAKE_PARALLEL_GROUND = 0.35;
     public static double WRIST_INTAKE_SPECIMEN = 0.39;
 
     // TODO: Retest
     public static double WRIST_RELEASE_BOX_HIGH = 0.35, WRIST_RELEASE_BOX_LOW = 0.28;
-    public static double WRIST_RELEASE_CHAMBER_HIGH = 0.86, WRIST_RELEASE_CHAMBER_LOW = 0.8;
+    public static double WRIST_RELEASE_CHAMBER_HIGH = 0.88, WRIST_RELEASE_CHAMBER_LOW = 0.8;
 
     // Spin Wrist
-    public static double SPINWRIST_INTAKE = 0.34;
+    public static double SPINWRIST_INTAKE = 0.33;
     public static double SPINWRIST_INTAKE_CLOCKWISE = 0.2;
     public static double SPINWRIST_INTAKE_COUNTERCLOCKWISE = 0.5;
     // TODO: CHANGE THE VALUE
-    public static double SPINWRIST_INTAKE_SPECIMEN = 0.34;
+    public static double SPINWRIST_INTAKE_SPECIMEN = 0.33;
     public static double SPINWRIST_RELEASE_SPECIMEN = 0.9;
     
     // Claw

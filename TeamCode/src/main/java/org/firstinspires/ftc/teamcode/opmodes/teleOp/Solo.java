@@ -34,7 +34,6 @@ public class Solo extends LinearOpMode {
             upper.update();
             XCYBoolean.bulkRead();
             telemetry.update();
-            // TODO: CHECK WHETHER THIS CAN WORK
             drive.setGlobalPower(upper.translation_coefficient() * gamepad1.left_stick_y, upper.translation_coefficient() * gamepad1.left_stick_x, upper.heading_coefficient() * gamepad1.right_stick_x);
         };
         drive.setUpdateRunnable(update);
@@ -57,6 +56,9 @@ public class Solo extends LinearOpMode {
         XCYBoolean toReleaseHighChamber = new XCYBoolean(()-> intakeState == IntakeState.SPECIMEN && gamepad1.dpad_up);
         XCYBoolean toPullDownSpecimen = new XCYBoolean(()-> intakeState == IntakeState.SPECIMEN && gamepad1.dpad_down);
 
+        XCYBoolean toHang = new XCYBoolean(()->gamepad1.dpad_left);
+        XCYBoolean hang = new XCYBoolean(()->gamepad1.dpad_right);
+
         upper.initialize();
         drive.setPoseEstimate(AutoMaster.endPos);
         intakeState = IntakeState.NEAR;
@@ -66,6 +68,14 @@ public class Solo extends LinearOpMode {
             Pose2d current_pos = drive.getPoseEstimate();
             if(resetHeading.toTrue()){
                 drive.resetHeading();
+            }
+            if(time > 90){
+                if(toHang.toTrue()){
+
+                }
+                if(hang.toTrue()){
+
+                }
             }
 
             if(sequence == Sequence.RUN){
@@ -136,6 +146,7 @@ public class Solo extends LinearOpMode {
                     upper.setClawOpen();
                     intakeState = IntakeState.FAR;
                 }
+
                 if(intakeNear.toTrue()){
                     upper.setSlidePosition(SuperStructure.SLIDE_MIN);
                     upper.setClawOpen();
@@ -172,6 +183,12 @@ public class Solo extends LinearOpMode {
                     upper.setSpinWristRelease_specimen();
                     upper.setSlidePosition(SuperStructure.SLIDE_CHAMBER_HIGH);
                     sequence = Sequence.RELEASE_SPECIMEN;
+                }
+                if(toOrigin.toTrue()){
+                    upper.setArmPosition(0);
+                    upper.setWristReleaseChamber();
+                    upper.setSlideState(SuperStructure.SlideState.VERTICAL);
+                    sequence = Sequence.RUN;
                 }
             }
 
