@@ -178,10 +178,10 @@ public class Solo extends LinearOpMode {
 
                 if(toReleaseHighChamber.toTrue()){
                     upper.setWristReleaseChamber();
-                    upper.setArmPosition(SuperStructure.ARM_RELEASE_CHAMBER);
+                    upper.setArmPosition(SuperStructure.ARM_RELEASE_CHAMBER_TELEOP);
                     delay(300);
                     upper.setSpinWristRelease_specimen();
-                    upper.setSlidePosition(SuperStructure.SLIDE_CHAMBER_HIGH);
+                    upper.setSlidePosition(SuperStructure.SLIDE_CHAMBER_HIGH_TELEOP);
                     sequence = Sequence.RELEASE_SPECIMEN;
                 }
                 if(toOrigin.toTrue()){
@@ -205,7 +205,7 @@ public class Solo extends LinearOpMode {
 
             if(sequence == Sequence.RELEASE_SPECIMEN){
                 if(toPullDownSpecimen.toTrue()){
-                    upper.setSlidePosition(SuperStructure.SLIDE_CHAMBER_HIGH_DOWN);
+                    upper.setSlidePosition(SuperStructure.SLIDE_CHAMBER_HIGH_DOWN_TELEOP);
                 }
 
                 if(grab.toTrue()){
