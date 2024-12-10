@@ -81,8 +81,8 @@ public class SuperStructure {
     
     // Claw
     // TODO: TEST Value
-    public static double CLAW_OPEN = 0.47;
-    public static double CLAW_GRAB = 0.26;
+    public static double CLAW_OPEN = 0.55;
+    public static double CLAW_GRAB = 0.4;
     public ClawState clawState = GRAB;
     public SlideState slideState = SlideState.VERTICAL;
     public WristIntakeState wristIntakeState = WristIntakeState.PRE_INTAKE;
@@ -128,8 +128,6 @@ public class SuperStructure {
         mSlideLeft.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
         mSlideRight.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
     }
-
-
 
     // init
     public void initialize(){
