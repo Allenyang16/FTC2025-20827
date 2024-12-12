@@ -295,7 +295,7 @@ public class NewMecanumDrive extends MecanumDrive{
 
     public void resetHeading(){
         odo.recalibrateIMU();
-        odo.setPosition(new Pose2D(DistanceUnit.INCH, getLocalizer().getPoseEstimate().getX(), getLocalizer().getPoseEstimate().getY(),AngleUnit.DEGREES,90));
+        odo.setPosition(new Pose2D(DistanceUnit.INCH, getLocalizer().getPoseEstimate().getX(), getLocalizer().getPoseEstimate().getY(),AngleUnit.DEGREES,0));
     }
 
     @NonNull
@@ -358,7 +358,8 @@ public class NewMecanumDrive extends MecanumDrive{
         return new ProfileAccelerationConstraint(maxAccel);
     }
 
-    public static PIDCoefficients translationPid = new PIDCoefficients(0.22, 0.000, 0.03);
+    public static PIDCoefficients translationPid_x = new PIDCoefficients(0.22, 0.000, 0.03);
+    public static PIDCoefficients translationPid_y = new PIDCoefficients(0.22, 0.000, 0.03);
     public static PIDCoefficients headingPid = new PIDCoefficients(2.1, 0, 0.165);
 
     private PIDFController transPID_x;
@@ -390,10 +391,10 @@ public class NewMecanumDrive extends MecanumDrive{
     public void initSimpleMove(Pose2d pos) {
         stopTrajectory();
         simpleMoveIsActivate = true;
-        transPID_x = new PIDFController(translationPid);
+        transPID_x = new PIDFController(translationPid_x);
         transPID_x.setTargetPosition(pos.getX());
 
-        transPID_y = new PIDFController(translationPid);
+        transPID_y = new PIDFController(translationPid_y);
         transPID_y.setTargetPosition(pos.getY());
 
         turnPID = new PIDFController(headingPid);

@@ -58,13 +58,15 @@ public class SuperStructure {
     public static int SLIDE_CHAMBER_HIGH_TELEOP = 1200;
     public static int SLIDE_CHAMBER_HIGH_DOWN_TELEOP = 700;
     public static int SLIDE_INTAKE_MAX = 1200, SLIDE_MIN = 0;
+    public static int SLIDE_HANG_AUTO = 200;
 
     public static int ARM_INTAKE = 1050;
     public static int ARM_POST_INTAKE = 820;
     // TODO: CHECK THIS VALUE
-    public static int ARM_INTAKE_SPECIMEN = -650;
+    public static int ARM_INTAKE_SPECIMEN = -750;
     public static int ARM_RELEASE_BOX = -80;
     public static int ARM_RELEASE_CHAMBER = 180, ARM_RELEASE_CHAMBER_TELEOP = 30; // 30 for teleOp
+    public static int ARM_HANG = 180, ARM_HANG_AUTO = 180;
     // WRIST
     public static double WRIST_INTAKE = 0.88, WRIST_INTAKE_PARALLEL_GROUND = 0.35;
     public static double WRIST_INTAKE_SPECIMEN = 0.39;
@@ -154,7 +156,7 @@ public class SuperStructure {
 
     //update
     public void update() {
-        mArmLeft.setPower(armLeftPidCtrl.update(mArmLeft.getCurrentPosition()));
+        mArmLeft.setPower(armLeftPidCtrl.update(getArmLeftPosition()));
         mArmLeft.setMode(DcMotor.RunMode.RUN_WITHOUT_ENCODER);
 
         mArmRight.setPower(armRightPidCtrl.update(getArmRightPosition()));

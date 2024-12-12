@@ -10,6 +10,7 @@ import com.qualcomm.robotcore.hardware.DcMotorEx;
 import com.qualcomm.robotcore.hardware.DcMotorSimple;
 
 import org.firstinspires.ftc.robotcore.external.Telemetry;
+import org.firstinspires.ftc.teamcode.XCYBoolean;
 
 @TeleOp (group = "Testing")
 @Config
@@ -30,6 +31,8 @@ public class SlideTest extends LinearOpMode {
     public void runOpMode(){
         mSlideLeft = hardwareMap.get(DcMotorEx.class,"slideLeft");
         mSlideRight = hardwareMap.get(DcMotorEx.class,"slideRight");
+        XCYBoolean enablePowerMode = new XCYBoolean(()->gamepad1.a);
+        XCYBoolean disablePowerMode = new XCYBoolean(()-> gamepad1.b);
 
         waitForStart();
         if (reset) {
@@ -47,6 +50,15 @@ public class SlideTest extends LinearOpMode {
 
 
         while(opModeIsActive()){
+            if(enablePowerMode.toTrue()){
+                set_power_mode_or_set_position_mode = true;
+                read_only = false;
+            }
+            if(disablePowerMode.toTrue()){
+                set_power_mode_or_set_position_mode = false;
+                read_only = true;
+            }
+
             if (set_power_mode_or_set_position_mode) {
                 if (read_only) {
                     mSlideRight.setPower(0);

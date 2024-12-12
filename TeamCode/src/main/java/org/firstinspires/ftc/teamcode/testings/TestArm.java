@@ -10,6 +10,7 @@ import com.qualcomm.robotcore.hardware.DcMotorEx;
 import com.qualcomm.robotcore.hardware.DcMotorSimple;
 
 import org.firstinspires.ftc.robotcore.external.Telemetry;
+import org.firstinspires.ftc.teamcode.XCYBoolean;
 
 @TeleOp (group = "Testing")
 @Config
@@ -33,6 +34,8 @@ public class TestArm extends LinearOpMode {
     public void runOpMode(){
         mArmLeft = hardwareMap.get(DcMotorEx.class,"armLeft");
         mArmRight = hardwareMap.get(DcMotorEx.class,"armRight");
+        XCYBoolean enablePowerMode = new XCYBoolean(()->gamepad1.a);
+        XCYBoolean disablePowerMode = new XCYBoolean(()-> gamepad1.b);
 
         waitForStart();
         if (reset) {
@@ -50,6 +53,15 @@ public class TestArm extends LinearOpMode {
 
 
         while(opModeIsActive()){
+            if(enablePowerMode.toTrue()){
+                set_power_mode_or_set_position_mode = true;
+                read_only = false;
+            }
+            if(disablePowerMode.toTrue()){
+                set_power_mode_or_set_position_mode = false;
+                read_only = true;
+            }
+
             if (set_power_mode_or_set_position_mode) {
                 if (read_only) {
                     mArmRight.setPower(0);

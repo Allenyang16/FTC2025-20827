@@ -20,6 +20,7 @@ public class TestTranslationPID extends LinearOpMode {
     private final Telemetry telemetry_M = new MultipleTelemetry(telemetry, FtcDashboard.getInstance().getTelemetry());
 
     private Pose2d forwardPos = new Pose2d(48,-48,0);
+    public static double t_x = 6, t_y = 39, t_heading = 90;
     private Pose2d backPos = new Pose2d(-48,-48,0);
     private Pose2d rightPos = new Pose2d(48,-48,Math.toRadians(90));
     private Pose2d leftPos = new Pose2d(-48,-48, Math.toRadians(90));
@@ -38,6 +39,8 @@ public class TestTranslationPID extends LinearOpMode {
         XCYBoolean turnClockwise = new XCYBoolean(()->gamepad1.right_bumper);
         XCYBoolean turnCounterClockwise = new XCYBoolean(()-> gamepad1.left_bumper);
 
+        forwardPos = new Pose2d(t_x,t_y,Math.toRadians(t_heading));
+
 
         Runnable update = ()->{
             drive.update();
@@ -50,7 +53,7 @@ public class TestTranslationPID extends LinearOpMode {
         superstructure.setUpdateRunnable(update);
         superstructure.initialize();
 
-        drive.setPoseEstimate(new Pose2d(0,-48,0));
+        drive.setPoseEstimate(new Pose2d(39,-62,Math.toRadians(90)));
         drive.update();
         waitForStart();
 

@@ -33,7 +33,7 @@ public abstract class AutoMaster extends LinearOpMode {
     public static double box_x = 57, box_y = 57, box_heading = 45; // or 135 in blue
 
     Pose2d chamberPos;
-    public static double chamber_x = 6, chamber_y = 39, chamber_heading = -90;
+    public static double chamber_x = 6, chamber_y = 40, chamber_heading = -90;
     Pose2d chamberPos2;
     public static double chamber2_x = 8;
     Pose2d chamberPos_delta;
@@ -82,7 +82,9 @@ public abstract class AutoMaster extends LinearOpMode {
     public static double dropSampleToHP_x = 50;
 
     public static Pose2d park_box = new Pose2d(-24,-10,Math.toRadians(90));
-    public static double park_box_x = 26, park_box_y = 10, parkRed_box_heading = 90;
+    public static double park_box_x = 26, park_box_y = 10, parkRed_box_heading = 0, parkBlue_box_heading = 180;
+    public static Pose2d prePark_box;
+    public static double prePark_box_x = 45, prePark_box_y = 10;
 
     public static Pose2d park_chamber = new Pose2d(50, 57.2,Math.toRadians(90));
     public static double park_chamber_x = 50, park_chamber_y = 57.2, park_chamber_heading = -90;
@@ -103,9 +105,11 @@ public abstract class AutoMaster extends LinearOpMode {
         if(side_color == RED){
             boxPos = new Pose2d(box_x * startSide, box_y * side_color, Math.toRadians(box_heading));
             park_box = new Pose2d(park_box_x * startSide, park_box_y * side_color, Math.toRadians(parkRed_box_heading));
+            prePark_box = new Pose2d(prePark_box_x * startSide, prePark_box_y * side_color, Math.toRadians(parkRed_box_heading));
         }else{
             boxPos = new Pose2d(box_x * startSide, box_y * side_color, Math.toRadians(-135));
-            park_box = new Pose2d(park_box_x * startSide, park_box_y * side_color, Math.toRadians(180));
+            park_box = new Pose2d(park_box_x * startSide, park_box_y * side_color, Math.toRadians(parkBlue_box_heading));
+            prePark_box = new Pose2d(prePark_box_x * startSide, prePark_box_y * side_color, Math.toRadians(parkBlue_box_heading));
         }
         park_chamber = new Pose2d(park_chamber_x * startSide,park_chamber_y * side_color,Math.toRadians(park_chamber_heading * side_color));
 
@@ -305,8 +309,6 @@ public abstract class AutoMaster extends LinearOpMode {
         upper.setClawOpen();
     }
 
-
-
     protected void intakeSpecimen(){
         upper.setWristIntakeSpecimen();
         upper.setSpinWristIntake_specimen();
@@ -320,7 +322,7 @@ public abstract class AutoMaster extends LinearOpMode {
     }
 
     protected void releaseSpecimen(int count){
-        drive.setSimpleMoveTolerance(1,1,Math.toRadians(2));
+        drive.setSimpleMoveTolerance(0.3,0.3,Math.toRadians(2));
         drive.setSimpleMovePower(0.95);
 
         upper.setWristIntake();
@@ -348,7 +350,7 @@ public abstract class AutoMaster extends LinearOpMode {
             upper.setSlidePosition(SuperStructure.SLIDE_CHAMBER_HIGH);
 
             drive.setSimpleMovePower(0.6);
-            drive.moveTo(chamberPos,480);
+            drive.moveTo(chamberPos,100);
         }
         upper.setSlidePosition(SuperStructure.SLIDE_CHAMBER_HIGH_DOWN);
         delay(250);
@@ -394,6 +396,10 @@ public abstract class AutoMaster extends LinearOpMode {
         upper.setClawGrab();
     }
     public void park_box(){
+        drive.moveTo(prePark_box,0);
+        upper.setArmPosition(SuperStructure.ARM_HANG_AUTO);
+        upper.setWristPreIntake();
+        upper.setSlidePosition(SuperStructure.ARM_HANG_AUTO);
         drive.moveTo(park_box,100);
     }
     protected void delay(int millisecond) {

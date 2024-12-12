@@ -121,7 +121,6 @@ public class Duo extends LinearOpMode {
                     upper.setSlidePosition(SuperStructure.SLIDE_MIN);
                     upper.setWristIntakeSpecimen();
                     upper.setSpinWristIntake_specimen();
-                    upper.setClawGrab();
                     upper.setArmPosition(SuperStructure.ARM_INTAKE_SPECIMEN);
                     upper.setSlideState(SuperStructure.SlideState.VERTICAL);
                     intakeState = IntakeState.SPECIMEN;
