@@ -29,10 +29,10 @@ public class SuperStructure {
     private DcMotorEx mSlideLeft = null;
     private DcMotorEx mSlideRight = null;
 
-    public static PIDCoefficients armLeftPidConf = new PIDCoefficients(0.007, 0.00, 0.00);
+    public static PIDCoefficients armLeftPidConf = new PIDCoefficients(0.009, 0.00, 0.00);
     private final PIDFController armLeftPidCtrl;
 
-    public static PIDCoefficients armRightPidConf = new PIDCoefficients(0.0072, 0.00, 0.00);
+    public static PIDCoefficients armRightPidConf = new PIDCoefficients(0.009, 0.00, 0.00);
     private final PIDFController armRightPidCtrl;
 
     public static PIDCoefficients slideLeftPidConf_Horizontal = new PIDCoefficients(0.0018, 0.00, 0.00);
@@ -59,10 +59,10 @@ public class SuperStructure {
     public static int SLIDE_CHAMBER_HIGH_DOWN_TELEOP = 700;
     public static int SLIDE_INTAKE_MAX = 1200, SLIDE_MIN = 0;
 
-    public static int ARM_INTAKE = 950;
+    public static int ARM_INTAKE = 1050;
     public static int ARM_POST_INTAKE = 820;
     // TODO: CHECK THIS VALUE
-    public static int ARM_INTAKE_SPECIMEN = -670;
+    public static int ARM_INTAKE_SPECIMEN = -760;
     public static int ARM_RELEASE_BOX = -80;
     public static int ARM_RELEASE_CHAMBER = 180, ARM_RELEASE_CHAMBER_TELEOP = 30; // 30 for teleOp
     // WRIST
