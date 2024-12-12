@@ -62,7 +62,7 @@ public class SuperStructure {
     public static int ARM_INTAKE = 1050;
     public static int ARM_POST_INTAKE = 820;
     // TODO: CHECK THIS VALUE
-    public static int ARM_INTAKE_SPECIMEN = -760;
+    public static int ARM_INTAKE_SPECIMEN = -650;
     public static int ARM_RELEASE_BOX = -80;
     public static int ARM_RELEASE_CHAMBER = 180, ARM_RELEASE_CHAMBER_TELEOP = 30; // 30 for teleOp
     // WRIST
