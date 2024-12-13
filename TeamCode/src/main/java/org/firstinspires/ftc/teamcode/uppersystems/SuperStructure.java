@@ -51,7 +51,6 @@ public class SuperStructure {
     private Servo mWrist = null;
 
     private TouchSensor armMag = null;
-
     public static int SLIDE_BOX_HIGH = 1650;
     public static int SLIDE_CHAMBER_HIGH = 700;
     public static int SLIDE_CHAMBER_HIGH_DOWN = 450;
@@ -65,6 +64,7 @@ public class SuperStructure {
     public static int ARM_INTAKE_SPECIMEN = -700;
     public static int ARM_RELEASE_BOX = -80;
     public static int ARM_RELEASE_CHAMBER = 180, ARM_RELEASE_CHAMBER_TELEOP = 30; // 30 for teleOp
+    public static int ARM_HANG = 180, ARM_HANG_AUTO = 180;
     // WRIST
     public static double WRIST_INTAKE = 0.88, WRIST_INTAKE_PARALLEL_GROUND = 0.35;
     public static double WRIST_INTAKE_SPECIMEN = 0.39;
@@ -154,7 +154,7 @@ public class SuperStructure {
 
     //update
     public void update() {
-        mArmLeft.setPower(armLeftPidCtrl.update(mArmLeft.getCurrentPosition()));
+        mArmLeft.setPower(armLeftPidCtrl.update(getArmLeftPosition()));
         mArmLeft.setMode(DcMotor.RunMode.RUN_WITHOUT_ENCODER);
 
         mArmRight.setPower(armRightPidCtrl.update(getArmRightPosition()));
