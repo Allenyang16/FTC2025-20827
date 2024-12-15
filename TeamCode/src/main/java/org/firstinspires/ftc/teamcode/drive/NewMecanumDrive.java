@@ -359,8 +359,8 @@ public class NewMecanumDrive extends MecanumDrive{
     }
 
     public static PIDCoefficients translationPid_x = new PIDCoefficients(0.22, 0.000, 0.03);
-    public static PIDCoefficients translationPid_y = new PIDCoefficients(0.22, 0.000, 0.03);
-    public static PIDCoefficients headingPid = new PIDCoefficients(2.1, 0, 0.165);
+    public static PIDCoefficients translationPid_y = new PIDCoefficients(0.24, 0.000, 0.03);
+    public static PIDCoefficients headingPid = new PIDCoefficients(2.1, 0, 0.13);
 
     private PIDFController transPID_x;
     private PIDFController transPID_y;

@@ -53,10 +53,10 @@ public class SuperStructure {
     private TouchSensor armMag = null;
 
     public static int SLIDE_BOX_HIGH = 1650, SLIDE_BOX_LOW = 1500;
-    public static int SLIDE_CHAMBER_HIGH = 700, SLIDE_CHAMBER_LOW = 0;
+    public static int SLIDE_CHAMBER_HIGH = 760, SLIDE_CHAMBER_LOW = 0;
     public static int SLIDE_CHAMBER_HIGH_DOWN = 450;
     public static int SLIDE_CHAMBER_HIGH_TELEOP = 700;
-    public static int SLIDE_CHAMBER_HIGH_DOWN_TELEOP = 450;
+    public static int SLIDE_CHAMBER_HIGH_DOWN_TELEOP = 400;
     public static int SLIDE_INTAKE_MAX = 700, SLIDE_MIN = 0;
     public static int SLIDE_HANG_AUTO = 200;
 
@@ -68,12 +68,12 @@ public class SuperStructure {
     public static int ARM_RELEASE_CHAMBER = 180, ARM_RELEASE_CHAMBER_TELEOP = 30; // 30 for teleOp
     public static int ARM_HANG = 180, ARM_HANG_AUTO = 180;
     // WRIST
-    public static double WRIST_INTAKE = 0.88, WRIST_INTAKE_PARALLEL_GROUND = 0.35;
-    public static double WRIST_INTAKE_SPECIMEN = 0.39;
+    public static double WRIST_INTAKE = 0.25, WRIST_INTAKE_PARALLEL_GROUND = 0.7;
+    public static double WRIST_INTAKE_SPECIMEN = 0.73;
 
     // TODO: Retest
-    public static double WRIST_RELEASE_BOX_HIGH = 0.35, WRIST_RELEASE_BOX_LOW = 0.28;
-    public static double WRIST_RELEASE_CHAMBER_HIGH = 0.88, WRIST_RELEASE_CHAMBER_LOW = 0.8;
+    public static double WRIST_RELEASE_BOX_HIGH = 0.78, WRIST_RELEASE_BOX_LOW = 0.28;
+    public static double WRIST_RELEASE_CHAMBER_HIGH = 0.25, WRIST_RELEASE_CHAMBER_LOW = 0.8;
 
     // Spin Wrist
     public static double SPINWRIST_INTAKE = 0.33;
@@ -135,8 +135,6 @@ public class SuperStructure {
 
     // init
     public void initialize(){
-        setArmPosition(0);
-        setSlidePosition(SuperStructure.SLIDE_MIN);
         setSpinWristIntake_specimen();
         setWristPostRelease();
         setClawGrab();
@@ -320,11 +318,12 @@ public class SuperStructure {
             return 1.0;
         }
     }
+
     public double heading_coefficient(){
         if(wristIntakeState == WristIntakeState.INTAKE){
-            return 0.3;
+            return 0.35;
         } else if (wristIntakeState == WristIntakeState.PRE_INTAKE) {
-            return 0.5;
+            return 0.8;
         } else if (wristIntakeState == WristIntakeState.INTAKE_SPECIMEN) {
             return 0.3;
         } else if (wristIntakeState == WristIntakeState.RELEASE_SAMPLE) {
