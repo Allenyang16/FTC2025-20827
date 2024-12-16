@@ -49,7 +49,7 @@ public abstract class AutoMaster extends LinearOpMode {
     Pose2d intakeSamplePos_2;
     public static double intake_samplePos2_x = 58, intake_samplePos2_y = 39.5, intake_samplePos2_heading = -90;
     Pose2d intakeSamplePos_3;
-    public static double intake_samplePos3_x = 60, intake_samplePos3_y = 37, intake_samplePos3_heading = -120;
+    public static double intake_samplePos3_x = 48, intake_samplePos3_y = 47, intake_samplePos3_heading = -120;
     public static double sample3_positive_heading = -60;
 
     public static double intake_redSample1_x = 37, intake_redSample1_y = -47, intake_redSample1_heading = 60;
@@ -238,15 +238,17 @@ public abstract class AutoMaster extends LinearOpMode {
     protected void intakeSample_3(){
         upper.setArmPosition(SuperStructure.ARM_INTAKE);
         upper.setSpinWristIntake_spinClockwise();
+
+        upper.setSlidePosition(SuperStructure.SLIDE_INTAKE_MAX);
         drive.moveTo(intakeSamplePos_3, correcting_time2);
         upper.setClawGrab();
     }
 
     protected void dropSample(){
         upper.setSlidePosition(SuperStructure.SLIDE_BOX_HIGH);
-        delay(1000);
+        delay(600);
         upper.setWristReleaseBox();
-        delay(400);
+        delay(200);
         upper.setClawOpen();
     }
 
@@ -266,7 +268,7 @@ public abstract class AutoMaster extends LinearOpMode {
         upper.setWristPreIntake();
         drive.moveTo(intakeRedSample_1,200);
         upper.setWristIntake();
-        delay(300);
+        delay(150);
         upper.setClawGrab();
     }
 
@@ -276,7 +278,7 @@ public abstract class AutoMaster extends LinearOpMode {
         upper.setSlidePosition(SuperStructure.SLIDE_INTAKE_MAX);
         drive.moveTo(intakeRedSample_2,200);
         upper.setWristIntake();
-        delay(300);
+        delay(150);
         upper.setClawGrab();
     }
 
@@ -285,7 +287,7 @@ public abstract class AutoMaster extends LinearOpMode {
         upper.setSlidePosition(SuperStructure.SLIDE_MIN);
         drive.moveTo(intakeRedSample_3,200);
         upper.setWristIntake();
-        delay(300);
+        delay(150);
         upper.setClawGrab();
     }
 

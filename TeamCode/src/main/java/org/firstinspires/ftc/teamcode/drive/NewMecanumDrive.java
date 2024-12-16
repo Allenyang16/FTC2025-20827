@@ -81,9 +81,11 @@ public class NewMecanumDrive extends MecanumDrive{
     private List<Integer> lastEncVels = new ArrayList<>();
 
     private Runnable updateRunnable;
+
     public void setUpdateRunnable(Runnable updateRunnable) {
         this.updateRunnable = updateRunnable;
     }
+
     public NewMecanumDrive(HardwareMap hardwareMap) {
         super(kV, kA, kStatic, TRACK_WIDTH, TRACK_WIDTH, LATERAL_MULTIPLIER);
 

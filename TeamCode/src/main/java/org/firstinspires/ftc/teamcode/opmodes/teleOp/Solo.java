@@ -36,6 +36,7 @@ public class Solo extends LinearOpMode {
             telemetry.update();
             drive.setGlobalPower(upper.translation_coefficient() * gamepad1.left_stick_y, upper.translation_coefficient() * gamepad1.left_stick_x, upper.heading_coefficient() * gamepad1.right_stick_x);
         };
+
         drive.setUpdateRunnable(update);
         upper.setUpdateRunnable(update);
 
@@ -69,13 +70,14 @@ public class Solo extends LinearOpMode {
             if(resetHeading.toTrue()){
                 drive.resetHeading();
             }
-            if(time > 90){
-                if(toHang.toTrue()){
 
-                }
-                if(hang.toTrue()){
-
-                }
+            if(toHang.toTrue()){
+                upper.setSlidePosition(SuperStructure.SLIDE_HANG_UP);
+                delay(500);
+                upper.setArmPosition(SuperStructure.ARM_HANG);
+            }
+            if(hang.toTrue()){
+                upper.setSlidePosition(SuperStructure.SLIDE_HANG_DOWN);
             }
 
             if(sequence == Sequence.RUN){
@@ -108,6 +110,9 @@ public class Solo extends LinearOpMode {
                     upper.setWristIntakeSpecimen();
                     upper.setSpinWristIntake_specimen();
                     upper.setArmPosition(SuperStructure.ARM_INTAKE_SPECIMEN);
+                    // TODO: Test this
+                    delay(100);
+                    upper.setClawOpen();
                     upper.setSlideState(SuperStructure.SlideState.VERTICAL);
                     intakeState = IntakeState.SPECIMEN;
                     sequence = Sequence.INTAKE_SPECIMEN;
@@ -209,7 +214,6 @@ public class Solo extends LinearOpMode {
 
                 if(grab.toTrue()){
                     upper.switchClawState();
-                    // TODO: 确保大臂下来不会撞到 chamber
                     sequence = Sequence.RUN;
                     intakeState = IntakeState.NEAR;
                     upper.setSlidePosition(SuperStructure.SLIDE_MIN);
