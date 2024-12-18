@@ -17,6 +17,7 @@ import com.qualcomm.robotcore.hardware.HardwareMap;
 import com.qualcomm.robotcore.hardware.Servo;
 import com.qualcomm.robotcore.hardware.TouchSensor;
 
+import java.security.PublicKey;
 import java.util.Arrays;
 import java.util.List;
 
@@ -58,7 +59,7 @@ public class SuperStructure {
     public static int SLIDE_CHAMBER_HIGH_TELEOP = 700;
     public static int SLIDE_CHAMBER_HIGH_DOWN_TELEOP = 400;
     public static int SLIDE_INTAKE_MAX = 700, SLIDE_MIN = 0;
-    public static int SLIDE_HANG_AUTO = 200, SLIDE_HANG_UP = 1700, SLIDE_HANG_DOWN = 1000;
+    public static int SLIDE_HANG_AUTO = 200, SLIDE_HANG_UP = 1720, SLIDE_HANG_DOWN = 1000;
 
     public static int ARM_INTAKE = 1050;
     public static int ARM_POST_INTAKE = 820;
@@ -69,18 +70,18 @@ public class SuperStructure {
     public static int ARM_HANG = -80, ARM_HANG_AUTO = 180;
     // WRIST
     public static double WRIST_INTAKE = 0.25, WRIST_INTAKE_PARALLEL_GROUND = 0.78;
-    public static double WRIST_INTAKE_SPECIMEN = 0.95;
+    public static double WRIST_INTAKE_SPECIMEN = 0.95, WRIST_INTAKE_SPECIMEN_GROUND = 0.45;
 
     // TODO: Retest
-    public static double WRIST_RELEASE_BOX_HIGH = 0.9, WRIST_RELEASE_BOX_LOW = 0.28;
+    public static double WRIST_RELEASE_BOX_HIGH = 0.95, WRIST_RELEASE_BOX_LOW = 0.28;
     public static double WRIST_RELEASE_CHAMBER_HIGH = 0.25, WRIST_RELEASE_CHAMBER_LOW = 0.8;
 
     // Spin Wrist
     public static double SPINWRIST_INTAKE = 0.25;
-    public static double SPINWRIST_INTAKE_CLOCKWISE = 0;
-    public static double SPINWRIST_INTAKE_COUNTERCLOCKWISE = 0.5;
+    public static double SPINWRIST_INTAKE_CLOCKWISE = 0.05;
+    public static double SPINWRIST_INTAKE_COUNTERCLOCKWISE = 0.45;
     // TODO: CHANGE THE VALUE
-    public static double SPINWRIST_INTAKE_SPECIMEN = 1;
+    public static double SPINWRIST_INTAKE_SPECIMEN = 0.96;
     public static double SPINWRIST_RELEASE_SPECIMEN = 0.25;
     
     // Claw
@@ -90,7 +91,7 @@ public class SuperStructure {
     public ClawState clawState = GRAB;
     public SlideState slideState = SlideState.VERTICAL;
     public WristIntakeState wristIntakeState = WristIntakeState.PRE_INTAKE;
-
+    public static boolean PID_isUsed = true;
     private final LinearOpMode opMode;
     private Runnable updateRunnable;
 
@@ -246,6 +247,10 @@ public class SuperStructure {
         mWrist.setPosition(WRIST_INTAKE_SPECIMEN);
         wristIntakeState = WristIntakeState.INTAKE_SPECIMEN;
     }
+    public void setWristIntakeSpecimenGround(){
+        mWrist.setPosition(WRIST_INTAKE_SPECIMEN_GROUND);
+    }
+
     public void setWristPostRelease(){
         mWrist.setPosition(WRIST_INTAKE);
     }
@@ -304,9 +309,9 @@ public class SuperStructure {
         } else if (wristIntakeState == WristIntakeState.PRE_INTAKE) {
             return 1.0;
         } else if (wristIntakeState == WristIntakeState.INTAKE_SPECIMEN) {
-            return 0.4;
+            return 0.6;
         } else if (wristIntakeState == WristIntakeState.RELEASE_SAMPLE) {
-            if(getSlidePosition() < 2500){
+            if(getSlidePosition() < 1500){
                 return 0.9;
             }else{
                 return 0.5;
@@ -322,7 +327,7 @@ public class SuperStructure {
         if(wristIntakeState == WristIntakeState.INTAKE){
             return 0.35;
         } else if (wristIntakeState == WristIntakeState.PRE_INTAKE) {
-            return 0.8;
+            return 0.78;
         } else if (wristIntakeState == WristIntakeState.INTAKE_SPECIMEN) {
             return 0.3;
         } else if (wristIntakeState == WristIntakeState.RELEASE_SAMPLE) {
@@ -342,6 +347,9 @@ public class SuperStructure {
     // Spin Wrist
     public void setSpinWristIntake(){
         mSpinWrist.setPosition(SPINWRIST_INTAKE);
+    }
+    public void setSpinWristReleaseBox(){
+        mSpinWrist.setPosition(SPINWRIST_INTAKE_SPECIMEN);
     }
     public void setSpinWristIntake_specimen(){
         mSpinWrist.setPosition(SPINWRIST_INTAKE_SPECIMEN);
@@ -370,8 +378,8 @@ public class SuperStructure {
             armRightPidCtrl.setOutputBounds(-1,1);
             armLeftPidCtrl.setOutputBounds(-1,1);
         }
-
     }
+
     public void resetArm(){
         mArmLeft.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
         mArmRight.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
@@ -403,6 +411,10 @@ public class SuperStructure {
         } else{
             setSlideOutputBounds(1);
         }
+    }
+    public void setSlidePower(double power){
+        mSlideRight.setPower(power);
+        mSlideLeft.setPower(power);
     }
 
     public void resetSlide(){

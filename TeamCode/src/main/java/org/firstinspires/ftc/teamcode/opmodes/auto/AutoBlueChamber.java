@@ -1,10 +1,12 @@
 package org.firstinspires.ftc.teamcode.opmodes.auto;
 
 import com.qualcomm.robotcore.eventloop.opmode.Autonomous;
+import com.qualcomm.robotcore.eventloop.opmode.Disabled;
 
 import org.firstinspires.ftc.teamcode.AutoMaster;
 
 @Autonomous
+@Disabled
 public class AutoBlueChamber extends AutoMaster {
     @Override
     public void runOpMode() throws InterruptedException {
@@ -37,7 +39,7 @@ public class AutoBlueChamber extends AutoMaster {
             intakeSpecimen();
             releaseSpecimen(2);
             dropSpecimen_toOrigin();
-            park();
+            park_observation();
         }
     }
 }

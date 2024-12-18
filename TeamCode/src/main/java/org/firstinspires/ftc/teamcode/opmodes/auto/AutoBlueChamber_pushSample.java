@@ -29,7 +29,7 @@ public class AutoBlueChamber_pushSample extends AutoMaster {
             dropSpecimen_toIntakeSpecimen();
             releaseSpecimen(4);
 
-            park();
+            park_observation();
         }
     }
 }

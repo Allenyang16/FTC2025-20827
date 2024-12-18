@@ -111,7 +111,7 @@ public class Solo extends LinearOpMode {
                     upper.setSpinWristIntake_specimen();
                     upper.setArmPosition(SuperStructure.ARM_INTAKE_SPECIMEN);
                     // TODO: Test this
-                    delay(100);
+                    delay(500);
                     upper.setClawOpen();
                     upper.setSlideState(SuperStructure.SlideState.VERTICAL);
                     intakeState = IntakeState.SPECIMEN;
@@ -122,7 +122,8 @@ public class Solo extends LinearOpMode {
                     upper.setArmPosition(SuperStructure.ARM_RELEASE_BOX);
                     upper.setSlidePosition(SuperStructure.SLIDE_BOX_HIGH);
                     upper.setSlideState(SuperStructure.SlideState.VERTICAL);
-                    upper.setWristReleaseBox();
+                    upper.setWristPreIntake();
+                    upper.setSpinWristReleaseBox();
                     sequence = Sequence.RELEASE_SAMPLE;
                 }
 
@@ -198,6 +199,8 @@ public class Solo extends LinearOpMode {
 
             if(sequence == Sequence.RELEASE_SAMPLE){
                 if(grab.toTrue()){
+                    upper.setWristReleaseBox();
+                    delay(10);
                     upper.switchClawState();
                     upper.setWristPostRelease();
                     sequence = Sequence.RUN;
@@ -208,6 +211,10 @@ public class Solo extends LinearOpMode {
             }
 
             if(sequence == Sequence.RELEASE_SPECIMEN){
+                if(toHighRelease_sample.toTrue()){
+                    upper.setSlidePosition(SuperStructure.SLIDE_BOX_HIGH);
+                }
+
                 if(toPullDownSpecimen.toTrue()){
                     upper.setSlidePosition(SuperStructure.SLIDE_CHAMBER_HIGH_DOWN_TELEOP);
                 }
@@ -228,6 +235,7 @@ public class Solo extends LinearOpMode {
             telemetry.addData("Intake State: ", intakeState);
             telemetry.addData("Trans coefficient", upper.translation_coefficient());
             telemetry.addData("Heading coefficient", upper.heading_coefficient());
+            telemetry.addData("Arm_pos: ", upper.getArmPosition());
             update.run();
         }
     }

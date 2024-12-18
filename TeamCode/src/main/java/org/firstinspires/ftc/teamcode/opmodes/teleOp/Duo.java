@@ -65,31 +65,8 @@ public class Duo extends LinearOpMode {
         // TODO: try to remove as much delay as possible
         while (opModeIsActive()){
             Pose2d current_pos = drive.getPoseEstimate();
-
-            if(resetUpper.toTrue()){
-                upper.setArmPosition(SuperStructure.ARM_INTAKE);
-                upper.setSlidePosition(SuperStructure.SLIDE_MIN);
-                upper.setClawOpen();
-                upper.setSpinWristIntake();
-                upper.setWristPreIntake();
-                upper.setSlideState(SuperStructure.SlideState.HORIZONTAL);
-                sequence = Sequence.RUN;
-            }
-
             if(resetHeading.toTrue()){
                 drive.resetHeading();
-            }
-
-            // TODO: TEST this
-            if(hang.toTrue()){
-                upper.setArmPosition(SuperStructure.ARM_RELEASE_BOX);
-                upper.setSlidePosition(SuperStructure.SLIDE_BOX_HIGH);
-                delay(5000);
-                upper.setSlidePosition(SuperStructure.SLIDE_MIN);
-            }
-
-            if(upper.getSlidePosition() < SuperStructure.SLIDE_INTAKE_MAX){
-
             }
 
             if(sequence == Sequence.RUN){
@@ -130,7 +107,8 @@ public class Duo extends LinearOpMode {
                 if(toHighRelease_sample.toTrue()){
                     upper.setArmPosition(SuperStructure.ARM_RELEASE_BOX);
                     upper.setSlidePosition(SuperStructure.SLIDE_BOX_HIGH);
-                    upper.setWristReleaseBox();
+                    upper.setWristPreIntake();
+                    upper.setSpinWristReleaseBox();
                     sequence = Sequence.RELEASE_SAMPLE;
                 }
 
@@ -205,6 +183,8 @@ public class Duo extends LinearOpMode {
 
             if(sequence == Sequence.RELEASE_SAMPLE){
                 if(grab.toTrue()){
+                    upper.setWristReleaseBox();
+                    delay(10);
                     upper.switchClawState();
                     upper.setWristPostRelease();
                     sequence = Sequence.RUN;

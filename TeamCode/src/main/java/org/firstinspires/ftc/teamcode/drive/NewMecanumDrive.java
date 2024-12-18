@@ -42,6 +42,7 @@ import com.qualcomm.robotcore.util.Range;
 import org.firstinspires.ftc.robotcore.external.navigation.AngleUnit;
 import org.firstinspires.ftc.robotcore.external.navigation.DistanceUnit;
 import org.firstinspires.ftc.robotcore.external.navigation.Pose2D;
+import org.firstinspires.ftc.teamcode.AutoMaster;
 import org.firstinspires.ftc.teamcode.gobildapinpoint.GoBildaPinpointDriver;
 import org.firstinspires.ftc.teamcode.trajectorysequence.TrajectorySequence;
 import org.firstinspires.ftc.teamcode.trajectorysequence.TrajectorySequenceBuilder;
@@ -64,6 +65,7 @@ public class NewMecanumDrive extends MecanumDrive{
     public static double VX_WEIGHT = 1;
     public static double VY_WEIGHT = 1;
     public static double OMEGA_WEIGHT = 1;
+    private static double yawHeading = AutoMaster.endPos.getHeading();
 
     private TrajectorySequenceRunner trajectorySequenceRunner;
 
@@ -251,7 +253,7 @@ public class NewMecanumDrive extends MecanumDrive{
     }
 
     public double getYaw() {
-        return odo.getHeading();
+        return yawHeading;
     }
 
 
@@ -277,7 +279,7 @@ public class NewMecanumDrive extends MecanumDrive{
     }
 
     public void setGlobalPower(double x, double y, double rx) {
-        double botHeading = odo.getHeading();
+        double botHeading = odo.getHeading() - yawHeading;
         double rotX = x * Math.cos(-botHeading) - y * Math.sin(-botHeading);
         double rotY = x * Math.sin(-botHeading) + y * Math.cos(-botHeading);
 
@@ -296,8 +298,7 @@ public class NewMecanumDrive extends MecanumDrive{
     }
 
     public void resetHeading(){
-        odo.recalibrateIMU();
-        odo.setPosition(new Pose2D(DistanceUnit.INCH, getLocalizer().getPoseEstimate().getX(), getLocalizer().getPoseEstimate().getY(),AngleUnit.DEGREES,0));
+        yawHeading = odo.getHeading();
     }
 
     @NonNull
