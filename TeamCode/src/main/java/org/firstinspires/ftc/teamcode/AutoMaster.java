@@ -23,7 +23,8 @@ public abstract class AutoMaster extends LinearOpMode {
     private SuperStructure upper;
     private Runnable update;
 
-    public static int correcting_time = 500, correcting_time2 = 200;
+    public static int correcting_time = 200, correcting_time2 = 200;
+    public static double yawOffset = 0;
 
     Pose2d startPos;
     public static double startPos_x = 39, startPos_y = 62, startPos_heading = -90;
@@ -110,10 +111,12 @@ public abstract class AutoMaster extends LinearOpMode {
             boxPos = new Pose2d(box_x * startSide, box_y * side_color, Math.toRadians(box_heading));
             park_box = new Pose2d(park_box_x * startSide, park_box_y * side_color, Math.toRadians(parkRed_box_heading));
             prePark_box = new Pose2d(prePark_box_x * startSide, prePark_box_y * side_color, Math.toRadians(parkRed_box_heading));
+            yawOffset = 0;
         }else{
             boxPos = new Pose2d(box_x * startSide, box_y * side_color, Math.toRadians(-135));
             park_box = new Pose2d(park_box_x * startSide, park_box_y * side_color, Math.toRadians(parkBlue_box_heading));
             prePark_box = new Pose2d(prePark_box_x * startSide, prePark_box_y * side_color, Math.toRadians(parkBlue_box_heading));
+            yawOffset = Math.toRadians(180);
         }
         park_chamber = new Pose2d(park_chamber_x * startSide,park_chamber_y * side_color,Math.toRadians(park_chamber_heading * side_color));
 
@@ -344,9 +347,9 @@ public abstract class AutoMaster extends LinearOpMode {
         upper.setArmPosition(SuperStructure.ARM_INTAKE_SPECIMEN);
         drive.moveTo(preIntakeSpecimenPos,0);
 
-        drive.setSimpleMovePower(0.3);
-        drive.setSimpleMoveTolerance(0.4,0.4,Math.toRadians(3));
-        drive.moveTo(intakeSpecimenPos,200);
+        drive.setSimpleMovePower(0.25);
+        drive.setSimpleMoveTolerance(0.4,0.8,Math.toRadians(3));
+        drive.moveTo(intakeSpecimenPos,300);
         upper.setClawGrab();
     }
 
@@ -394,7 +397,7 @@ public abstract class AutoMaster extends LinearOpMode {
             upper.setArmPosition(SuperStructure.ARM_RELEASE_CHAMBER);
             upper.setSlidePosition(SuperStructure.SLIDE_CHAMBER_HIGH);
 
-            drive.setSimpleMovePower(0.95);
+            drive.setSimpleMovePower(0.85);
             drive.setSimpleMoveTolerance(2,2,Math.toRadians(10));
             drive.moveTo(preChamberPos,0);
 

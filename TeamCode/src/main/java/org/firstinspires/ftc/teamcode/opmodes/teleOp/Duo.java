@@ -195,6 +195,10 @@ public class Duo extends LinearOpMode {
             }
 
             if(sequence == Sequence.RELEASE_SPECIMEN){
+                if(toReleaseHighChamber.toTrue()){
+                    upper.setSlidePosition(SuperStructure.SLIDE_BOX_HIGH);
+                }
+
                 if(toPullDownSpecimen.toTrue()){
                     upper.setSlidePosition(SuperStructure.SLIDE_CHAMBER_HIGH_DOWN_TELEOP);
                 }

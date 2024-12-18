@@ -17,7 +17,6 @@ import com.qualcomm.robotcore.hardware.HardwareMap;
 import com.qualcomm.robotcore.hardware.Servo;
 import com.qualcomm.robotcore.hardware.TouchSensor;
 
-import java.security.PublicKey;
 import java.util.Arrays;
 import java.util.List;
 
@@ -59,7 +58,8 @@ public class SuperStructure {
     public static int SLIDE_CHAMBER_HIGH_TELEOP = 700;
     public static int SLIDE_CHAMBER_HIGH_DOWN_TELEOP = 400;
     public static int SLIDE_INTAKE_MAX = 700, SLIDE_MIN = 0;
-    public static int SLIDE_HANG_AUTO = 200, SLIDE_HANG_UP = 1720, SLIDE_HANG_DOWN = 1000;
+    public static int SLIDE_HANG_AUTO = 200, SLIDE_HANG_HIGH_UP = 1720, SLIDE_HANG_HIGH_DOWN = 1000;
+    public static int SLIDE_HANG_LOW_UP = 900, SLIDE_HANG_LOW_DOWN = 0;
 
     public static int ARM_INTAKE = 1050;
     public static int ARM_POST_INTAKE = 820;
@@ -67,7 +67,9 @@ public class SuperStructure {
     public static int ARM_INTAKE_SPECIMEN = -750;
     public static int ARM_RELEASE_BOX = -80;
     public static int ARM_RELEASE_CHAMBER = 180, ARM_RELEASE_CHAMBER_TELEOP = 30; // 30 for teleOp
-    public static int ARM_HANG = -80, ARM_HANG_AUTO = 180;
+    public static int ARM_HANG_HIGH = -80, ARM_HANG_AUTO = 180;
+    public static int ARM_HANG_LOW = -220;
+
     // WRIST
     public static double WRIST_INTAKE = 0.25, WRIST_INTAKE_PARALLEL_GROUND = 0.78;
     public static double WRIST_INTAKE_SPECIMEN = 0.95, WRIST_INTAKE_SPECIMEN_GROUND = 0.45;

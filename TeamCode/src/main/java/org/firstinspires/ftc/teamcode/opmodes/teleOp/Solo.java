@@ -72,12 +72,12 @@ public class Solo extends LinearOpMode {
             }
 
             if(toHang.toTrue()){
-                upper.setSlidePosition(SuperStructure.SLIDE_HANG_UP);
+                upper.setSlidePosition(SuperStructure.SLIDE_HANG_LOW_UP);
                 delay(500);
-                upper.setArmPosition(SuperStructure.ARM_HANG);
+                upper.setArmPosition(SuperStructure.ARM_HANG_LOW);
             }
             if(hang.toTrue()){
-                upper.setSlidePosition(SuperStructure.SLIDE_HANG_DOWN);
+                upper.setSlidePosition(SuperStructure.SLIDE_HANG_LOW_DOWN);
             }
 
             if(sequence == Sequence.RUN){
@@ -110,9 +110,6 @@ public class Solo extends LinearOpMode {
                     upper.setWristIntakeSpecimen();
                     upper.setSpinWristIntake_specimen();
                     upper.setArmPosition(SuperStructure.ARM_INTAKE_SPECIMEN);
-                    // TODO: Test this
-                    delay(500);
-                    upper.setClawOpen();
                     upper.setSlideState(SuperStructure.SlideState.VERTICAL);
                     intakeState = IntakeState.SPECIMEN;
                     sequence = Sequence.INTAKE_SPECIMEN;
@@ -211,7 +208,7 @@ public class Solo extends LinearOpMode {
             }
 
             if(sequence == Sequence.RELEASE_SPECIMEN){
-                if(toHighRelease_sample.toTrue()){
+                if(toReleaseHighChamber.toTrue()){
                     upper.setSlidePosition(SuperStructure.SLIDE_BOX_HIGH);
                 }
 
