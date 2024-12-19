@@ -52,7 +52,7 @@ public class SuperStructure {
 
     private TouchSensor armMag = null;
 
-    public static int SLIDE_BOX_HIGH = 1700, SLIDE_BOX_LOW = 1500;
+    public static int SLIDE_BOX_HIGH = 1650, SLIDE_BOX_LOW = 1500;
     public static int SLIDE_CHAMBER_HIGH = 760, SLIDE_CHAMBER_LOW = 0;
     public static int SLIDE_CHAMBER_HIGH_DOWN = 450;
     public static int SLIDE_CHAMBER_HIGH_TELEOP = 700;
@@ -61,7 +61,7 @@ public class SuperStructure {
     public static int SLIDE_HANG_AUTO = 200, SLIDE_HANG_HIGH_UP = 1720, SLIDE_HANG_HIGH_DOWN = 1000;
     public static int SLIDE_HANG_LOW_UP = 900, SLIDE_HANG_LOW_DOWN = 0;
 
-    public static int ARM_INTAKE = 1050;
+    public static int ARM_INTAKE = 1020;
     public static int ARM_POST_INTAKE = 820;
     // TODO: CHECK THIS VALUE
     public static int ARM_INTAKE_SPECIMEN = -750;
@@ -71,25 +71,25 @@ public class SuperStructure {
     public static int ARM_HANG_LOW = -220;
 
     // WRIST
-    public static double WRIST_INTAKE = 0.25, WRIST_INTAKE_PARALLEL_GROUND = 0.78;
-    public static double WRIST_INTAKE_SPECIMEN = 0.95, WRIST_INTAKE_SPECIMEN_GROUND = 0.45;
+    public static double WRIST_INTAKE = 0.2, WRIST_INTAKE_PARALLEL_GROUND = 0.5;
+    public static double WRIST_INTAKE_SPECIMEN = 0.7, WRIST_INTAKE_SPECIMEN_GROUND = 0.72;
 
     // TODO: Retest
-    public static double WRIST_RELEASE_BOX_HIGH = 0.95, WRIST_RELEASE_BOX_LOW = 0.28;
-    public static double WRIST_RELEASE_CHAMBER_HIGH = 0.25, WRIST_RELEASE_CHAMBER_LOW = 0.8;
+    public static double WRIST_RELEASE_BOX_HIGH = 0.7, WRIST_RELEASE_BOX_LOW = 0.28;
+    public static double WRIST_RELEASE_CHAMBER_HIGH = 0.2, WRIST_RELEASE_CHAMBER_LOW = 0.8;
 
     // Spin Wrist
-    public static double SPINWRIST_INTAKE = 0.25;
-    public static double SPINWRIST_INTAKE_CLOCKWISE = 0.05;
-    public static double SPINWRIST_INTAKE_COUNTERCLOCKWISE = 0.45;
+    public static double SPINWRIST_INTAKE = 0.605;
+    public static double SPINWRIST_INTAKE_CLOCKWISE = 0.5;
+    public static double SPINWRIST_INTAKE_COUNTERCLOCKWISE = 0.7;
     // TODO: CHANGE THE VALUE
-    public static double SPINWRIST_INTAKE_SPECIMEN = 0.96;
-    public static double SPINWRIST_RELEASE_SPECIMEN = 0.25;
+    public static double SPINWRIST_INTAKE_SPECIMEN = 0.605;
+    public static double SPINWRIST_RELEASE_SPECIMEN = 0.08;
     
     // Claw
     // TODO: TEST Value
-    public static double CLAW_OPEN = 0.75;
-    public static double CLAW_GRAB = 0.95;
+    public static double CLAW_OPEN = 0.65;
+    public static double CLAW_GRAB = 0.915;
     public ClawState clawState = GRAB;
     public SlideState slideState = SlideState.VERTICAL;
     public WristIntakeState wristIntakeState = WristIntakeState.PRE_INTAKE;
@@ -126,9 +126,9 @@ public class SuperStructure {
 
 //        armMag = hardwareMap.get(TouchSensor.class,"armMag");
 
-        mSlideLeft.setDirection(DcMotorSimple.Direction.REVERSE);
-        mArmLeft.setDirection(DcMotorSimple.Direction.REVERSE);
-        mArmRight.setDirection(DcMotorSimple.Direction.FORWARD);
+        mSlideRight.setDirection(DcMotorSimple.Direction.REVERSE);
+        mArmRight.setDirection(DcMotorSimple.Direction.REVERSE);
+        mArmLeft.setDirection(DcMotorSimple.Direction.FORWARD);
 
         mArmLeft.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
         mArmRight.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
