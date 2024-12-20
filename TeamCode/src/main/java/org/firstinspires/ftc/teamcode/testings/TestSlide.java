@@ -14,7 +14,7 @@ import org.firstinspires.ftc.teamcode.XCYBoolean;
 
 @TeleOp (group = "Testing")
 @Config
-public class SlideTest extends LinearOpMode {
+public class TestSlide extends LinearOpMode {
 
     private final Telemetry telemetry_M = new MultipleTelemetry(telemetry, FtcDashboard.getInstance().getTelemetry());
     private DcMotorEx mSlideLeft = null;

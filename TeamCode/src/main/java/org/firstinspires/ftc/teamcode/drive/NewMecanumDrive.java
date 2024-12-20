@@ -135,7 +135,7 @@ public class NewMecanumDrive extends MecanumDrive{
         // TODO: if desired, use setLocalizer() to change the localization method
         // TODO: Use this former initialization
         odo = hardwareMap.get(GoBildaPinpointDriver.class,"odo");
-        odo.setOffsets(-120,133);
+        odo.setOffsets(-132.5,133);
         odo.setEncoderResolution(GoBildaPinpointDriver.GoBildaOdometryPods.goBILDA_SWINGARM_POD);
         odo.setEncoderDirections(GoBildaPinpointDriver.EncoderDirection.REVERSED, GoBildaPinpointDriver.EncoderDirection.FORWARD);
 
@@ -301,6 +301,9 @@ public class NewMecanumDrive extends MecanumDrive{
     public void resetHeading(){
         yawHeading = odo.getHeading();
     }
+    public void setYawHeading(double heading){
+        yawHeading = heading;
+    }
 
     @NonNull
     @Override
@@ -363,7 +366,7 @@ public class NewMecanumDrive extends MecanumDrive{
     }
 
     public static PIDCoefficients translationPid_x = new PIDCoefficients(0.22, 0.000, 0.03);
-    public static PIDCoefficients translationPid_y = new PIDCoefficients(0.24, 0.000, 0.03);
+    public static PIDCoefficients translationPid_y = new PIDCoefficients(0.22, 0.000, 0.03);
     public static PIDCoefficients headingPid = new PIDCoefficients(2.1, 0, 0.13);
 
     private PIDFController transPID_x;

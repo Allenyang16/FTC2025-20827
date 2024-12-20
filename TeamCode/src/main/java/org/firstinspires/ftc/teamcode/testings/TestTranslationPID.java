@@ -8,6 +8,7 @@ import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
 import com.qualcomm.robotcore.eventloop.opmode.TeleOp;
 
 import org.firstinspires.ftc.robotcore.external.Telemetry;
+import org.firstinspires.ftc.teamcode.AutoMaster;
 import org.firstinspires.ftc.teamcode.XCYBoolean;
 import org.firstinspires.ftc.teamcode.drive.NewMecanumDrive;
 import org.firstinspires.ftc.teamcode.uppersystems.SuperStructure;
@@ -20,12 +21,15 @@ public class TestTranslationPID extends LinearOpMode {
     private final Telemetry telemetry_M = new MultipleTelemetry(telemetry, FtcDashboard.getInstance().getTelemetry());
 
     private Pose2d forwardPos = new Pose2d(48,-48,0);
-    public static double t_x = 6, t_y = 39, t_heading = 90;
+    public static double t_x = 0.5, t_y = 0.5, t_heading = 3;
+    public static double t1_x = AutoMaster.chamber_x, t1_y = AutoMaster.chamber_y, t1_heading = -90;
+    public static double t2_x = AutoMaster.intakeSpecimen_x, t2_y = AutoMaster.pre_intakeSpecimen_y, t2_heading = 90;
+    public static double t3_x = t2_x, t3_y = AutoMaster.intakeSpecimen_y;
     private Pose2d backPos = new Pose2d(-48,-48,0);
     private Pose2d rightPos = new Pose2d(48,-48,Math.toRadians(90));
     private Pose2d leftPos = new Pose2d(-48,-48, Math.toRadians(90));
 
-    private Pose2d targetPos = new Pose2d(0,-48,0);
+    private Pose2d targetPos = new Pose2d(9,-62,Math.toRadians(90));
     public static int correctTime = 0;
     @Override
     public void runOpMode() throws InterruptedException {
@@ -39,8 +43,12 @@ public class TestTranslationPID extends LinearOpMode {
         XCYBoolean turnClockwise = new XCYBoolean(()->gamepad1.right_bumper);
         XCYBoolean turnCounterClockwise = new XCYBoolean(()-> gamepad1.left_bumper);
 
-        forwardPos = new Pose2d(t_x,t_y,Math.toRadians(t_heading));
+        XCYBoolean toTargetPos1 = new XCYBoolean(()-> gamepad1.a);
 
+
+        Pose2d targetPos1 = new Pose2d(t1_x,t1_y,Math.toRadians(t1_heading));
+        Pose2d targetPos2 = new Pose2d(t2_x,t2_y,Math.toRadians(t1_heading));
+        Pose2d targetPos3 = new Pose2d(t3_x,t3_y,Math.toRadians(t1_heading));
 
         Runnable update = ()->{
             drive.update();
@@ -53,11 +61,12 @@ public class TestTranslationPID extends LinearOpMode {
         superstructure.setUpdateRunnable(update);
         superstructure.initialize();
 
-        drive.setPoseEstimate(new Pose2d(39,-62,Math.toRadians(90)));
+        drive.setPoseEstimate(new Pose2d(-9,62,Math.toRadians(-90)));
         drive.update();
         waitForStart();
 
         while (opModeIsActive()) {
+            drive.setSimpleMoveTolerance(t_x,t_y,Math.toRadians(t_heading));
             Pose2d currentPos = drive.getPoseEstimate();
             if(moveForward.toTrue()){
                 targetPos = forwardPos;
@@ -74,6 +83,19 @@ public class TestTranslationPID extends LinearOpMode {
             if(strafeLeft.toTrue()){
                 targetPos = leftPos;
                 drive.moveTo(leftPos, correctTime);
+            }
+
+            if(toTargetPos1.toTrue()){
+                targetPos = targetPos1;
+                drive.moveTo(targetPos1,correctTime);
+            }
+            if(gamepad1.b){
+                targetPos = targetPos2;
+                drive.moveTo(targetPos2,correctTime);
+            }
+            if(gamepad1.y){
+                targetPos = targetPos3;
+                drive.moveTo(targetPos3,correctTime);
             }
 
 

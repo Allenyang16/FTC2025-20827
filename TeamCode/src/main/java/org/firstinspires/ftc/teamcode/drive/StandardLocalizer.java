@@ -30,7 +30,7 @@ import org.firstinspires.ftc.teamcode.util.GeomUtil;
  */
 @Config
 public class StandardLocalizer implements Localizer {
-    public double xOffset = -120, yOffset = 133;
+    public double xOffset = -132, yOffset = 133;
     private Pose2d poseEstimate = new Pose2d(0, 0, 0);
     private Pose2d poseVelocity = new Pose2d(0, 0, 0);
 

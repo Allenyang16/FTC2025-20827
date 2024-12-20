@@ -303,7 +303,7 @@ public class SampleMecanumDrive extends MecanumDrive {
     @Override
     public double getRawExternalHeading() {
         // return imu.getRobotYawPitchRollAngles().getYaw(AngleUnit.RADIANS);
-        return ((GobildaPinpointLocalizer)getLocalizer()).getHeading();
+        return getLocalizer().getPoseEstimate().getHeading();
     }
 
     @Override

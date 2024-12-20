@@ -15,7 +15,7 @@ import java.util.Locale;
 public class Solo extends LinearOpMode {
     Runnable update;
     enum Sequence{
-        RUN, INTAKE_SAMPLE, INTAKE_SPECIMEN, RELEASE_SAMPLE,RELEASE_SPECIMEN
+        RUN, INTAKE_SAMPLE, INTAKE_SPECIMEN, RELEASE_SAMPLE,RELEASE_SPECIMEN, INTAKE_SPECIMEN_GROUND
     }
     enum IntakeState{
         FAR, NEAR, POST, SPECIMEN
@@ -51,9 +51,10 @@ public class Solo extends LinearOpMode {
         XCYBoolean toIntakeSpecimen = new XCYBoolean(()->gamepad1.b);
 
         XCYBoolean toHighRelease_sample = new XCYBoolean(()-> intakeState == IntakeState.POST && (gamepad1.dpad_up || gamepad1.left_trigger > 0));
-        XCYBoolean downWrist = new XCYBoolean(()-> gamepad1.left_bumper);
-        XCYBoolean spinWristClockwise = new XCYBoolean(()-> gamepad1.right_trigger > 0);
-        XCYBoolean spinWristCounterClockwise = new XCYBoolean(()-> gamepad1.left_trigger > 0);
+        XCYBoolean downWrist = new XCYBoolean(()-> sequence == Sequence.INTAKE_SAMPLE && gamepad1.left_bumper);
+        XCYBoolean spinWristClockwise = new XCYBoolean(()-> sequence == Sequence.INTAKE_SAMPLE && gamepad1.right_trigger > 0);
+        XCYBoolean spinWristCounterClockwise = new XCYBoolean(()-> sequence == Sequence.INTAKE_SAMPLE && gamepad1.left_trigger > 0);
+        XCYBoolean intakeSpecimen_ground = new XCYBoolean(()->sequence == Sequence.RUN && gamepad1.right_trigger>0);
         XCYBoolean toReleaseHighChamber = new XCYBoolean(()-> intakeState == IntakeState.SPECIMEN && gamepad1.dpad_up);
         XCYBoolean toPullDownSpecimen = new XCYBoolean(()-> intakeState == IntakeState.SPECIMEN && gamepad1.dpad_down);
 
@@ -72,12 +73,16 @@ public class Solo extends LinearOpMode {
             }
 
             if(toHang.toTrue()){
-                upper.setSlidePosition(SuperStructure.SLIDE_HANG_LOW_UP);
+                upper.setArmPosition(-200);
+                upper.hang_setSlide(SuperStructure.SLIDE_HANG_LOW_UP);
+
                 delay(500);
                 upper.setArmPosition(SuperStructure.ARM_HANG_LOW);
             }
             if(hang.toTrue()){
                 upper.setSlidePosition(SuperStructure.SLIDE_HANG_LOW_DOWN);
+                delay(1500);
+                upper.setArmPosition(0);
             }
 
             if(sequence == Sequence.RUN){
@@ -114,6 +119,14 @@ public class Solo extends LinearOpMode {
                     intakeState = IntakeState.SPECIMEN;
                     sequence = Sequence.INTAKE_SPECIMEN;
                 }
+                if(intakeSpecimen_ground.toTrue()){
+                    upper.setArmPosition(SuperStructure.ARM_INTAKE);
+                    delay(300);
+                    upper.setSlidePosition(SuperStructure.SLIDE_INTAKE_MAX);
+                    upper.setWristIntakeSpecimenGround();
+                    sequence = Sequence.INTAKE_SPECIMEN_GROUND;
+                    intakeState = IntakeState.SPECIMEN;
+                }
 
                 if(toHighRelease_sample.toTrue()){
                     upper.setArmPosition(SuperStructure.ARM_RELEASE_BOX);
@@ -123,6 +136,7 @@ public class Solo extends LinearOpMode {
                     upper.setSpinWristReleaseBox();
                     sequence = Sequence.RELEASE_SAMPLE;
                 }
+
 
                 if(grab.toTrue()){
                     upper.switchClawState();
@@ -179,6 +193,7 @@ public class Solo extends LinearOpMode {
                 }
 
                 if(toReleaseHighChamber.toTrue()){
+                    upper.setSlideState(SuperStructure.SlideState.VERTICAL);
                     upper.setWristReleaseChamber();
                     upper.setArmPosition(SuperStructure.ARM_RELEASE_CHAMBER_TELEOP);
                     delay(300);
@@ -188,6 +203,31 @@ public class Solo extends LinearOpMode {
                 }
                 if(toOrigin.toTrue()){
                     upper.setArmPosition(0);
+                    upper.setWristReleaseChamber();
+                    upper.setSlideState(SuperStructure.SlideState.VERTICAL);
+                    sequence = Sequence.RUN;
+                }
+            }
+            if(sequence == Sequence.INTAKE_SPECIMEN_GROUND){
+                if(grab.toTrue()){
+                    upper.switchClawState();
+                }
+
+                if(toReleaseHighChamber.toTrue()){
+                    upper.setWristPreIntake();
+                    upper.setSlidePosition(0);
+                    delay(200);
+                    upper.setArmPosition(0);
+                    delay(500);
+                    upper.setWristReleaseChamber();
+                    upper.setArmPosition(SuperStructure.ARM_RELEASE_CHAMBER_TELEOP);
+                    delay(300);
+                    upper.setSlidePosition(SuperStructure.SLIDE_CHAMBER_HIGH_TELEOP);
+                    sequence = Sequence.RELEASE_SPECIMEN;
+                }
+                if(toOrigin.toTrue()){
+                    upper.setArmPosition(0);
+                    upper.setSlidePosition(0);
                     upper.setWristReleaseChamber();
                     upper.setSlideState(SuperStructure.SlideState.VERTICAL);
                     sequence = Sequence.RUN;
@@ -209,11 +249,14 @@ public class Solo extends LinearOpMode {
 
             if(sequence == Sequence.RELEASE_SPECIMEN){
                 if(toReleaseHighChamber.toTrue()){
-                    upper.setSlidePosition(SuperStructure.SLIDE_BOX_HIGH);
+                    upper.setSlidePosition(SuperStructure.SLIDE_CHAMBER_HIGH_TELEOP);
+                    delay(200);
+                    upper.setArmPosition(SuperStructure.ARM_RELEASE_CHAMBER_TELEOP);
                 }
 
                 if(toPullDownSpecimen.toTrue()){
                     upper.setSlidePosition(SuperStructure.SLIDE_CHAMBER_HIGH_DOWN_TELEOP);
+
                 }
 
                 if(grab.toTrue()){

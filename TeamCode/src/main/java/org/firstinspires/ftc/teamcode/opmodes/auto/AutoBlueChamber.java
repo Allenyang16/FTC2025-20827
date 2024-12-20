@@ -22,13 +22,13 @@ public class AutoBlueChamber extends AutoMaster {
             releaseSpecimen(1);
             dropSpecimen_toOrigin();
 
-            intakeSample_1();
+            intakeSample(1);
             dropSampleToHP();
             intakeSpecimen();
             releaseSpecimen(2);
             dropSpecimen_toOrigin();
 
-            intakeSample_2();
+            intakeSample(2);
             dropSampleToHP();
             intakeSpecimen();
             releaseSpecimen(1);

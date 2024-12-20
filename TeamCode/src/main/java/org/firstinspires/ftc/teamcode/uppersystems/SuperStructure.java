@@ -37,12 +37,12 @@ public class SuperStructure {
 
     public static PIDCoefficients slideLeftPidConf_Horizontal = new PIDCoefficients(0.0018, 0.00, 0.00);
     private final PIDFController slideLeftPidCtrl_Horizontal;
-    public static PIDCoefficients slideLeftPidConf_Vertical = new PIDCoefficients(0.00578, 0.0001, 0.00);
+    public static PIDCoefficients slideLeftPidConf_Vertical = new PIDCoefficients(0.0085, 0.0001, 0.00);
     private final PIDFController slideLeftPidCtrl_Vertical;
 
     public static PIDCoefficients slideRightPidConf_Horizontal = new PIDCoefficients(0.0018, 0.00, 0.00);
     private final PIDFController slideRightPidCtrl_Horizontal;
-    public static PIDCoefficients slideRightPidConf_Vertical = new PIDCoefficients(0.00578, 0.0001, 0.00);
+    public static PIDCoefficients slideRightPidConf_Vertical = new PIDCoefficients(0.0075, 0.0001, 0.00);
     private final PIDFController slideRightPidCtrl_Vertical;
     private List<PIDFController> slidePidCtrl;
 
@@ -52,27 +52,27 @@ public class SuperStructure {
 
     private TouchSensor armMag = null;
 
-    public static int SLIDE_BOX_HIGH = 1650, SLIDE_BOX_LOW = 1500;
+    public static int SLIDE_BOX_HIGH = 1650, SLIDE_BOX_LOW = 500;
     public static int SLIDE_CHAMBER_HIGH = 760, SLIDE_CHAMBER_LOW = 0;
     public static int SLIDE_CHAMBER_HIGH_DOWN = 450;
     public static int SLIDE_CHAMBER_HIGH_TELEOP = 700;
     public static int SLIDE_CHAMBER_HIGH_DOWN_TELEOP = 400;
     public static int SLIDE_INTAKE_MAX = 700, SLIDE_MIN = 0;
     public static int SLIDE_HANG_AUTO = 200, SLIDE_HANG_HIGH_UP = 1720, SLIDE_HANG_HIGH_DOWN = 1000;
-    public static int SLIDE_HANG_LOW_UP = 900, SLIDE_HANG_LOW_DOWN = 0;
+    public static int SLIDE_HANG_LOW_UP = 920, SLIDE_HANG_LOW_DOWN = -70;
 
     public static int ARM_INTAKE = 1020;
-    public static int ARM_POST_INTAKE = 820;
+    public static int ARM_POST_INTAKE = 920;
     // TODO: CHECK THIS VALUE
-    public static int ARM_INTAKE_SPECIMEN = -750;
+    public static int ARM_INTAKE_SPECIMEN = -680;
     public static int ARM_RELEASE_BOX = -80;
-    public static int ARM_RELEASE_CHAMBER = 180, ARM_RELEASE_CHAMBER_TELEOP = 30; // 30 for teleOp
+    public static int ARM_RELEASE_CHAMBER = 160, ARM_RELEASE_CHAMBER_TELEOP = 50; // 30 for teleOp
     public static int ARM_HANG_HIGH = -80, ARM_HANG_AUTO = 180;
-    public static int ARM_HANG_LOW = -220;
+    public static int ARM_HANG_LOW = -331;
 
     // WRIST
     public static double WRIST_INTAKE = 0.2, WRIST_INTAKE_PARALLEL_GROUND = 0.5;
-    public static double WRIST_INTAKE_SPECIMEN = 0.7, WRIST_INTAKE_SPECIMEN_GROUND = 0.72;
+    public static double WRIST_INTAKE_SPECIMEN = 0.65, WRIST_INTAKE_SPECIMEN_GROUND = 0.3;
 
     // TODO: Retest
     public static double WRIST_RELEASE_BOX_HIGH = 0.7, WRIST_RELEASE_BOX_LOW = 0.28;
@@ -80,8 +80,8 @@ public class SuperStructure {
 
     // Spin Wrist
     public static double SPINWRIST_INTAKE = 0.605;
-    public static double SPINWRIST_INTAKE_CLOCKWISE = 0.5;
-    public static double SPINWRIST_INTAKE_COUNTERCLOCKWISE = 0.7;
+    public static double SPINWRIST_INTAKE_CLOCKWISE = 0.7;
+    public static double SPINWRIST_INTAKE_COUNTERCLOCKWISE = 0.5;
     // TODO: CHANGE THE VALUE
     public static double SPINWRIST_INTAKE_SPECIMEN = 0.605;
     public static double SPINWRIST_RELEASE_SPECIMEN = 0.08;
@@ -169,6 +169,9 @@ public class SuperStructure {
         } else if (slideState == SlideState.VERTICAL) {
             mSlideRight.setPower(slideRightPidCtrl_Vertical.update(mSlideRight.getCurrentPosition()));
             mSlideLeft.setPower(slideLeftPidCtrl_Vertical.update(mSlideLeft.getCurrentPosition()));
+        }else{
+            mSlideRight.setPower(slideRightPidCtrl_Vertical.update(mSlideRight.getCurrentPosition()));
+            mSlideLeft.setPower(slideLeftPidCtrl_Vertical.update(mSlideLeft.getCurrentPosition()));
         }
         mSlideRight.setMode(DcMotor.RunMode.RUN_WITHOUT_ENCODER);
         mSlideLeft.setMode(DcMotor.RunMode.RUN_WITHOUT_ENCODER);
@@ -176,7 +179,7 @@ public class SuperStructure {
         packet.put("Slide State", slideState.toString());
         packet.put("Wrist state", wristIntakeState.toString());
         packet.put("rightSlide_encoder: ", getSlideRightPosition());
-        packet.put("leftSlide_encoder: ", getSlideRightPosition());
+        packet.put("leftSlide_encoder: ", getSlideLeftPosition());
         packet.put("leftSlide_power:", getSlideLeftPower());
         packet.put("rightSlide_power", getSlideRightPower());
         packet.put("slideTargetPos:", getSlideTargetPosition());
@@ -184,6 +187,12 @@ public class SuperStructure {
         packet.put("rightArm_pos: ", getArmRightPosition());
         packet.put("leftArm_pos: ",getArmLeftPosition());
         FtcDashboard.getInstance().sendTelemetryPacket(packet);
+    }
+
+    // Hang
+    public void hang_setSlide(int pos){
+        slideState = SlideState.HANG;
+        setSlidePosition(pos);
     }
 
     // Claw
@@ -307,7 +316,7 @@ public class SuperStructure {
     }
     public double translation_coefficient(){
         if(wristIntakeState == WristIntakeState.INTAKE){
-            return 0.3;
+            return 0.4;
         } else if (wristIntakeState == WristIntakeState.PRE_INTAKE) {
             return 1.0;
         } else if (wristIntakeState == WristIntakeState.INTAKE_SPECIMEN) {
@@ -329,7 +338,7 @@ public class SuperStructure {
         if(wristIntakeState == WristIntakeState.INTAKE){
             return 0.35;
         } else if (wristIntakeState == WristIntakeState.PRE_INTAKE) {
-            return 0.78;
+            return 0.8;
         } else if (wristIntakeState == WristIntakeState.INTAKE_SPECIMEN) {
             return 0.3;
         } else if (wristIntakeState == WristIntakeState.RELEASE_SAMPLE) {
@@ -339,7 +348,7 @@ public class SuperStructure {
                 return 0.3;
             }
         } else if (wristIntakeState == WristIntakeState.RELEASE_SPECIMEN) {
-            return 0.5;
+            return 0.6;
         } else{
             return 1.0;
         }
@@ -406,13 +415,18 @@ public class SuperStructure {
         slideRightPidCtrl_Horizontal.setTargetPosition(slideTargetPosition);
         slideRightPidCtrl_Vertical.setTargetPosition(slideTargetPosition);
 
-        if(slideTargetPosition < getSlidePosition() && getSlidePosition() < 200){
-            setSlideOutputBounds(0.4);
-        } else if (slideTargetPosition < getSlidePosition() && getSlidePosition() < 800) {
-            setSlideOutputBounds(0.9);
-        } else{
+        if(slideState == SlideState.VERTICAL){
+            if(slideTargetPosition < getSlidePosition() && getSlidePosition() < 200){
+                setSlideOutputBounds(0.2);
+            } else if (slideTargetPosition < getSlidePosition() && getSlidePosition() < 800) {
+                setSlideOutputBounds(0.9);
+            } else{
+                setSlideOutputBounds(1);
+            }
+        }else{
             setSlideOutputBounds(1);
         }
+
     }
     public void setSlidePower(double power){
         mSlideRight.setPower(power);
@@ -421,11 +435,11 @@ public class SuperStructure {
 
     public void resetSlide(){
         mSlideRight.setMode(DcMotor.RunMode.RUN_WITHOUT_ENCODER);
-        mSlideRight.setPower(-0.3);
+        mSlideRight.setPower(-0.5);
         mSlideLeft.setMode(DcMotor.RunMode.RUN_WITHOUT_ENCODER);
-        mSlideLeft.setPower(-0.3);
+        mSlideLeft.setPower(-0.5);
 
-        delay(200);
+        delay(500);
 
         mSlideRight.setPower(0);
         mSlideRight.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
@@ -438,7 +452,9 @@ public class SuperStructure {
 
     public enum SlideState{
         HORIZONTAL(slideLeftPidConf_Horizontal),
-        VERTICAL(slideLeftPidConf_Vertical);
+        VERTICAL(slideLeftPidConf_Vertical),
+        HANG(slideLeftPidConf_Vertical);
+
 
         private final PIDCoefficients pidCoefficients;
         SlideState(PIDCoefficients pidCoefficients) {
@@ -452,6 +468,8 @@ public class SuperStructure {
                     return "HORIZONTAL";
                 case VERTICAL:
                     return "VERTICAL";
+                case HANG:
+                    return "HANG";
                 default:
                     return "noo";
             }
@@ -487,7 +505,6 @@ public class SuperStructure {
         return mArmLeft.getCurrentPosition();
     }
     public int getArmRightPosition(){
-        // TODO: test validity
         return mArmRight.getCurrentPosition();
     }
     public int getArmPosition(){
