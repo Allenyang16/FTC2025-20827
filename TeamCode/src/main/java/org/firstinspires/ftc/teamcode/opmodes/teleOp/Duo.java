@@ -39,8 +39,6 @@ public class Duo extends LinearOpMode {
         drive.setUpdateRunnable(update);
         upper.setUpdateRunnable(update);
 
-
-
         XCYBoolean resetHeading = new XCYBoolean(()-> gamepad1.a);
         XCYBoolean toOrigin = new XCYBoolean(()-> (intakeState == IntakeState.POST || intakeState == IntakeState.SPECIMEN) && gamepad1.left_stick_button);
         XCYBoolean toPostIntake = new XCYBoolean(()-> (intakeState != IntakeState.SPECIMEN) && gamepad1.right_stick_button);
@@ -87,12 +85,14 @@ public class Duo extends LinearOpMode {
                 upper.setArmPosition(0);
             }
 
-            if(resetSlide.toTrue()){
-                upper.setSlidePosition(-30);
-                upper.resetSlide();
-            }
-
             if(sequence == Sequence.RUN){
+                if(resetSlide.toTrue()){
+                    upper.setSlidePosition(-50);
+                    delay(300);
+                    upper.resetSlide();
+                    upper.setSlidePosition(0);
+                }
+
                 if(intakeFar.toTrue()){
                     upper.setArmPosition(SuperStructure.ARM_INTAKE);
                     upper.setWristPreIntake();
@@ -122,6 +122,7 @@ public class Duo extends LinearOpMode {
                     delay(300);
                     upper.setSlidePosition(SuperStructure.SLIDE_INTAKE_MAX);
                     upper.setWristIntake();
+                    upper.setClawOpen();
                     upper.setSlideState(SuperStructure.SlideState.HORIZONTAL);
                     intakeState = IntakeState.SPECIMEN;
                     sequence = Sequence.INTAKE_SPECIMEN;
@@ -210,15 +211,13 @@ public class Duo extends LinearOpMode {
                 }
 
                 if(toReleaseHighChamber.toTrue()){
-                    upper.setWristPreIntake();
+                    upper.setSlideState(SuperStructure.SlideState.VERTICAL);
                     upper.setSlidePosition(0);
                     delay(200);
                     upper.setArmPosition(0);
-                    delay(200);
+                    delay(300);
                     upper.setWristReleaseChamber();
                     upper.setArmPosition(SuperStructure.ARM_RELEASE_CHAMBER_TELEOP);
-                    upper.setSlideState(SuperStructure.SlideState.VERTICAL);
-                    delay(300);
                     upper.setSlidePosition(SuperStructure.SLIDE_CHAMBER_HIGH_TELEOP);
                     sequence = Sequence.RELEASE_SPECIMEN;
                 }
@@ -261,6 +260,7 @@ public class Duo extends LinearOpMode {
                     intakeState = IntakeState.NEAR;
                     upper.setSlidePosition(SuperStructure.SLIDE_MIN);
                     upper.setWristPreIntake();
+                    upper.setSpinWristIntake();
                 }
             }
 

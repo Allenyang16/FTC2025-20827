@@ -138,6 +138,7 @@ public class NewMecanumDrive extends MecanumDrive{
         odo.setOffsets(-132.5,133);
         odo.setEncoderResolution(GoBildaPinpointDriver.GoBildaOdometryPods.goBILDA_SWINGARM_POD);
         odo.setEncoderDirections(GoBildaPinpointDriver.EncoderDirection.REVERSED, GoBildaPinpointDriver.EncoderDirection.FORWARD);
+        odo.recalibrateIMU();
 
         setLocalizer(new StandardLocalizer(hardwareMap));
 

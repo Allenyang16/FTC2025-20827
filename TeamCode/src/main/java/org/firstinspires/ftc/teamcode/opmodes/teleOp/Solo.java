@@ -250,8 +250,6 @@ public class Solo extends LinearOpMode {
             if(sequence == Sequence.RELEASE_SPECIMEN){
                 if(toReleaseHighChamber.toTrue()){
                     upper.setSlidePosition(SuperStructure.SLIDE_CHAMBER_HIGH_TELEOP);
-                    delay(200);
-                    upper.setArmPosition(SuperStructure.ARM_RELEASE_CHAMBER_TELEOP);
                 }
 
                 if(toPullDownSpecimen.toTrue()){

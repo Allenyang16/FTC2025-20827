@@ -17,16 +17,20 @@ public class AutoRedChamber_pushSample extends AutoMaster {
         }
 
         if(opModeIsActive()){
+            moveToPreChamber(1);
             releaseSpecimen(1);
             pushSample();
 
             intakeSpecimen();
+            moveToPreChamber(2);
             releaseSpecimen(2);
 
             dropSpecimen_toIntakeSpecimen();
+            moveToPreChamber(3);
             releaseSpecimen(3);
 
             dropSpecimen_toIntakeSpecimen();
+            moveToPreChamber(4);
             releaseSpecimen(4);
 
             park_observation();
