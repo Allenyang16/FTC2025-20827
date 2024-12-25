@@ -17,6 +17,7 @@ public class SplineTest extends LinearOpMode {
     public void runOpMode() throws InterruptedException {
         SampleMecanumDrive drive = new SampleMecanumDrive(hardwareMap);
 
+        drive.setPoseEstimate(new Pose2d(0,0,0));
         waitForStart();
 
         if (isStopRequested()) return;
