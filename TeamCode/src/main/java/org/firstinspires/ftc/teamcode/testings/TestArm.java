@@ -25,7 +25,6 @@ public class TestArm extends LinearOpMode {
     public static boolean read_only = true;
     public static boolean reverse_left = true;
     public static boolean reverse_right = false;
-
     public static boolean set_power_mode_or_set_position_mode = false;
 
     public static boolean reset = true;
