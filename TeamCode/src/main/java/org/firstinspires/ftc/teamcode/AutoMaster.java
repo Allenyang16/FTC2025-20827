@@ -2,6 +2,7 @@ package org.firstinspires.ftc.teamcode;
 
 import com.acmerobotics.dashboard.config.Config;
 import com.acmerobotics.roadrunner.geometry.Pose2d;
+import com.acmerobotics.roadrunner.trajectory.Trajectory;
 import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
 import com.qualcomm.robotcore.hardware.DcMotor;
 
@@ -409,6 +410,14 @@ public abstract class AutoMaster extends LinearOpMode {
         upper.setArmPosition(0);
         upper.setSlidePosition(SuperStructure.SLIDE_MIN);
         drive.moveTo(park_chamber,500);
+    }
+    public void park(){
+        upper.setArmPosition(0);
+        upper.setSlidePosition(SuperStructure.SLIDE_MIN);
+        Trajectory parkObservation = drive.trajectoryBuilder(chamberPos)
+                .lineToLinearHeading(park_chamber)
+                .build();
+        drive.followTrajectory(parkObservation);
     }
 
     public void pushSample(){
