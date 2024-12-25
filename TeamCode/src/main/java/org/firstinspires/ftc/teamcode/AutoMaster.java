@@ -2,11 +2,13 @@ package org.firstinspires.ftc.teamcode;
 
 import com.acmerobotics.dashboard.config.Config;
 import com.acmerobotics.roadrunner.geometry.Pose2d;
+import com.acmerobotics.roadrunner.geometry.Vector2d;
 import com.acmerobotics.roadrunner.trajectory.Trajectory;
 import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
 import com.qualcomm.robotcore.hardware.DcMotor;
 
 import org.firstinspires.ftc.teamcode.drive.NewMecanumDrive;
+import org.firstinspires.ftc.teamcode.trajectorysequence.TrajectorySequence;
 import org.firstinspires.ftc.teamcode.uppersystems.SuperStructure;
 
 @Config
@@ -419,6 +421,16 @@ public abstract class AutoMaster extends LinearOpMode {
                 .build();
         drive.followTrajectory(parkObservation);
     }
+    // TODO: only test for red now
+    public void moveToPush(){
+        TrajectorySequence moveToPush1 = drive.trajectorySequenceBuilder(new Pose2d(6.00, -35.60, Math.toRadians(90.00)))
+                .splineTo(new Vector2d(16.06, -38.23), Math.toRadians(-9.20))
+                .splineTo(new Vector2d(27.81, -35.26), Math.toRadians(10.00))
+                .splineTo(new Vector2d(37.41, -20.86), Math.toRadians(82.36))
+                .splineTo(new Vector2d(47.17, -8.94), Math.toRadians(90.00))
+                .build();
+        drive.followTrajectorySequence(moveToPush1);
+    }
 
     public void pushSample(){
         drive.setSimpleMovePower(0.9);
@@ -426,8 +438,10 @@ public abstract class AutoMaster extends LinearOpMode {
         upper.setSlidePosition(SuperStructure.SLIDE_MIN);
         upper.setArmPosition(0);
         // Move to the first pre push pos
-        drive.moveTo(postChamberPos,0);
-        drive.moveTo(pushSamplePos_midpoint,0);
+//        drive.moveTo(postChamberPos,0);
+//        drive.moveTo(pushSamplePos_midpoint,0);
+        // TODO: Need testing
+        moveToPush();
 
         drive.moveTo(pushSamplePos_1,0);
         drive.moveTo(pushSamplePos_1.plus(pushSamplePos_delta),0);
