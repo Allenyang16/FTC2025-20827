@@ -11,8 +11,8 @@ import org.firstinspires.ftc.teamcode.uppersystems.SuperStructure;
 
 import java.util.Locale;
 
-@TeleOp (name = "TeleOp_Solo")
-public class Solo extends LinearOpMode {
+@TeleOp (name = "TeleOp_Solo_ArmSpin")
+public class Solo_ArmSpin extends LinearOpMode {
     Runnable update;
     enum Sequence{
         RUN, INTAKE_SAMPLE, INTAKE_SPECIMEN, RELEASE_SAMPLE,RELEASE_SPECIMEN
@@ -98,7 +98,6 @@ public class Solo extends LinearOpMode {
                     upper.setWristPreIntake();
                     upper.setSpinWristIntake();
                     upper.setSlideState(SuperStructure.SlideState.HORIZONTAL);
-                    upper.setClawOpen();
                     delay(200);
                     upper.setSlidePosition(SuperStructure.SLIDE_INTAKE_MAX);
                     intakeState = IntakeState.FAR;
@@ -110,18 +109,16 @@ public class Solo extends LinearOpMode {
                     upper.setSpinWristIntake();
                     upper.setWristPreIntake();
                     upper.setSlideState(SuperStructure.SlideState.HORIZONTAL);
-
                     upper.setArmPosition(SuperStructure.ARM_INTAKE);
-                    upper.setClawOpen();
                     intakeState = IntakeState.NEAR;
                     sequence = Sequence.INTAKE_SAMPLE;
                 }
 
                 if(toIntakeSpecimen.toTrue()){
-                    upper.setArmPosition(SuperStructure.ARM_INTAKE);
-                    delay(300);
-                    upper.setSlidePosition(SuperStructure.SLIDE_INTAKE_MAX);
-                    upper.setWristIntake();
+                    upper.setSlidePosition(SuperStructure.SLIDE_MIN);
+                    delay(100);
+                    upper.setArmPosition(SuperStructure.ARM_INTAKE_SPECIMEN);
+                    upper.setWristIntakeSpecimen();
                     upper.setClawOpen();
                     upper.setSlideState(SuperStructure.SlideState.HORIZONTAL);
                     intakeState = IntakeState.SPECIMEN;
