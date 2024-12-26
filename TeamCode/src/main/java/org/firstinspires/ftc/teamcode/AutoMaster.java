@@ -425,9 +425,7 @@ public abstract class AutoMaster extends LinearOpMode {
     public void moveToPush(){
         TrajectorySequence moveToPush1 = drive.trajectorySequenceBuilder(new Pose2d(6.00, -35.60, Math.toRadians(90.00)))
                 .splineTo(new Vector2d(16.06, -38.23), Math.toRadians(-9.20))
-                .splineTo(new Vector2d(27.81, -35.26), Math.toRadians(10.00))
-                .splineTo(new Vector2d(37.41, -20.86), Math.toRadians(82.36))
-                .splineTo(new Vector2d(47.17, -8.94), Math.toRadians(90.00))
+                .splineTo(new Vector2d(37.41, -20.86), Math.toRadians(90.0))
                 .build();
         drive.followTrajectorySequence(moveToPush1);
     }
