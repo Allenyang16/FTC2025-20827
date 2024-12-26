@@ -160,7 +160,6 @@ public class Duo extends LinearOpMode {
                     upper.setSlidePosition(SuperStructure.SLIDE_INTAKE_MAX);
                     upper.setWristPreIntake();
                     upper.setSpinWristIntake();
-                    upper.setClawOpen();
                     intakeState = IntakeState.FAR;
                 }
                 if(intakeNear.toTrue()){
