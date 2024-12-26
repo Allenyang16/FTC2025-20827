@@ -58,8 +58,9 @@ public class SuperStructure {
     public static int SLIDE_CHAMBER_HIGH_TELEOP = 700;
     public static int SLIDE_CHAMBER_HIGH_DOWN_TELEOP = 380;
     public static int SLIDE_INTAKE_MAX = 700, SLIDE_MIN = 0;
-    public static int SLIDE_HANG_AUTO = 200, SLIDE_HANG_HIGH_UP = 1720, SLIDE_HANG_HIGH_DOWN = 1000;
+    public static int SLIDE_HANG_AUTO = 200, SLIDE_HANG_HIGH_UP = 1200, SLIDE_HANG_HIGH_DOWN = -70;
     public static int SLIDE_HANG_LOW_UP = 920, SLIDE_HANG_LOW_DOWN = -70;
+
 
     public static int ARM_INTAKE = 1020;
     public static int ARM_POST_INTAKE = 920;
@@ -67,8 +68,10 @@ public class SuperStructure {
     public static int ARM_INTAKE_SPECIMEN = -680;
     public static int ARM_RELEASE_BOX = -80;
     public static int ARM_RELEASE_CHAMBER = 160, ARM_RELEASE_CHAMBER_TELEOP = 80; // 80 for teleOp
-    public static int ARM_HANG_HIGH = -80, ARM_HANG_AUTO = 220;
+    public static int ARM_HANG_HIGH = -200, ARM_HANG_AUTO = 220;
     public static int ARM_HANG_LOW = -331;
+
+    public static int HANG_DELAY = 1000;
 
     // WRIST
     public static double WRIST_INTAKE = 0.2, WRIST_INTAKE_PARALLEL_GROUND = 0.5;

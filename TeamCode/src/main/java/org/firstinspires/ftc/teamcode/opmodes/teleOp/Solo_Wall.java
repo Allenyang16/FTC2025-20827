@@ -12,7 +12,7 @@ import org.firstinspires.ftc.teamcode.uppersystems.SuperStructure;
 import java.util.Locale;
 
 @TeleOp (name = "TeleOp_Solo_ArmSpin")
-public class Solo_ArmSpin extends LinearOpMode {
+public class Solo_Wall extends LinearOpMode {
     Runnable update;
     enum Sequence{
         RUN, INTAKE_SAMPLE, INTAKE_SPECIMEN, RELEASE_SAMPLE,RELEASE_SPECIMEN

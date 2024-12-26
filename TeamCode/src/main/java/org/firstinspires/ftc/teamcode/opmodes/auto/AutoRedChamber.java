@@ -22,7 +22,7 @@ public class AutoRedChamber extends AutoMaster {
             releaseSpecimen(1);
             dropSpecimen_toOrigin();
 
-            intakeRedSample();
+            intake_release_RedSample();
             releaseRedSample(1);
 
             intakeSpecimen_ground();

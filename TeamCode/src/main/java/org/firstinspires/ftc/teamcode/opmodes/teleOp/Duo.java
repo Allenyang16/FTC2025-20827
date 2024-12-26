@@ -44,6 +44,8 @@ public class Duo extends LinearOpMode {
         XCYBoolean toPostIntake = new XCYBoolean(()-> (intakeState != IntakeState.SPECIMEN) && gamepad1.right_stick_button);
         XCYBoolean toHang = new XCYBoolean(()->gamepad1.dpad_left);
         XCYBoolean hang = new XCYBoolean(()->gamepad1.dpad_right);
+        XCYBoolean toHangHigher = new XCYBoolean(()->gamepad2.dpad_left);
+        XCYBoolean hangHigher= new XCYBoolean(()->gamepad2.dpad_right);
 
         XCYBoolean intakeFar = new XCYBoolean(()-> gamepad2.y);
         XCYBoolean intakeNear = new XCYBoolean(()-> gamepad2.a);
@@ -84,6 +86,20 @@ public class Duo extends LinearOpMode {
                 delay(1800);
                 upper.setArmPosition(0);
             }
+
+            if(toHangHigher.toTrue()) {
+                upper.setArmPosition(-20);
+                upper.hang_setSlide(SuperStructure.SLIDE_HANG_HIGH_UP);
+                upper.setArmPosition(SuperStructure.ARM_HANG_HIGH);
+            }
+            if(hangHigher.toTrue()){
+                upper.setArmPosition(200);
+                upper.setSlidePosition(SuperStructure.SLIDE_HANG_HIGH_DOWN);
+                delay(1800);
+                upper.setArmPosition(0);
+            }
+
+
 
             if(sequence == Sequence.RUN){
                 if(resetSlide.toTrue()){
