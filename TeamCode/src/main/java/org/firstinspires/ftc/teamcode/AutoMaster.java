@@ -414,12 +414,13 @@ public abstract class AutoMaster extends LinearOpMode {
         upper.setSlidePosition(SuperStructure.SLIDE_MIN);
         upper.setArmPosition(0);
         // Move to the first pre push pos
-//        drive.moveTo(postChamberPos,0);
-//        drive.moveTo(pushSamplePos_midpoint,0);
-        // TODO: Need testing
-        moveToPush();
+        drive.moveTo(pushSamplePos_midpoint,0);
 
-        drive.moveTo(pushSamplePos_1,0);
+        //drive.moveTo(pushSamplePos_1,0);
+        Trajectory moveToPushSamplePos_1 = drive.trajectoryBuilder(pushSamplePos_midpoint)
+                        .lineToLinearHeading(pushSamplePos_1)
+                        .build();
+
         drive.moveTo(pushSamplePos_1.plus(pushSamplePos_delta),0);
         drive.moveTo(pushSamplePos_1,0);
 

@@ -92,6 +92,13 @@ public class Duo extends LinearOpMode {
                 upper.hang_setSlide(SuperStructure.SLIDE_HANG_HIGH_UP);
                 upper.setArmPosition(SuperStructure.ARM_HANG_HIGH);
             }
+            if(toHangHigher.toTrue()) {
+                upper.setArmPosition(-20);
+                upper.hang_setSlide(SuperStructure.SLIDE_HANG_HIGH_UP);
+                upper.setArmPosition(SuperStructure.ARM_HANG_HIGH);
+            }
+
+
             if(hangHigher.toTrue()){
                 upper.setArmPosition(200);
                 upper.setSlidePosition(SuperStructure.SLIDE_HANG_HIGH_DOWN);
