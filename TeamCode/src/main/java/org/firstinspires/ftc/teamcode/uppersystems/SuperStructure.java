@@ -52,7 +52,7 @@ public class SuperStructure {
 
     private TouchSensor armMag = null;
 
-    public static int SLIDE_BOX_HIGH = 1650, SLIDE_BOX_LOW = 500;
+    public static int SLIDE_BOX_HIGH = 1750, SLIDE_BOX_LOW = 500;
     public static int SLIDE_CHAMBER_HIGH = 755, SLIDE_CHAMBER_LOW = 0;
     public static int SLIDE_CHAMBER_HIGH_DOWN = 450;
     public static int SLIDE_CHAMBER_HIGH_TELEOP = 700;
@@ -94,7 +94,7 @@ public class SuperStructure {
     
     // Claw
     // TODO: TEST Value
-    public static double CLAW_OPEN = 0.8;
+    public static double CLAW_OPEN = 0.85;
     public static double CLAW_GRAB = 0.597;
     public ClawState clawState = GRAB;
     public SlideState slideState = SlideState.VERTICAL;
