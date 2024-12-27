@@ -71,7 +71,10 @@ public class SuperStructure {
     public static int ARM_HANG_HIGH = -200, ARM_HANG_AUTO = 220;
     public static int ARM_HANG_LOW = -331;
 
-    public static int HANG_DELAY = 1000;
+    //New Auto
+    public static int ARM_AUTO_CHAMBER = 300;
+    public static int SLIDE_AUTO_CHAMBER = 500;
+
 
     // WRIST
     public static double WRIST_INTAKE = 0.2, WRIST_INTAKE_PARALLEL_GROUND = 0.5;

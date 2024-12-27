@@ -43,7 +43,7 @@ public abstract class AutoMaster extends LinearOpMode {
     Pose2d chamberPos_delta;
     public static double chamber_delta_x = 1.5;
     Pose2d preChamberPos;
-    public static double preChamber_x = 6, preChamber_y = 45;
+    public static double preChamber_x = 6, preChamber_y = 37;
 
     Pose2d postChamberPos;
     public static double postChamber_x = 35, postChamber_y = 40;
@@ -341,22 +341,28 @@ public abstract class AutoMaster extends LinearOpMode {
     }
 
     public void moveToPreChamber(int count){
-        drive.setSimpleMoveTolerance(2,2,Math.toRadians(4));
-        drive.setSimpleMovePower(0.85);
-        upper.setWristIntake();
-        upper.setSpinWristRelease_specimen();
-        upper.setArmPosition(0);
+        drive.setSimpleMoveTolerance(3,3,Math.toRadians(4));
+        drive.setSimpleMovePower(1);
+        upper.setWristPreIntake();
+        upper.setArmPosition(SuperStructure.ARM_AUTO_CHAMBER);
+        upper.setSlidePosition(SuperStructure.SLIDE_AUTO_CHAMBER);
+        //upper.setSpinWristRelease_specimen();
 
         if(count == 1){
             drive.moveTo(preChamberPos,0);
+
         }else if (count == 2) {
             drive.moveTo(preChamberPos.plus(chamberPos_delta),0);
+
         } else if (count == 3) {
             drive.moveTo(preChamberPos.plus(chamberPos_delta).plus(chamberPos_delta),0);
+
         } else if (count == 4) {
             drive.moveTo(preChamberPos.plus(chamberPos_delta).plus(chamberPos_delta).plus(chamberPos_delta),0);
+
         } else if (count == 5) {
             drive.moveTo(preChamberPos.plus(chamberPos_delta).plus(chamberPos_delta).plus(chamberPos_delta).plus(chamberPos_delta),0);
+
         }
     }
     protected void releaseSpecimen(int count){
@@ -409,17 +415,22 @@ public abstract class AutoMaster extends LinearOpMode {
     }
 
     public void pushSample(){
+        upper.setClawOpen();
+        upper.setSlidePosition(SuperStructure.SLIDE_MIN);
+        delay(50);
+        upper.setArmPosition(0);
+        delay(50);
         drive.setSimpleMovePower(0.9);
         drive.setSimpleMoveTolerance(3,3,Math.toRadians(5));
-        upper.setSlidePosition(SuperStructure.SLIDE_MIN);
-        upper.setArmPosition(0);
         // Move to the first pre push pos
         drive.moveTo(pushSamplePos_midpoint,0);
 
-        //drive.moveTo(pushSamplePos_1,0);
+        drive.moveTo(pushSamplePos_1,0);
+        /*
         Trajectory moveToPushSamplePos_1 = drive.trajectoryBuilder(pushSamplePos_midpoint)
                         .lineToLinearHeading(pushSamplePos_1)
                         .build();
+        */
 
         drive.moveTo(pushSamplePos_1.plus(pushSamplePos_delta),0);
         drive.moveTo(pushSamplePos_1,0);

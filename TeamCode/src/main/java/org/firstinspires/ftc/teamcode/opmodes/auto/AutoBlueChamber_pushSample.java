@@ -18,20 +18,30 @@ public class AutoBlueChamber_pushSample extends AutoMaster {
 
         if(opModeIsActive()){
             moveToPreChamber(1);
-            releaseSpecimen(1);
+            delay(100);
+            //releaseSpecimen(1);
+
             pushSample();
 
             intakeSpecimen();
             moveToPreChamber(2);
-            releaseSpecimen(2);
+            delay(200);
+            //releaseSpecimen(2);
 
             dropSpecimen_toIntakeSpecimen();
             moveToPreChamber(3);
-            releaseSpecimen(3);
+            delay(200);
+            //releaseSpecimen(3);
 
             dropSpecimen_toIntakeSpecimen();
             moveToPreChamber(4);
-            releaseSpecimen(4);
+            delay(200);
+            //releaseSpecimen(4);
+
+            dropSpecimen_toIntakeSpecimen();
+            moveToPreChamber(5);
+            delay(200);
+            //releaseSpecimen(5);
 
             park_observation();
         }
