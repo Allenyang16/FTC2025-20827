@@ -94,8 +94,8 @@ public class SuperStructure {
     
     // Claw
     // TODO: TEST Value
-    public static double CLAW_OPEN = 0.85;
-    public static double CLAW_GRAB = 0.597;
+    public static double CLAW_OPEN = 0.5;
+    public static double CLAW_GRAB = 0.333;
     public ClawState clawState = GRAB;
     public SlideState slideState = SlideState.VERTICAL;
     public WristIntakeState wristIntakeState = WristIntakeState.PRE_INTAKE;
