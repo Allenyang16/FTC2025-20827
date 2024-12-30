@@ -434,6 +434,33 @@ public class SuperStructure {
         }
 
     }
+    public void setSlidePosition_horizontal(int pos){
+        slideState = SlideState.HORIZONTAL;
+        slideTargetPosition = pos;
+        slideLeftPidCtrl_Horizontal.setTargetPosition(slideTargetPosition);
+        slideRightPidCtrl_Horizontal.setTargetPosition(slideTargetPosition);
+    }
+
+    public void setSlidePosition_verticle(int pos){
+        slideState = SlideState.VERTICAL;
+        slideTargetPosition = pos;
+        slideLeftPidCtrl_Vertical.setTargetPosition(slideTargetPosition);
+        slideRightPidCtrl_Vertical.setTargetPosition(slideTargetPosition);
+        if(slideTargetPosition < getSlidePosition() && getSlidePosition() < 200){
+            setSlideOutputBounds(0.2);
+        } else if (slideTargetPosition < getSlidePosition() && getSlidePosition() < 600) {
+            setSlideOutputBounds(0.9);
+        } else {
+            setSlideOutputBounds(1);
+        }
+    }
+
+    public void setSlidePosition_hang(int pos){
+        slideState = SlideState.HANG;
+        slideTargetPosition = pos;
+        slideLeftPidCtrl_Vertical.setTargetPosition(slideTargetPosition);
+        slideRightPidCtrl_Vertical.setTargetPosition(slideTargetPosition);
+    }
     public void setSlidePower(double power){
         mSlideRight.setPower(power);
         mSlideLeft.setPower(power);

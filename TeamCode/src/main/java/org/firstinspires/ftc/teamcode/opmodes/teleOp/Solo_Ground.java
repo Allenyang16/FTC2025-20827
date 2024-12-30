@@ -11,7 +11,7 @@ import org.firstinspires.ftc.teamcode.uppersystems.SuperStructure;
 
 import java.util.Locale;
 
-@TeleOp (name = "TeleOp_SoloRegular")
+@TeleOp (name = "TeleOp_SoloGround")
 public class Solo_Ground extends LinearOpMode {
     Runnable update;
     enum Sequence{
