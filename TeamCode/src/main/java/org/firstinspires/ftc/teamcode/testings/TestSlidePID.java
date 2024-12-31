@@ -49,10 +49,10 @@ public class TestSlidePID extends LinearOpMode {
                 superstructure.setSlidePosition(SuperStructure.SLIDE_MIN);
             }
             if(y.toTrue()) {
-                superstructure.setSlidePosition(SuperStructure.SLIDE_BOX_HIGH);
+                superstructure.setSlidePosition_verticle(SuperStructure.SLIDE_BOX_HIGH);
             }
             if(b.toTrue()) {
-                superstructure.setSlidePosition(SuperStructure.SLIDE_INTAKE_MAX);
+                superstructure.setSlidePosition_horizontal(SuperStructure.SLIDE_INTAKE_MAX);
             }
             if(changeSlideState.toTrue()){
                 superstructure.switchSlideState();

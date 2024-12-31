@@ -197,8 +197,7 @@ public class SuperStructure {
 
     // Hang
     public void hang_setSlide(int pos){
-        slideState = SlideState.HANG;
-        setSlidePosition(pos);
+        setSlidePosition_hang(pos);
     }
 
     // Claw
@@ -436,6 +435,7 @@ public class SuperStructure {
     }
     public void setSlidePosition_horizontal(int pos){
         slideState = SlideState.HORIZONTAL;
+        delay(50);
         slideTargetPosition = pos;
         slideLeftPidCtrl_Horizontal.setTargetPosition(slideTargetPosition);
         slideRightPidCtrl_Horizontal.setTargetPosition(slideTargetPosition);
@@ -443,6 +443,7 @@ public class SuperStructure {
 
     public void setSlidePosition_verticle(int pos){
         slideState = SlideState.VERTICAL;
+        delay(50);
         slideTargetPosition = pos;
         slideLeftPidCtrl_Vertical.setTargetPosition(slideTargetPosition);
         slideRightPidCtrl_Vertical.setTargetPosition(slideTargetPosition);
@@ -457,6 +458,7 @@ public class SuperStructure {
 
     public void setSlidePosition_hang(int pos){
         slideState = SlideState.HANG;
+        delay(50);
         slideTargetPosition = pos;
         slideLeftPidCtrl_Vertical.setTargetPosition(slideTargetPosition);
         slideRightPidCtrl_Vertical.setTargetPosition(slideTargetPosition);

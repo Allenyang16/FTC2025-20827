@@ -45,13 +45,11 @@ public class TestHang extends LinearOpMode {
         waitForStart();
 
         while (opModeIsActive()) {
-            superstructure.setSlideState(SuperStructure.SlideState.HANG);
-
             if (a.toTrue()) {
-                superstructure.setSlidePosition(SuperStructure.SLIDE_MIN);
+                superstructure.setSlidePosition_hang(SuperStructure.SLIDE_MIN);
             }
             if(y.toTrue()) {
-                superstructure.setSlidePosition(slideUpper_pos);
+                superstructure.setSlidePosition_hang(slideUpper_pos);
             }
             if(setArm.toTrue()){
                 superstructure.setArmPosition(armPos);
