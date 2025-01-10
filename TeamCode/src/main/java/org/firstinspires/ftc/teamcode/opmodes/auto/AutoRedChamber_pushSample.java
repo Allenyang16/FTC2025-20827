@@ -20,8 +20,10 @@ public class AutoRedChamber_pushSample extends AutoMaster {
         moveToPreChamber(1);
         releaseSpecimen(1);
 
-        pushSample();
-        intake_release_RedSample();
+        grabSample(1);
+        delay(100);
+        grabSample(2);
+        //intake_release_RedSample();
 
         intakeSpecimen();
         moveToPreChamber(2);
