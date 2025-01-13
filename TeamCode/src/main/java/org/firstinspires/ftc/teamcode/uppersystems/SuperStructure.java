@@ -53,11 +53,11 @@ public class SuperStructure {
     private TouchSensor armMag = null;
 
     public static int SLIDE_BOX_HIGH = 1750, SLIDE_BOX_LOW = 500;
-    public static int SLIDE_CHAMBER_HIGH = 755, SLIDE_CHAMBER_LOW = 0;
-    public static int SLIDE_CHAMBER_HIGH_DOWN = 450;
+    public static int SLIDE_CHAMBER_HIGH = 900, SLIDE_CHAMBER_LOW = 0;
+    public static int SLIDE_CHAMBER_HIGH_DOWN = 380;
     public static int SLIDE_CHAMBER_HIGH_TELEOP = 700;
     public static int SLIDE_CHAMBER_HIGH_DOWN_TELEOP = 380;
-    public static int SLIDE_INTAKE_MAX = 700, SLIDE_INTAKE_MEDIUM = 580, SLIDE_MIN = 0;
+    public static int SLIDE_INTAKE_MAX = 700, SLIDE_INTAKE_MEDIUM = 530, SLIDE_MIN = 0;
     public static int SLIDE_HANG_AUTO = 200, SLIDE_HANG_HIGH_UP = 1200, SLIDE_HANG_HIGH_DOWN = -70;
     public static int SLIDE_HANG_LOW_UP = 920, SLIDE_HANG_LOW_DOWN = -70;
 
@@ -65,15 +65,14 @@ public class SuperStructure {
     public static int ARM_INTAKE = 1020;
     public static int ARM_POST_INTAKE = 920;
     // TODO: CHECK THIS VALUE
-    public static int ARM_INTAKE_SPECIMEN = -680;
+    public static int ARM_INTAKE_SPECIMEN = -670;
     public static int ARM_RELEASE_BOX = -80;
     public static int ARM_RELEASE_CHAMBER = 160, ARM_RELEASE_CHAMBER_TELEOP = 80; // 80 for teleOp
     public static int ARM_HANG_HIGH = -200, ARM_HANG_AUTO = 220;
     public static int ARM_HANG_LOW = -331;
 
     //New Auto
-    public static int ARM_AUTO_CHAMBER = 300;
-    public static int SLIDE_AUTO_CHAMBER = 500;
+    public static int ARM_AUTO_CHAMBER = 160;
 
 
     // WRIST
@@ -277,6 +276,10 @@ public class SuperStructure {
     public void setWristReleaseChamber(){
         mWrist.setPosition(WRIST_RELEASE_CHAMBER_HIGH);
         wristIntakeState = WristIntakeState.RELEASE_SPECIMEN;
+    }
+
+    public void setWristHide(){
+        mWrist.setPosition(WRIST_RELEASE_CHAMBER_LOW);
     }
 
     public enum WristIntakeState {
