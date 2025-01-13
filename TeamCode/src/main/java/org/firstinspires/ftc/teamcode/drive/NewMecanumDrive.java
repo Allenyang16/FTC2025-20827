@@ -64,6 +64,7 @@ public class NewMecanumDrive extends MecanumDrive{
 
     public static double VX_WEIGHT = 1;
     public static double VY_WEIGHT = 1;
+    //fuck you
     public static double OMEGA_WEIGHT = 1;
     private static double yawHeading = AutoMaster.yawOffset;
 
