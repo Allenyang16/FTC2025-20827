@@ -22,23 +22,23 @@ public class AutoBlueChamber_pushSample extends AutoMaster {
 
             grabSample(1);
             grabSample(2);
-            grabSample(3);
+            //grabSample(3);
 
             intakeSpecimen();
             moveToPreChamber(2);
             releaseSpecimen(2);
 
-            dropSpecimen_toIntakeSpecimen();
+            dropSpecimen_toIntakeSpecimen(3);
             moveToPreChamber(3);
             releaseSpecimen(3);
 
-            dropSpecimen_toIntakeSpecimen();
+            dropSpecimen_toIntakeSpecimen(4);
             moveToPreChamber(4);
             releaseSpecimen(4);
 
-            dropSpecimen_toIntakeSpecimen();
-            moveToPreChamber(5);
-            releaseSpecimen(5);
+            //dropSpecimen_toIntakeSpecimen(5);
+            //moveToPreChamber(5);
+            //releaseSpecimen(5);
 
             park_observation();
         }

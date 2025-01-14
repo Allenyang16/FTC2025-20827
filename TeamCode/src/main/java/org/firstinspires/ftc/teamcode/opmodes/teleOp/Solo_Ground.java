@@ -236,7 +236,7 @@ public class Solo_Ground extends LinearOpMode {
                     sequence = Sequence.RUN;
                     upper.setArmPosition(0);
                     delay(200);
-                    upper.setSlidePosition_verticle(SuperStructure.SLIDE_BOX_HIGH);
+                    upper.setSlidePosition_verticle(0);
                 }
             }
 
