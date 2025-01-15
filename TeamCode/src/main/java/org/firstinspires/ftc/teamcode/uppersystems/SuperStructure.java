@@ -76,11 +76,11 @@ public class SuperStructure {
 
 
     // WRIST
-    public static double WRIST_INTAKE = 0.2, WRIST_INTAKE_PARALLEL_GROUND = 0.5;
-    public static double WRIST_INTAKE_SPECIMEN = 0.64, WRIST_INTAKE_SPECIMEN_GROUND = 0.3;
+    public static double WRIST_INTAKE = 0.2, WRIST_INTAKE_PARALLEL_GROUND = 0.75;
+    public static double WRIST_INTAKE_SPECIMEN = 0.98, WRIST_INTAKE_SPECIMEN_GROUND = 0.35;
 
     // TODO: Retest
-    public static double WRIST_RELEASE_BOX_HIGH = 0.7, WRIST_RELEASE_BOX_LOW = 0.28;
+    public static double WRIST_RELEASE_BOX_HIGH = 0.9, WRIST_RELEASE_BOX_LOW = 0.28;
     public static double WRIST_RELEASE_CHAMBER_HIGH = 0.2, WRIST_RELEASE_CHAMBER_LOW = 0.8;
 
     // Spin Wrist
@@ -93,8 +93,8 @@ public class SuperStructure {
     
     // Claw
     // TODO: TEST Value
-    public static double CLAW_OPEN = 0.5;
-    public static double CLAW_GRAB = 0.33;
+    public static double CLAW_OPEN = 0.28;
+    public static double CLAW_GRAB = 0.142;
     public ClawState clawState = GRAB;
     public SlideState slideState = SlideState.VERTICAL;
     public WristIntakeState wristIntakeState = WristIntakeState.PRE_INTAKE;

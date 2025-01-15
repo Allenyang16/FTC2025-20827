@@ -314,7 +314,7 @@ public abstract class AutoMaster extends LinearOpMode {
         drive.setSimpleMoveTolerance(3,3,Math.toRadians(5));
         drive.setSimpleMovePower(1);
         upper.setSpinWristIntake_specimen();
-        upper.setWristIntakeSpecimenGround();
+        upper.setWristIntake();
         drive.moveTo(preIntakeSpecimenPos,0);
         drive.setSimpleMovePower(0.4);
         drive.setSimpleMoveTolerance(0.8,0.8,Math.toRadians(1));
@@ -499,7 +499,7 @@ public abstract class AutoMaster extends LinearOpMode {
             delay(200);
             upper.setSlidePosition_horizontal(SuperStructure.SLIDE_INTAKE_MEDIUM);
             upper.setWristIntake();
-            delay(250);
+            delay(200);
             upper.setClawGrab();
             delay(50);
             upper.setSlidePosition(SuperStructure.SLIDE_MIN);
@@ -511,10 +511,10 @@ public abstract class AutoMaster extends LinearOpMode {
             upper.setClawOpen();
         } else if (count == 2){
             drive.moveTo(grabSamplePos_2,150);
-            upper.setArmPosition(SuperStructure.ARM_INTAKE);
-            delay(425);
-            upper.setSlidePosition_horizontal(SuperStructure.SLIDE_INTAKE_MEDIUM);
             upper.setWristIntake();
+            upper.setArmPosition(SuperStructure.ARM_INTAKE);
+            delay(400);
+            upper.setSlidePosition_horizontal(SuperStructure.SLIDE_INTAKE_MEDIUM);
             delay(200);
             upper.setClawGrab();
             delay(50);

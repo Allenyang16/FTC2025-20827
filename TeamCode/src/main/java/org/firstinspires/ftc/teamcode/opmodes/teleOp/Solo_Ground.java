@@ -97,6 +97,7 @@ public class Solo_Ground extends LinearOpMode {
                     upper.setArmPosition(SuperStructure.ARM_INTAKE);
                     upper.setWristPreIntake();
                     upper.setSpinWristIntake();
+                    delay(200);
                     upper.setSlidePosition_horizontal(SuperStructure.SLIDE_INTAKE_MAX);
                     delay(200);
 
