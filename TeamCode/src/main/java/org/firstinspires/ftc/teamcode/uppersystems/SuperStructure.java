@@ -52,9 +52,9 @@ public class SuperStructure {
 
     private TouchSensor armMag = null;
 
-    public static int SLIDE_BOX_HIGH = 1750, SLIDE_BOX_LOW = 500;
-    public static int SLIDE_CHAMBER_HIGH = 870, SLIDE_CHAMBER_LOW = 0;
-    public static int SLIDE_CHAMBER_HIGH_DOWN = 380;
+    public static int SLIDE_BOX_HIGH = 1650, SLIDE_BOX_LOW = 500;
+    public static int SLIDE_CHAMBER_HIGH = 755, SLIDE_CHAMBER_LOW = 0;
+    public static int SLIDE_CHAMBER_HIGH_DOWN = 450;
     public static int SLIDE_CHAMBER_HIGH_TELEOP = 700;
     public static int SLIDE_CHAMBER_HIGH_DOWN_TELEOP = 380;
     public static int SLIDE_INTAKE_MAX = 700, SLIDE_INTAKE_MEDIUM = 530, SLIDE_MIN = 0;
@@ -65,7 +65,7 @@ public class SuperStructure {
     public static int ARM_INTAKE = 1020;
     public static int ARM_POST_INTAKE = 920;
     // TODO: CHECK THIS VALUE
-    public static int ARM_INTAKE_SPECIMEN = -670;
+    public static int ARM_INTAKE_SPECIMEN = -680;
     public static int ARM_RELEASE_BOX = -80;
     public static int ARM_RELEASE_CHAMBER = 160, ARM_RELEASE_CHAMBER_TELEOP = 80; // 80 for teleOp
     public static int ARM_HANG_HIGH = -200, ARM_HANG_AUTO = 220;
