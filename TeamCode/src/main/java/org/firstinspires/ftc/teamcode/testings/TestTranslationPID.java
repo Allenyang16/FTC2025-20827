@@ -20,16 +20,16 @@ public class TestTranslationPID extends LinearOpMode {
     public static double power = 0.9;
     private final Telemetry telemetry_M = new MultipleTelemetry(telemetry, FtcDashboard.getInstance().getTelemetry());
 
-    private Pose2d forwardPos = new Pose2d(48,-48,0);
+    private Pose2d forwardPos = new Pose2d(-48,48,0);
     public static double t_x = 0.5, t_y = 0.5, t_heading = 3;
     public static double t1_x = AutoMaster.chamber_x, t1_y = AutoMaster.chamber_y, t1_heading = -90;
     public static double t2_x = AutoMaster.intakeSpecimen_x, t2_y = AutoMaster.pre_intakeSpecimen_y, t2_heading = 90;
     public static double t3_x = t2_x, t3_y = AutoMaster.intakeSpecimen_y;
-    private Pose2d backPos = new Pose2d(-48,-48,0);
-    private Pose2d rightPos = new Pose2d(48,-48,Math.toRadians(90));
-    private Pose2d leftPos = new Pose2d(-48,-48, Math.toRadians(90));
+    private Pose2d backPos = new Pose2d(48,48,0);
+    private Pose2d rightPos = new Pose2d(48,48,Math.toRadians(-90));
+    private Pose2d leftPos = new Pose2d(-48,48, Math.toRadians(-90));
 
-    private Pose2d targetPos = new Pose2d(9,-62,Math.toRadians(90));
+    private Pose2d targetPos = new Pose2d(9,62,Math.toRadians(-90));
     public static int correctTime = 0;
     @Override
     public void runOpMode() throws InterruptedException {
@@ -82,7 +82,7 @@ public class TestTranslationPID extends LinearOpMode {
             }
             if(strafeLeft.toTrue()){
                 targetPos = leftPos;
-                drive.moveTo(leftPos, correctTime);
+                drive.moveTo(leftPos,correctTime);
             }
 
             if(toTargetPos1.toTrue()){
