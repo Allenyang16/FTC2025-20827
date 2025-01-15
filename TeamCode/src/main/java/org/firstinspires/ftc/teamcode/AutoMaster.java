@@ -43,9 +43,9 @@ public abstract class AutoMaster extends LinearOpMode {
     Pose2d chamberPos_delta;
     public static double chamber_delta_x = 0.5;
     Pose2d preChamberPos;
-    public static double preChamber_x = 6, preChamber_y = 36;
+    public static double preChamber_x = 6, preChamber_y = 46;
     Pose2d preChamberPos1;
-    public static double preChamber1_x = 6, preChamber1_y = 45;
+    public static double preChamber1_x = 6, preChamber1_y = 40;
 
     Pose2d postChamberPos;
     public static double postChamber_x = 35, postChamber_y = 40;
