@@ -24,7 +24,10 @@ android {
         }
         jniLibs.useLegacyPackaging true
     }
+    android.buildFeatures.buildConfig = true
+
 }
+
 
 dependencies {
     implementation project(':FtcRobotController')
