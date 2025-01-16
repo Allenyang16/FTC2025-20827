@@ -53,11 +53,11 @@ public class SuperStructure {
     private TouchSensor armMag = null;
 
     public static int SLIDE_BOX_HIGH = 1650, SLIDE_BOX_LOW = 500;
-    public static int SLIDE_CHAMBER_HIGH = 830, SLIDE_CHAMBER_LOW = 0;
+    public static int SLIDE_CHAMBER_HIGH = 800, SLIDE_CHAMBER_LOW = 0;
     public static int SLIDE_CHAMBER_HIGH_DOWN = 450;
     public static int SLIDE_CHAMBER_HIGH_TELEOP = 700;
     public static int SLIDE_CHAMBER_HIGH_DOWN_TELEOP = 380;
-    public static int SLIDE_INTAKE_MAX = 700, SLIDE_INTAKE_MEDIUM = 540, SLIDE_MIN = 0;
+    public static int SLIDE_INTAKE_MAX = 700, SLIDE_INTAKE_MEDIUM = 530, SLIDE_MIN = 0;
     public static int SLIDE_HANG_AUTO = 200, SLIDE_HANG_HIGH_UP = 1200, SLIDE_HANG_HIGH_DOWN = -70;
     public static int SLIDE_HANG_LOW_UP = 920, SLIDE_HANG_LOW_DOWN = -70;
 
@@ -76,12 +76,12 @@ public class SuperStructure {
 
 
     // WRIST
-    public static double WRIST_INTAKE = 0.2, WRIST_INTAKE_PARALLEL_GROUND = 0.75;
-    public static double WRIST_INTAKE_SPECIMEN = 0.98, WRIST_INTAKE_SPECIMEN_GROUND = 0.35;
+    public static double WRIST_INTAKE = 0.18, WRIST_INTAKE_PARALLEL_GROUND = 0.43;
+    public static double WRIST_INTAKE_SPECIMEN = 0.52, WRIST_INTAKE_SPECIMEN_GROUND = 0.26;
 
     // TODO: Retest
-    public static double WRIST_RELEASE_BOX_HIGH = 0.9, WRIST_RELEASE_BOX_LOW = 0.28;
-    public static double WRIST_RELEASE_CHAMBER_HIGH = 0.2, WRIST_RELEASE_CHAMBER_LOW = 0.8;
+    public static double WRIST_RELEASE_BOX_HIGH = 0.54, WRIST_RELEASE_BOX_LOW = 0.28;
+    public static double WRIST_RELEASE_CHAMBER_HIGH = 0.18, WRIST_RELEASE_CHAMBER_LOW = 0.8;
 
     // Spin Wrist
     public static double SPINWRIST_INTAKE = 0.605;
