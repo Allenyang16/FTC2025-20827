@@ -53,7 +53,7 @@ public class SuperStructure {
     private TouchSensor armMag = null;
 
     public static int SLIDE_BOX_HIGH = 1650, SLIDE_BOX_LOW = 500;
-    public static int SLIDE_CHAMBER_HIGH = 800, SLIDE_CHAMBER_LOW = 0;
+    public static int SLIDE_CHAMBER_HIGH = 830, SLIDE_CHAMBER_LOW = 0;
     public static int SLIDE_CHAMBER_HIGH_DOWN = 450;
     public static int SLIDE_CHAMBER_HIGH_TELEOP = 700;
     public static int SLIDE_CHAMBER_HIGH_DOWN_TELEOP = 380;
@@ -67,7 +67,7 @@ public class SuperStructure {
     // TODO: CHECK THIS VALUE
     public static int ARM_INTAKE_SPECIMEN = -680;
     public static int ARM_RELEASE_BOX = -80;
-    public static int ARM_RELEASE_CHAMBER = 160, ARM_RELEASE_CHAMBER_TELEOP = 80; // 80 for teleOp
+    public static int ARM_RELEASE_CHAMBER = 160, ARM_RELEASE_CHAMBER_TELEOP = 80;// 80 for teleOp
     public static int ARM_HANG_HIGH = -200, ARM_HANG_AUTO = 220;
     public static int ARM_HANG_LOW = -331;
 
@@ -93,8 +93,8 @@ public class SuperStructure {
     
     // Claw
     // TODO: TEST Value
-    public static double CLAW_OPEN = 0.28;
-    public static double CLAW_GRAB = 0.142;
+    public static double CLAW_OPEN = 0.37;
+    public static double CLAW_GRAB = 0.14;
     public ClawState clawState = GRAB;
     public SlideState slideState = SlideState.VERTICAL;
     public WristIntakeState wristIntakeState = WristIntakeState.PRE_INTAKE;
