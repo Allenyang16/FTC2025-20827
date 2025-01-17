@@ -61,7 +61,7 @@ public class Duo extends LinearOpMode {
         XCYBoolean toPullDownSpecimen = new XCYBoolean(()-> intakeState == IntakeState.SPECIMEN && gamepad2.dpad_down);
         XCYBoolean resetSlide = new XCYBoolean(()-> sequence == Sequence.RUN && gamepad2.right_stick_button);
 
-        upper.initialize();
+//        upper.initialize();
         drive.setPoseEstimate(AutoMaster.endPos);
         drive.setYawHeading(AutoMaster.yawOffset);
 
@@ -142,7 +142,7 @@ public class Duo extends LinearOpMode {
                     upper.setArmPosition(SuperStructure.ARM_INTAKE);
                     delay(300);
                     upper.setSlidePosition_horizontal(SuperStructure.SLIDE_INTAKE_MAX);
-                    upper.setWristIntake();
+                    upper.setWristIntakeSpecimenGround();
                     upper.setClawOpen();
                     intakeState = IntakeState.SPECIMEN;
                     sequence = Sequence.INTAKE_SPECIMEN;
@@ -270,7 +270,7 @@ public class Duo extends LinearOpMode {
                 }
 
                 if(toPullDownSpecimen.toTrue()){
-                    upper.setSlidePosition_verticle(0);
+                    upper.setSlidePosition_verticle(SuperStructure.SLIDE_CHAMBER_HIGH_DOWN_TELEOP);
                 }
 
                 if(grab.toTrue()){

@@ -9,20 +9,21 @@ public class AutoRedChamber_pushSample extends AutoMaster {
     @Override
     public void runOpMode() throws InterruptedException {
         side_color = RED;
-        startSide = NEGATIVE;
+        startSide = POSITIVE ;
 
         initHardware();
         while (opModeInInit()){
+
 
         }
 
         if(opModeIsActive()){
             moveToPreChamber(1);
-            releaseSpecimen(1);
+            //releaseSpecimen(1);
 
             grabSample(1);
             grabSample(2);
-            grabSample(3);
+            //grabSample(3);
 
             intakeSpecimen();
             moveToPreChamber(2);
@@ -36,9 +37,9 @@ public class AutoRedChamber_pushSample extends AutoMaster {
             moveToPreChamber(4);
             releaseSpecimen(4);
 
-            dropSpecimen_toIntakeSpecimen(5);
-            moveToPreChamber(5);
-            releaseSpecimen(5);
+            //dropSpecimen_toIntakeSpecimen(5);
+            //moveToPreChamber(5);
+            //releaseSpecimen(5);
 
             park_observation();
         }
