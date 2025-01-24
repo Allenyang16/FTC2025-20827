@@ -62,12 +62,13 @@ public class SuperStructure {
     public static int SLIDE_HANG_LOW_UP = 920, SLIDE_HANG_LOW_DOWN = -70;
 
 
-    public static int ARM_INTAKE = 1020;
+    public static int ARM_INTAKE = -800;
     public static int ARM_POST_INTAKE = 920;
     // TODO: CHECK THIS VALUE
-    public static int ARM_INTAKE_SPECIMEN = -680;
-    public static int ARM_RELEASE_BOX = -80;
+    public static int ARM_INTAKE_SPECIMEN = 590;
+    public static int ARM_RELEASE_BOX = 80;
     public static int ARM_RELEASE_CHAMBER = 160, ARM_RELEASE_CHAMBER_TELEOP = 80;// 80 for teleOp
+
     public static int ARM_HANG_HIGH = -200, ARM_HANG_AUTO = 220;
     public static int ARM_HANG_LOW = -331;
 
@@ -76,25 +77,25 @@ public class SuperStructure {
 
 
     // WRIST
-    public static double WRIST_INTAKE = 0.18, WRIST_INTAKE_PARALLEL_GROUND = 0.43;
+    public static double WRIST_INTAKE = 0.1, WRIST_INTAKE_PARALLEL_GROUND = 0.42;
     public static double WRIST_INTAKE_SPECIMEN = 0.52, WRIST_INTAKE_SPECIMEN_GROUND = 0.26;
 
     // TODO: Retest
     public static double WRIST_RELEASE_BOX_HIGH = 0.54, WRIST_RELEASE_BOX_LOW = 0.28;
-    public static double WRIST_RELEASE_CHAMBER_HIGH = 0.18, WRIST_RELEASE_CHAMBER_LOW = 0.8;
+    public static double WRIST_RELEASE_CHAMBER_HIGH = 0.85, WRIST_RELEASE_CHAMBER_LOW = 0.8;
 
     // Spin Wrist
-    public static double SPINWRIST_INTAKE = 0.605;
+    public static double SPINWRIST_INTAKE = 0.87;
     public static double SPINWRIST_INTAKE_CLOCKWISE = 0.72;
     public static double SPINWRIST_INTAKE_COUNTERCLOCKWISE = 0.48;
     // TODO: CHANGE THE VALUE
-    public static double SPINWRIST_INTAKE_SPECIMEN = 0.605;
-    public static double SPINWRIST_RELEASE_SPECIMEN = 0.08;
+    public static double SPINWRIST_INTAKE_SPECIMEN = 0.87;
+    public static double SPINWRIST_RELEASE_SPECIMEN = 0.19;
     
     // Claw
     // TODO: TEST Value
-    public static double CLAW_OPEN = 0.37;
-    public static double CLAW_GRAB = 0.13;
+    public static double CLAW_OPEN = 0.65;
+    public static double CLAW_GRAB = 0.254;
     public ClawState clawState = GRAB;
     public SlideState slideState = SlideState.VERTICAL;
     public WristIntakeState wristIntakeState = WristIntakeState.PRE_INTAKE;
