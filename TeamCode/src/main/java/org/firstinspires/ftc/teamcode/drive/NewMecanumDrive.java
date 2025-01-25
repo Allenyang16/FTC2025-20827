@@ -135,9 +135,9 @@ public class NewMecanumDrive extends MecanumDrive{
         // TODO: if desired, use setLocalizer() to change the localization method
         // TODO: Use this former initialization
         odo = hardwareMap.get(GoBildaPinpointDriver.class,"odo");
-        odo.setOffsets(-132.5,133);
+        odo.setOffsets(-73.7,93.8);
         odo.setEncoderResolution(GoBildaPinpointDriver.GoBildaOdometryPods.goBILDA_SWINGARM_POD);
-        odo.setEncoderDirections(GoBildaPinpointDriver.EncoderDirection.REVERSED, GoBildaPinpointDriver.EncoderDirection.FORWARD);
+                odo.setEncoderDirections(GoBildaPinpointDriver.EncoderDirection.FORWARD, GoBildaPinpointDriver.EncoderDirection.FORWARD);
         odo.recalibrateIMU();
 
         setLocalizer(new StandardLocalizer(hardwareMap));

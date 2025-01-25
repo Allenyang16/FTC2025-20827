@@ -73,16 +73,16 @@ public class SuperStructure {
     public static int ARM_HANG_LOW = -331;
 
     //New Auto
-    public static int ARM_AUTO_CHAMBER = 160;
+    public static int ARM_AUTO_CHAMBER = -160;
 
 
     // WRIST
-    public static double WRIST_INTAKE = 0.1, WRIST_INTAKE_PARALLEL_GROUND = 0.52;
-    public static double WRIST_INTAKE_SPECIMEN = 0.52, WRIST_INTAKE_SPECIMEN_GROUND = 0.26;
+    public static double WRIST_INTAKE = 0.3, WRIST_INTAKE_PARALLEL_GROUND = 0.57;
+    public static double WRIST_INTAKE_SPECIMEN = 0.66, WRIST_INTAKE_SPECIMEN_GROUND = 0.26;
 
     // TODO: Retest
-    public static double WRIST_RELEASE_BOX_HIGH = 0.54, WRIST_RELEASE_BOX_LOW = 0.28;
-    public static double WRIST_RELEASE_CHAMBER_HIGH = 0.85, WRIST_RELEASE_CHAMBER_LOW = 0.8;
+    public static double WRIST_RELEASE_BOX_HIGH = 0.66, WRIST_RELEASE_BOX_LOW = 0.28;
+    public static double WRIST_RELEASE_CHAMBER_HIGH = 0.3, WRIST_RELEASE_CHAMBER_LOW = 0.8;
 
     // Spin Wrist
     public static double SPINWRIST_INTAKE = 0.2;
