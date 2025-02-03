@@ -15,7 +15,7 @@ import java.util.Locale;
 public class Solo_Wall extends LinearOpMode {
     Runnable update;
     enum Sequence{
-        RUN, INTAKE_SAMPLE, INTAKE_SPECIMEN, RELEASE_SAMPLE,RELEASE_SPECIMEN
+        RUN, INTAKE_SAMPLE, INTAKE_SPECIMEN, RELEASE_SAMPLE,RELEASE_SPECIMEN, HANG
     }
     enum IntakeState{
         FAR, NEAR, POST, SPECIMEN
@@ -34,28 +34,31 @@ public class Solo_Wall extends LinearOpMode {
             upper.update();
             XCYBoolean.bulkRead();
             telemetry.update();
-            drive.setGlobalPower(upper.translation_coefficient() * gamepad1.left_stick_y, upper.translation_coefficient() * gamepad1.left_stick_x, upper.heading_coefficient() * gamepad1.right_stick_x);
+            drive.setGlobalPower(upper.translation_coefficient() * gamepad1.left_stick_y, upper.translation_coefficient() * gamepad1.left_stick_x, upper.heading_coefficient() * (gamepad1.right_stick_x));
         };
         drive.setUpdateRunnable(update);
         upper.setUpdateRunnable(update);
 
         XCYBoolean resetHeading = new XCYBoolean(()-> gamepad1.x);
-        XCYBoolean toOrigin = new XCYBoolean(()-> (intakeState == IntakeState.POST || intakeState == IntakeState.SPECIMEN) && gamepad1.left_stick_button);
+        XCYBoolean toOrigin = new XCYBoolean(()-> (gamepad1.left_stick_button));
         XCYBoolean toPostIntake = new XCYBoolean(()-> (intakeState != IntakeState.SPECIMEN) && gamepad1.right_stick_button);
-        XCYBoolean toHang = new XCYBoolean(()->gamepad1.dpad_left);
-        XCYBoolean hang = new XCYBoolean(()->gamepad1.dpad_right);
+        XCYBoolean toHang = new XCYBoolean(() -> gamepad1.dpad_left && sequence == Sequence.RUN);
+        XCYBoolean hang = new XCYBoolean(() -> gamepad1.dpad_right && sequence == Sequence.HANG);
+        XCYBoolean toHang_high = new XCYBoolean(() -> gamepad1.dpad_left && sequence == Sequence.HANG);
+        XCYBoolean hang_high = new XCYBoolean(() -> gamepad1.dpad_right && sequence == Sequence.HANG);
 
         XCYBoolean intakeFar = new XCYBoolean(()-> gamepad1.y);
         XCYBoolean intakeNear = new XCYBoolean(()-> gamepad1.a);
         XCYBoolean toIntakeSpecimen = new XCYBoolean(()->gamepad1.b);
-        XCYBoolean toHighRelease_sample = new XCYBoolean(()-> gamepad1.dpad_up);
+        XCYBoolean toHighRelease_sample = new XCYBoolean(()-> gamepad1.left_trigger>0 && sequence == Sequence.RUN);
         XCYBoolean downWrist = new XCYBoolean(()-> gamepad1.left_bumper);
         XCYBoolean upWrist = new XCYBoolean(()-> sequence == Sequence.INTAKE_SPECIMEN && gamepad1.left_bumper);
         XCYBoolean grab = new XCYBoolean(()-> gamepad1.right_bumper);
+        XCYBoolean adjustChamber = new XCYBoolean(()-> gamepad1.right_bumper && gamepad1.left_bumper && sequence == Sequence.RELEASE_SPECIMEN);
 
-        XCYBoolean spinWristClockwise = new XCYBoolean(()-> gamepad1.right_trigger > 0);
+        XCYBoolean spinWristClockwise = new XCYBoolean(()-> gamepad1.right_trigger > 0 && sequence == Sequence.INTAKE_SAMPLE);
         XCYBoolean spinWristCounterClockwise = new XCYBoolean(()-> gamepad1.left_trigger > 0);
-        XCYBoolean toReleaseHighChamber = new XCYBoolean(()-> intakeState == IntakeState.SPECIMEN && gamepad1.dpad_up);
+        XCYBoolean toReleaseHighChamber = new XCYBoolean(()-> intakeState == IntakeState.SPECIMEN && gamepad1.left_trigger>0);
         XCYBoolean toPullDownSpecimen = new XCYBoolean(()-> intakeState == IntakeState.SPECIMEN && gamepad1.dpad_down);
         XCYBoolean resetSlide = new XCYBoolean(()-> sequence == Sequence.RUN && gamepad1.right_stick_button);
 
@@ -73,16 +76,36 @@ public class Solo_Wall extends LinearOpMode {
                 drive.resetHeading();
             }
 
-            if(toHang.toTrue()){
-                upper.setArmPosition(-200);
-                upper.hang_setSlide(SuperStructure.SLIDE_HANG_LOW_UP);
-                delay(500);
-                upper.setArmPosition(SuperStructure.ARM_HANG_LOW);
-            }
-            if(hang.toTrue()){
-                upper.setSlidePosition_verticle(SuperStructure.SLIDE_HANG_LOW_DOWN);
-                delay(1800);
-                upper.setArmPosition(0);
+            if (sequence == Sequence.HANG) {
+                if (hang.toTrue()) {
+                    upper.setSlidePosition_hang(SuperStructure.SLIDE_HANG_LOW_DOWN);
+                    delay(1800);
+                    upper.setArmPosition(100);
+                }
+
+                if (toOrigin.toTrue()) {
+                    upper.setSlidePosition_horizontal(0);
+                    delay(300);
+                    upper.setArmPosition(0);
+                    upper.setWristIntake();
+                    upper.setWristReleaseChamber();
+                    sequence = Sequence.RUN;
+                }
+
+                if (toHang_high.toTrue()) {
+                    upper.setArmPosition(50);
+                    delay(10);
+                    upper.hang_setSlide(SuperStructure.SLIDE_HANG_HIGH_UP);
+                    delay(500);
+                }
+
+                if (hang_high.toTrue()) {
+                    upper.hang_setSlide(SuperStructure.SLIDE_HANG_HIGH_DOWN);
+                    delay(200);
+                    upper.setArmPosition(500);
+                    delay(1000);
+                    upper.setArmPosition(0);
+                }
             }
 
             if(sequence == Sequence.RUN){
@@ -92,7 +115,13 @@ public class Solo_Wall extends LinearOpMode {
                     upper.resetSlide();
                     upper.setSlidePosition(0);
                 }
-
+                if (toHang.toTrue()) {
+                    upper.setArmPosition(SuperStructure.ARM_HANG_LOW);
+                    upper.hang_setSlide(SuperStructure.SLIDE_HANG_LOW_UP);
+                    delay(500);
+//                    upper.setArmPosition(SuperStructure.ARM_HANG_LOW);
+                    sequence = Sequence.HANG;
+                }
                 if(intakeFar.toTrue()){
                     upper.setArmPosition(SuperStructure.ARM_INTAKE);
                     upper.setWristPreIntake();
@@ -112,15 +141,18 @@ public class Solo_Wall extends LinearOpMode {
                     sequence = Sequence.INTAKE_SAMPLE;
                 }
 
-                if(toIntakeSpecimen.toTrue()){
-                    upper.setSlidePosition_horizontal(SuperStructure.SLIDE_MIN);
-                    delay(100);
-                    upper.setArmPosition(SuperStructure.ARM_INTAKE_SPECIMEN);
-                    upper.setWristIntakeSpecimen();
+                if (toIntakeSpecimen.toTrue()) {
+                    upper.setSpinWristIntake_specimen();
+                    upper.setArmPosition(SuperStructure.ARM_INTAKE);
+                    delay(300);
+                    upper.setSlidePosition_horizontal(SuperStructure.SLIDE_INTAKE_MAX);
+                    upper.setWristIntake();
                     upper.setClawOpen();
+
                     intakeState = IntakeState.SPECIMEN;
                     sequence = Sequence.INTAKE_SPECIMEN;
                 }
+
 
                 if(toHighRelease_sample.toTrue()){
                     upper.setArmPosition(SuperStructure.ARM_RELEASE_BOX);
@@ -154,6 +186,7 @@ public class Solo_Wall extends LinearOpMode {
                     upper.setSlidePosition_horizontal(SuperStructure.SLIDE_INTAKE_MAX);
                     upper.setWristPreIntake();
                     upper.setSpinWristIntake();
+                    delay(200);
                     upper.setClawOpen();
                     intakeState = IntakeState.FAR;
                 }
@@ -165,8 +198,10 @@ public class Solo_Wall extends LinearOpMode {
                     intakeState = IntakeState.NEAR;
                 }
 
-                if(toIntakeSpecimen.toTrue()){
+                if (toIntakeSpecimen.toTrue()) {
                     upper.setWristIntakeSpecimenGround();
+                    upper.setWristIntakeSpecimen();
+                    upper.setSpinWristIntake_specimen();
                     intakeState = IntakeState.SPECIMEN;
                     sequence = Sequence.INTAKE_SPECIMEN;
                 }
@@ -196,20 +231,24 @@ public class Solo_Wall extends LinearOpMode {
 
                 if(upWrist.toTrue()){
                     upper.setWristIntakeSpecimenGround();
+                    upper.setSpinWristIntake_specimen();
                 }
                 if(intakeFar.toTrue()){
                     upper.setSlidePosition_horizontal(SuperStructure.SLIDE_INTAKE_MAX);
+                    upper.setSpinWristIntake_specimen();
                 }
                 if(intakeNear.toTrue()){
                     upper.setSlidePosition_horizontal(0);
+                    upper.setSpinWristIntake_specimen();
                 }
 
                 if(toReleaseHighChamber.toTrue()){
                     upper.setSlidePosition_verticle(0);
                     delay(200);
-                    upper.setArmPosition(0);
+                    upper.setArmPosition(SuperStructure.ARM_CHAMBER_HIGH_Test);
                     delay(300);
                     upper.setWristReleaseChamber();
+                    upper.setSpinWristIntake();
                     upper.setArmPosition(SuperStructure.ARM_RELEASE_CHAMBER_TELEOP);
                     upper.setSlidePosition_verticle(SuperStructure.SLIDE_CHAMBER_HIGH_TELEOP);
                     sequence = Sequence.RELEASE_SPECIMEN;
@@ -254,6 +293,9 @@ public class Solo_Wall extends LinearOpMode {
                     upper.setSlidePosition_verticle(SuperStructure.SLIDE_MIN);
                     upper.setWristPreIntake();
                     upper.setSpinWristIntake();
+                    upper.setArmPosition(0);
+                    sequence = Sequence.RUN;
+
                 }
             }
 

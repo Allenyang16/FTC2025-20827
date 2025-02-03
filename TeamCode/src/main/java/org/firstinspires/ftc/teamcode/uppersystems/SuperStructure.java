@@ -52,50 +52,52 @@ public class SuperStructure {
 
     private TouchSensor armMag = null;
 
-    public static int SLIDE_BOX_HIGH = 1650, SLIDE_BOX_LOW = 500;
+    public static int SLIDE_BOX_HIGH = 1750, SLIDE_BOX_LOW = 500;
     public static int SLIDE_CHAMBER_HIGH = 780, SLIDE_CHAMBER_HIGH_FIRST = 720, SLIDE_CHAMBER_LOW = 0;
     public static int SLIDE_CHAMBER_HIGH_DOWN = 420;
-    public static int SLIDE_CHAMBER_HIGH_TELEOP = 600;
+    public static int SLIDE_CHAMBER_HIGH_TELEOP = 480;
     public static int SLIDE_CHAMBER_HIGH_DOWN_TELEOP = 360;
     public static int SLIDE_INTAKE_MAX = 700, SLIDE_INTAKE_MEDIUM = 530, SLIDE_MIN = 0;
-    public static int SLIDE_HANG_AUTO = 200, SLIDE_HANG_HIGH_UP = 1200, SLIDE_HANG_HIGH_DOWN = -70;
-    public static int SLIDE_HANG_LOW_UP = 920, SLIDE_HANG_LOW_DOWN = -70;
+    public static int SLIDE_HANG_AUTO = 200, SLIDE_HANG_HIGH_UP = 1300, SLIDE_HANG_HIGH_DOWN = -70;
+    public static int SLIDE_HANG_LOW_UP = 1200, SLIDE_HANG_LOW_DOWN = -70;
 
-
-    public static int ARM_INTAKE = -800;
-    public static int ARM_POST_INTAKE = 920;
+    public static int ARM_CHAMBER_HIGH_Test = 220;
+    public static int ARM_INTAKE = -850;
+    public static int ARM_POST_INTAKE = -750;
     // TODO: CHECK THIS VALUE
     public static int ARM_INTAKE_SPECIMEN = 590;
-    public static int ARM_RELEASE_BOX = 80;
-    public static int ARM_RELEASE_CHAMBER = 160, ARM_RELEASE_CHAMBER_TELEOP = 80;// 80 for teleOp
+    public static int ARM_RELEASE_BOX = 50;
+    public static int ARM_RELEASE_CHAMBER = 160, ARM_RELEASE_CHAMBER_TELEOP = 260;// 80 for teleOp
 
-    public static int ARM_HANG_HIGH = -200, ARM_HANG_AUTO = 220;
-    public static int ARM_HANG_LOW = -331;
+    public static int ARM_HANG_HIGH = -200, ARM_HANG_AUTO = 220;//
+    public static int ARM_HANG_LOW = 200;
+
 
     //New Auto
     public static int ARM_AUTO_CHAMBER = 160;
 
 
     // WRIST
-    public static double WRIST_INTAKE = 0.1, WRIST_INTAKE_PARALLEL_GROUND = 0.42;
-    public static double WRIST_INTAKE_SPECIMEN = 0.52, WRIST_INTAKE_SPECIMEN_GROUND = 0.26;
+    public static double WRIST_INTAKE = 0.29, WRIST_INTAKE_PARALLEL_GROUND = 0.57;
+    public static double WRIST_INTAKE_SPECIMEN = 0.52, WRIST_INTAKE_SPECIMEN_GROUND = 0.38;
 
     // TODO: Retest
-    public static double WRIST_RELEASE_BOX_HIGH = 0.54, WRIST_RELEASE_BOX_LOW = 0.28;
+    public static double WRIST_RELEASE_BOX_HIGH = 0.8, WRIST_RELEASE_BOX_LOW = 0.28;
     public static double WRIST_RELEASE_CHAMBER_HIGH = 0.85, WRIST_RELEASE_CHAMBER_LOW = 0.8;
 
     // Spin Wrist
-    public static double SPINWRIST_INTAKE = 0.87;
-    public static double SPINWRIST_INTAKE_CLOCKWISE = 0.72;
-    public static double SPINWRIST_INTAKE_COUNTERCLOCKWISE = 0.48;
+    public static double SPINWRIST_INTAKE = 0.27;
+
+    public static double SPINWRIST_INTAKE_CLOCKWISE = 0.55;
+    public static double SPINWRIST_INTAKE_COUNTERCLOCKWISE = 0.27;
     // TODO: CHANGE THE VALUE
-    public static double SPINWRIST_INTAKE_SPECIMEN = 0.87;
-    public static double SPINWRIST_RELEASE_SPECIMEN = 0.19;
+    public static double SPINWRIST_INTAKE_SPECIMEN = 0.85;
+    public static double SPINWRIST_RELEASE_SPECIMEN = 0.27;
     
     // Claw
     // TODO: TEST Value
-    public static double CLAW_OPEN = 0.65;
-    public static double CLAW_GRAB = 0.254;
+    public static double CLAW_OPEN = 0.7;
+    public static double CLAW_GRAB = 0.26;
     public ClawState clawState = GRAB;
     public SlideState slideState = SlideState.VERTICAL;
     public WristIntakeState wristIntakeState = WristIntakeState.PRE_INTAKE;
@@ -131,10 +133,10 @@ public class SuperStructure {
         mSpinWrist = hardwareMap.get(Servo.class,"spinWrist");
 
 //        armMag = hardwareMap.get(TouchSensor.class,"armMag");
-
-        mSlideRight.setDirection(DcMotorSimple.Direction.REVERSE);
-        mArmRight.setDirection(DcMotorSimple.Direction.REVERSE);
-        mArmLeft.setDirection(DcMotorSimple.Direction.FORWARD);
+        mSlideLeft.setDirection(DcMotorSimple.Direction.REVERSE);
+        mSlideRight.setDirection(DcMotorSimple.Direction.FORWARD);
+        mArmRight.setDirection(DcMotorSimple.Direction.FORWARD);
+        mArmLeft.setDirection(DcMotorSimple.Direction.REVERSE);
 
         mArmLeft.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
         mArmRight.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
@@ -275,7 +277,7 @@ public class SuperStructure {
         wristIntakeState = WristIntakeState.RELEASE_SAMPLE;
     }
     public void setWristReleaseChamber(){
-        mWrist.setPosition(WRIST_RELEASE_CHAMBER_HIGH);
+        mWrist.setPosition(WRIST_INTAKE_PARALLEL_GROUND);
         wristIntakeState = WristIntakeState.RELEASE_SPECIMEN;
     }
 

@@ -17,7 +17,7 @@ public class AutoBlueChamber_pushSample extends AutoMaster {
         }
 
         if(opModeIsActive()){
-            moveToPreChamber(1);
+            moveToChamber(1);
             //releaseSpecimen(1);
 
             grabSample(1);
@@ -25,15 +25,15 @@ public class AutoBlueChamber_pushSample extends AutoMaster {
             //grabSample(3);
 
             intakeSpecimen();
-            moveToPreChamber(2);
+            moveToChamber(2);
             releaseSpecimen(2);
 
             dropSpecimen_toIntakeSpecimen(3);
-            moveToPreChamber(3);
+            moveToChamber(3);
             releaseSpecimen(3);
 
             dropSpecimen_toIntakeSpecimen(4);
-            moveToPreChamber(4);
+            moveToChamber(4);
             releaseSpecimen(4);
 
             //dropSpecimen_toIntakeSpecimen(5);

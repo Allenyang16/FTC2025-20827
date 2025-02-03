@@ -5,18 +5,19 @@ import com.qualcomm.robotcore.eventloop.opmode.Disabled;
 
 import org.firstinspires.ftc.teamcode.AutoMaster;
 
-@Autonomous
-@Disabled
+@Autonomous @Disabled
 public class AutoRedChamber extends AutoMaster {
     @Override
+
     public void runOpMode() throws InterruptedException {
         side_color = RED;
         startSide = POSITIVE;
 
         initHardware();
         while (opModeInInit()){
-
+//            resetPosAndIMU();
         }
+
 
         if(opModeIsActive()){
             releaseSpecimen(1);

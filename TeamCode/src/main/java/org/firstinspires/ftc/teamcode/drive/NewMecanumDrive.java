@@ -124,10 +124,10 @@ public class NewMecanumDrive extends MecanumDrive{
         }
 
         // TODO: reverse any motors using DcMotor.setDirection()
-        leftFront.setDirection(DcMotorSimple.Direction.FORWARD);
-        leftRear.setDirection(DcMotorSimple.Direction.FORWARD);
-        rightFront.setDirection(DcMotorSimple.Direction.REVERSE);
-        rightRear.setDirection(DcMotorSimple.Direction.REVERSE);
+        leftFront.setDirection(DcMotorSimple.Direction.REVERSE);
+        leftRear.setDirection(DcMotorSimple.Direction.REVERSE);
+        rightFront.setDirection(DcMotorSimple.Direction.FORWARD);
+        rightRear.setDirection(DcMotorSimple.Direction.FORWARD);
 
         List<Integer> lastTrackingEncPositions = new ArrayList<>();
         List<Integer> lastTrackingEncVels = new ArrayList<>();
@@ -135,13 +135,12 @@ public class NewMecanumDrive extends MecanumDrive{
         // TODO: if desired, use setLocalizer() to change the localization method
         // TODO: Use this former initialization
         odo = hardwareMap.get(GoBildaPinpointDriver.class,"odo");
-        odo.setOffsets(-132.5,133);
-        odo.setEncoderResolution(GoBildaPinpointDriver.GoBildaOdometryPods.goBILDA_SWINGARM_POD);
-        odo.setEncoderDirections(GoBildaPinpointDriver.EncoderDirection.REVERSED, GoBildaPinpointDriver.EncoderDirection.FORWARD);
+        odo.setOffsets(-74.7000,95.7000);
+        odo.setEncoderResolution(GoBildaPinpointDriver.GoBildaOdometryPods.goBILDA_4_BAR_POD);
+        odo.setEncoderDirections(GoBildaPinpointDriver.EncoderDirection.FORWARD, GoBildaPinpointDriver.EncoderDirection.FORWARD);
         odo.recalibrateIMU();
 
         setLocalizer(new StandardLocalizer(hardwareMap));
-
 
         trajectorySequenceRunner = new TrajectorySequenceRunner(
                 follower, HEADING_PID, batteryVoltageSensor,
@@ -149,6 +148,9 @@ public class NewMecanumDrive extends MecanumDrive{
         );
     }
 
+    public void resetPosAndIMU() {
+        odo.resetPosAndIMU();
+    }
     public TrajectoryBuilder trajectoryBuilder(Pose2d startPose) {
         return new TrajectoryBuilder(startPose, VEL_CONSTRAINT, ACCEL_CONSTRAINT);
     }
@@ -365,9 +367,8 @@ public class NewMecanumDrive extends MecanumDrive{
     public static TrajectoryAccelerationConstraint getAccelerationConstraint(double maxAccel) {
         return new ProfileAccelerationConstraint(maxAccel);
     }
-
-    public static PIDCoefficients translationPid_x = new PIDCoefficients(0.22, 0.000, 0.03);
-    public static PIDCoefficients translationPid_y = new PIDCoefficients(0.22, 0.000, 0.03);
+    public static PIDCoefficients translationPid_x = new PIDCoefficients(0.20, 0.003, 0.03);
+    public static PIDCoefficients translationPid_y = new PIDCoefficients(0.20, 0.003, 0.03);
     public static PIDCoefficients headingPid = new PIDCoefficients(2.1, 0, 0.13);
 
     private PIDFController transPID_x;
@@ -375,7 +376,7 @@ public class NewMecanumDrive extends MecanumDrive{
     private PIDFController turnPID;
     private double moveHeading = 0;
 
-    private static final double DEFAULT_TRANS_TOL = 1.25;
+
 
     private double simpleMove_x_Tolerance = 1.25, simpleMove_y_Tolerance = 1.25, simpleMoveRotationTolerance = Math.toRadians(10);
     private double simpleMovePower = 0.95;
