@@ -146,7 +146,7 @@ public class Solo_Wall extends LinearOpMode {
                     upper.setArmPosition(SuperStructure.ARM_INTAKE);
                     delay(300);
                     upper.setSlidePosition_horizontal(SuperStructure.SLIDE_INTAKE_MAX);
-                    upper.setWristIntake();
+                    upper.setWristIntakeSpecimenGround();
                     upper.setClawOpen();
 
                     intakeState = IntakeState.SPECIMEN;
@@ -200,7 +200,6 @@ public class Solo_Wall extends LinearOpMode {
 
                 if (toIntakeSpecimen.toTrue()) {
                     upper.setWristIntakeSpecimenGround();
-                    upper.setWristIntakeSpecimen();
                     upper.setSpinWristIntake_specimen();
                     intakeState = IntakeState.SPECIMEN;
                     sequence = Sequence.INTAKE_SPECIMEN;
@@ -218,6 +217,10 @@ public class Solo_Wall extends LinearOpMode {
                 }
 
                 if(toOrigin.toTrue()){
+                    if(intakeState == IntakeState.FAR){
+                        upper.setSlidePosition_horizontal(SuperStructure.SLIDE_MIN);
+                        delay(200);
+                    }
                     upper.setSpinWristIntake();
                     upper.setArmPosition(0);
                     sequence = Sequence.RUN;

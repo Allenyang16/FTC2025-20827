@@ -15,7 +15,7 @@ import java.util.Locale;
 public class Duo extends LinearOpMode {
     Runnable update;
     enum Sequence{
-        RUN, INTAKE_SAMPLE, INTAKE_SPECIMEN, RELEASE_SAMPLE,RELEASE_SPECIMEN
+        RUN, INTAKE_SAMPLE, INTAKE_SPECIMEN, RELEASE_SAMPLE,RELEASE_SPECIMEN,HANG
     }
     enum IntakeState{
         FAR, NEAR, POST, SPECIMEN
@@ -39,29 +39,29 @@ public class Duo extends LinearOpMode {
         drive.setUpdateRunnable(update);
         upper.setUpdateRunnable(update);
 
-        XCYBoolean resetHeading = new XCYBoolean(()-> gamepad1.a);
-        XCYBoolean toOrigin = new XCYBoolean(()-> (intakeState == IntakeState.POST || intakeState == IntakeState.SPECIMEN) && gamepad1.left_stick_button);
+        XCYBoolean resetHeading = new XCYBoolean(()-> gamepad1.x);
+        XCYBoolean toOrigin = new XCYBoolean(()-> (gamepad1.left_stick_button));
         XCYBoolean toPostIntake = new XCYBoolean(()-> (intakeState != IntakeState.SPECIMEN) && gamepad1.right_stick_button);
-        XCYBoolean toHang = new XCYBoolean(()->gamepad1.dpad_left);
-        XCYBoolean hang = new XCYBoolean(()->gamepad1.dpad_right);
-        XCYBoolean toHangHigher = new XCYBoolean(()->gamepad2.dpad_left);
-        XCYBoolean hangHigher= new XCYBoolean(()->gamepad2.dpad_right);
+        XCYBoolean toHang = new XCYBoolean(() -> gamepad1.dpad_left && sequence == Sequence.RUN);
+        XCYBoolean hang = new XCYBoolean(() -> gamepad1.dpad_right && sequence == Sequence.HANG);
+        XCYBoolean toHang_high = new XCYBoolean(() -> gamepad1.dpad_left && sequence == Sequence.HANG);
+        XCYBoolean hang_high = new XCYBoolean(() -> gamepad1.dpad_right && sequence == Sequence.HANG);
 
         XCYBoolean intakeFar = new XCYBoolean(()-> gamepad2.y);
         XCYBoolean intakeNear = new XCYBoolean(()-> gamepad2.a);
         XCYBoolean toIntakeSpecimen = new XCYBoolean(()->gamepad2.b);
-        XCYBoolean toHighRelease_sample = new XCYBoolean(()-> gamepad2.dpad_up);
+        XCYBoolean toHighRelease_sample = new XCYBoolean(()-> gamepad2.dpad_up && sequence == Sequence.RUN);
         XCYBoolean downWrist = new XCYBoolean(()-> gamepad2.left_bumper);
         XCYBoolean upWrist = new XCYBoolean(()-> sequence == Sequence.INTAKE_SPECIMEN && gamepad2.left_bumper);
         XCYBoolean grab = new XCYBoolean(()-> gamepad2.right_bumper);
 
-        XCYBoolean spinWristClockwise = new XCYBoolean(()-> gamepad2.right_trigger > 0);
-        XCYBoolean spinWristCounterClockwise = new XCYBoolean(()-> gamepad2.left_trigger > 0);
+        XCYBoolean spinWristClockwise = new XCYBoolean(()-> gamepad2.right_trigger > 0 && sequence == Sequence.INTAKE_SAMPLE);
+        XCYBoolean spinWristCounterClockwise = new XCYBoolean(()-> gamepad2.left_trigger >0 && sequence == Sequence.INTAKE_SAMPLE);
         XCYBoolean toReleaseHighChamber = new XCYBoolean(()-> intakeState == IntakeState.SPECIMEN && gamepad2.dpad_up);
         XCYBoolean toPullDownSpecimen = new XCYBoolean(()-> intakeState == IntakeState.SPECIMEN && gamepad2.dpad_down);
         XCYBoolean resetSlide = new XCYBoolean(()-> sequence == Sequence.RUN && gamepad2.right_stick_button);
 
-//        upper.initialize();
+        upper.initialize();
         drive.setPoseEstimate(AutoMaster.endPos);
         drive.setYawHeading(AutoMaster.yawOffset);
 
@@ -75,38 +75,37 @@ public class Duo extends LinearOpMode {
                 drive.resetHeading();
             }
 
-            if(toHang.toTrue()){
-                upper.setArmPosition(-200);
-                upper.hang_setSlide(SuperStructure.SLIDE_HANG_LOW_UP);
-                delay(500);
-                upper.setArmPosition(SuperStructure.ARM_HANG_LOW);
-            }
-            if(hang.toTrue()){
-                upper.setSlidePosition_hang(SuperStructure.SLIDE_HANG_LOW_DOWN);
-                delay(1800);
-                upper.setArmPosition(0);
-            }
+            if (sequence == Sequence.HANG) {
+                if (hang.toTrue()) {
+                    upper.setSlidePosition_hang(SuperStructure.SLIDE_HANG_LOW_DOWN);
+                    delay(1800);
+                    upper.setArmPosition(100);
+                }
 
-            if(toHangHigher.toTrue()) {
-                upper.setArmPosition(-20);
-                upper.hang_setSlide(SuperStructure.SLIDE_HANG_HIGH_UP);
-                upper.setArmPosition(SuperStructure.ARM_HANG_HIGH);
+                if (toOrigin.toTrue()) {
+                    upper.setSlidePosition_horizontal(0);
+                    delay(300);
+                    upper.setArmPosition(0);
+                    upper.setWristIntake();
+                    upper.setWristReleaseChamber();
+                    sequence = Sequence.RUN;
+                }
+
+                if (toHang_high.toTrue()) {
+                    upper.setArmPosition(50);
+                    delay(10);
+                    upper.hang_setSlide(SuperStructure.SLIDE_HANG_HIGH_UP);
+                    delay(500);
+                }
+
+                if (hang_high.toTrue()) {
+                    upper.hang_setSlide(SuperStructure.SLIDE_HANG_HIGH_DOWN);
+                    delay(200);
+                    upper.setArmPosition(500);
+                    delay(1000);
+                    upper.setArmPosition(0);
+                }
             }
-            if(toHangHigher.toTrue()) {
-                upper.setArmPosition(-20);
-                upper.hang_setSlide(SuperStructure.SLIDE_HANG_HIGH_UP);
-                upper.setArmPosition(SuperStructure.ARM_HANG_HIGH);
-            }
-
-
-            if(hangHigher.toTrue()){
-                upper.setArmPosition(200);
-                upper.setSlidePosition_hang(SuperStructure.SLIDE_HANG_HIGH_DOWN);
-                delay(1800);
-                upper.setArmPosition(0);
-            }
-
-
 
             if(sequence == Sequence.RUN){
                 if(resetSlide.toTrue()){
@@ -115,12 +114,17 @@ public class Duo extends LinearOpMode {
                     upper.resetSlide();
                     upper.setSlidePosition(0);
                 }
-
+                if (toHang.toTrue()) {
+                    upper.setArmPosition(SuperStructure.ARM_HANG_LOW);
+                    upper.hang_setSlide(SuperStructure.SLIDE_HANG_LOW_UP);
+                    delay(500);
+//                    upper.setArmPosition(SuperStructure.ARM_HANG_LOW);
+                    sequence = Sequence.HANG;
+                }
                 if(intakeFar.toTrue()){
                     upper.setArmPosition(SuperStructure.ARM_INTAKE);
                     upper.setWristPreIntake();
                     upper.setSpinWristIntake();
-                    upper.setClawOpen();
                     delay(200);
                     upper.setSlidePosition_horizontal(SuperStructure.SLIDE_INTAKE_MAX);
                     intakeState = IntakeState.FAR;
@@ -131,25 +135,25 @@ public class Duo extends LinearOpMode {
                     upper.setSlidePosition_horizontal(SuperStructure.SLIDE_MIN);
                     upper.setSpinWristIntake();
                     upper.setWristPreIntake();
-
                     upper.setArmPosition(SuperStructure.ARM_INTAKE);
-                    upper.setClawOpen();
                     intakeState = IntakeState.NEAR;
                     sequence = Sequence.INTAKE_SAMPLE;
                 }
 
-                if(toIntakeSpecimen.toTrue()){
+                if (toIntakeSpecimen.toTrue()) {
+                    upper.setSpinWristIntake_specimen();
                     upper.setArmPosition(SuperStructure.ARM_INTAKE);
                     delay(300);
                     upper.setSlidePosition_horizontal(SuperStructure.SLIDE_INTAKE_MAX);
                     upper.setWristIntakeSpecimenGround();
                     upper.setClawOpen();
+
                     intakeState = IntakeState.SPECIMEN;
                     sequence = Sequence.INTAKE_SPECIMEN;
                 }
 
+
                 if(toHighRelease_sample.toTrue()){
-                    delay(100);
                     upper.setArmPosition(SuperStructure.ARM_RELEASE_BOX);
                     upper.setSlidePosition_verticle(SuperStructure.SLIDE_BOX_HIGH);
                     upper.setWristPreIntake();
@@ -181,6 +185,8 @@ public class Duo extends LinearOpMode {
                     upper.setSlidePosition_horizontal(SuperStructure.SLIDE_INTAKE_MAX);
                     upper.setWristPreIntake();
                     upper.setSpinWristIntake();
+                    delay(200);
+                    upper.setClawOpen();
                     intakeState = IntakeState.FAR;
                 }
                 if(intakeNear.toTrue()){
@@ -191,8 +197,9 @@ public class Duo extends LinearOpMode {
                     intakeState = IntakeState.NEAR;
                 }
 
-                if(toIntakeSpecimen.toTrue()){
+                if (toIntakeSpecimen.toTrue()) {
                     upper.setWristIntakeSpecimenGround();
+                    upper.setSpinWristIntake_specimen();
                     intakeState = IntakeState.SPECIMEN;
                     sequence = Sequence.INTAKE_SPECIMEN;
                 }
@@ -209,6 +216,10 @@ public class Duo extends LinearOpMode {
                 }
 
                 if(toOrigin.toTrue()){
+                    if(intakeState == IntakeState.FAR){
+                        upper.setSlidePosition_horizontal(SuperStructure.SLIDE_MIN);
+                        delay(200);
+                    }
                     upper.setSpinWristIntake();
                     upper.setArmPosition(0);
                     sequence = Sequence.RUN;
@@ -222,20 +233,24 @@ public class Duo extends LinearOpMode {
 
                 if(upWrist.toTrue()){
                     upper.setWristIntakeSpecimenGround();
+                    upper.setSpinWristIntake_specimen();
                 }
                 if(intakeFar.toTrue()){
                     upper.setSlidePosition_horizontal(SuperStructure.SLIDE_INTAKE_MAX);
+                    upper.setSpinWristIntake_specimen();
                 }
                 if(intakeNear.toTrue()){
                     upper.setSlidePosition_horizontal(0);
+                    upper.setSpinWristIntake_specimen();
                 }
 
                 if(toReleaseHighChamber.toTrue()){
                     upper.setSlidePosition_verticle(0);
                     delay(200);
-                    upper.setArmPosition(0);
+                    upper.setArmPosition(SuperStructure.ARM_CHAMBER_HIGH_Test);
                     delay(300);
                     upper.setWristReleaseChamber();
+                    upper.setSpinWristIntake();
                     upper.setArmPosition(SuperStructure.ARM_RELEASE_CHAMBER_TELEOP);
                     upper.setSlidePosition_verticle(SuperStructure.SLIDE_CHAMBER_HIGH_TELEOP);
                     sequence = Sequence.RELEASE_SPECIMEN;
@@ -280,6 +295,9 @@ public class Duo extends LinearOpMode {
                     upper.setSlidePosition_verticle(SuperStructure.SLIDE_MIN);
                     upper.setWristPreIntake();
                     upper.setSpinWristIntake();
+                    upper.setArmPosition(0);
+                    sequence = Sequence.RUN;
+
                 }
             }
 

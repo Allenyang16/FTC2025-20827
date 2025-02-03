@@ -5,7 +5,7 @@ import com.qualcomm.robotcore.eventloop.opmode.Autonomous;
 import org.firstinspires.ftc.teamcode.AutoMaster;
 
 @Autonomous
-public class AutoRedChamber_pushSample extends AutoMaster {
+public class AutoRedChamber_test extends AutoMaster {
     @Override
     public void runOpMode() throws InterruptedException {
         side_color = RED;
@@ -25,17 +25,21 @@ public class AutoRedChamber_pushSample extends AutoMaster {
             grabSample(2);
             grabSample(3);
 
-            intakeSpecimen();
+            intakeSpecimen_ground();
             moveToChamber(2);
             releaseSpecimen(2);
 
-            dropSpecimen_toIntakeSpecimen(3);
+            intakeSpecimen_ground();
             moveToChamber(3);
             releaseSpecimen(3);
 
-            dropSpecimen_toIntakeSpecimen(4);
+            intakeSpecimen_ground();
             moveToChamber(4);
             releaseSpecimen(4);
+
+            intakeSpecimen_ground();
+            moveToChamber(5);
+            releaseSpecimen(5);
 
             //dropSpecimen_toIntakeSpecimen(5);
             //moveToPreChamber(5);
