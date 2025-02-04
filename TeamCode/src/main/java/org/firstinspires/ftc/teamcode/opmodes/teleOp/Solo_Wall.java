@@ -50,7 +50,7 @@ public class Solo_Wall extends LinearOpMode {
         XCYBoolean intakeFar = new XCYBoolean(()-> gamepad1.y);
         XCYBoolean intakeNear = new XCYBoolean(()-> gamepad1.a);
         XCYBoolean toIntakeSpecimen = new XCYBoolean(()->gamepad1.b);
-        XCYBoolean toHighRelease_sample = new XCYBoolean(()-> gamepad1.left_trigger>0 && sequence == Sequence.RUN);
+        XCYBoolean toHighRelease_sample = new XCYBoolean(()-> gamepad1.dpad_up && sequence == Sequence.RUN);
         XCYBoolean downWrist = new XCYBoolean(()-> gamepad1.left_bumper);
         XCYBoolean upWrist = new XCYBoolean(()-> sequence == Sequence.INTAKE_SPECIMEN && gamepad1.left_bumper);
         XCYBoolean grab = new XCYBoolean(()-> gamepad1.right_bumper);
@@ -58,7 +58,7 @@ public class Solo_Wall extends LinearOpMode {
 
         XCYBoolean spinWristClockwise = new XCYBoolean(()-> gamepad1.right_trigger > 0 && sequence == Sequence.INTAKE_SAMPLE);
         XCYBoolean spinWristCounterClockwise = new XCYBoolean(()-> gamepad1.left_trigger > 0);
-        XCYBoolean toReleaseHighChamber = new XCYBoolean(()-> intakeState == IntakeState.SPECIMEN && gamepad1.left_trigger>0);
+        XCYBoolean toReleaseHighChamber = new XCYBoolean(()-> intakeState == IntakeState.SPECIMEN && gamepad1.dpad_up);
         XCYBoolean toPullDownSpecimen = new XCYBoolean(()-> intakeState == IntakeState.SPECIMEN && gamepad1.dpad_down);
         XCYBoolean resetSlide = new XCYBoolean(()-> sequence == Sequence.RUN && gamepad1.right_stick_button);
 

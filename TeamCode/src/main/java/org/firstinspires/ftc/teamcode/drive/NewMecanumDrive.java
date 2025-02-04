@@ -376,7 +376,7 @@ public class NewMecanumDrive extends MecanumDrive{
     private PIDFController turnPID;
     private double moveHeading = 0;
 
-
+    private static final double DEFAULT_TRANS_TOL = 0.05;
 
     private double simpleMove_x_Tolerance = 1.25, simpleMove_y_Tolerance = 1.25, simpleMoveRotationTolerance = Math.toRadians(10);
     private double simpleMovePower = 0.95;
