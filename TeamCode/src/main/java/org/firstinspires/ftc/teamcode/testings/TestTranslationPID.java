@@ -23,7 +23,7 @@ public class TestTranslationPID extends LinearOpMode {
     private Pose2d forwardPos = new Pose2d(-48,48,0);
     public static double t_x = 0.5, t_y = 0.5, t_heading = 3;
     public static double t1_x = AutoMaster.chamber_x, t1_y = AutoMaster.chamber_y, t1_heading = -90;
-    public static double t2_x = AutoMaster.intakeSpecimen_x, t2_y = AutoMaster.pre_intakeSpecimen_y, t2_heading = 90;
+    public static double t2_x = AutoMaster.intakeSpecimen_x, t2_y = AutoMaster.pre_intakeSpecimen_y_wall, t2_heading = 90;
     public static double t3_x = t2_x, t3_y = AutoMaster.intakeSpecimen_y;
     private Pose2d backPos = new Pose2d(48,48,0);
     private Pose2d rightPos = new Pose2d(48,48,Math.toRadians(-90));
