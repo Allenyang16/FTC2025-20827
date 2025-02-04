@@ -78,12 +78,12 @@ public class SuperStructure {
 
 
     // WRIST
-    public static double WRIST_INTAKE = 0.29, WRIST_INTAKE_PARALLEL_GROUND = 0.57;
-    public static double WRIST_INTAKE_SPECIMEN = 0.52, WRIST_INTAKE_SPECIMEN_GROUND = 0.38;
+    public static double WRIST_INTAKE = 0.02, WRIST_INTAKE_PARALLEL_GROUND = 0.29;
+    public static double WRIST_INTAKE_SPECIMEN = 0.4, WRIST_INTAKE_SPECIMEN_GROUND = 0.08;
 
     // TODO: Retest
-    public static double WRIST_RELEASE_BOX_HIGH = 0.8, WRIST_RELEASE_BOX_LOW = 0.28;
-    public static double WRIST_RELEASE_CHAMBER_HIGH = 0.85, WRIST_RELEASE_CHAMBER_LOW = 0.8;
+    public static double WRIST_RELEASE_BOX_HIGH = 0.4, WRIST_RELEASE_BOX_LOW = 0.28;
+    public static double WRIST_RELEASE_CHAMBER_HIGH = 0.02, WRIST_RELEASE_CHAMBER_LOW = 0.8;
 
     // Spin Wrist
     public static double SPINWRIST_INTAKE = 0.27;
