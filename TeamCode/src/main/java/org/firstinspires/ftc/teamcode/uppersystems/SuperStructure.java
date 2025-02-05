@@ -62,15 +62,16 @@ public class SuperStructure {
     public static int SLIDE_HANG_LOW_UP = 1200, SLIDE_HANG_LOW_DOWN = -70;
 
     public static int ARM_CHAMBER_HIGH_Test = 220;
-    public static int ARM_INTAKE = 850;
-    public static int ARM_POST_INTAKE = 750;
+    public static int ARM_INTAKE = -850;
+    public static int ARM_PRE_INTAKE = -810;
+    public static int ARM_POST_INTAKE = -750;
     // TODO: CHECK THIS VALUE
     public static int ARM_INTAKE_SPECIMEN = 590;
-    public static int ARM_RELEASE_BOX = -50;
+    public static int ARM_RELEASE_BOX = 50;
     public static int ARM_RELEASE_CHAMBER = 160, ARM_RELEASE_CHAMBER_TELEOP = 260;// 80 for teleOp
 
     public static int ARM_HANG_HIGH = -200, ARM_HANG_AUTO = 220;//
-    public static int ARM_HANG_LOW = -200;
+    public static int ARM_HANG_LOW = 200;
 
 
     //New Auto
@@ -86,10 +87,10 @@ public class SuperStructure {
     public static double WRIST_RELEASE_CHAMBER_HIGH = 0.02, WRIST_RELEASE_CHAMBER_LOW = 0.8;
 
     // Spin Wrist
-    public static double SPINWRIST_INTAKE = 0.85;
+    public static double SPINWRIST_INTAKE = 0.27;
 
-    public static double SPINWRIST_INTAKE_CLOCKWISE = 0.72;
-    public static double SPINWRIST_INTAKE_COUNTERCLOCKWISE = 0.98;
+    public static double SPINWRIST_INTAKE_CLOCKWISE = 0.55;
+    public static double SPINWRIST_INTAKE_COUNTERCLOCKWISE = 0.27;
     // TODO: CHANGE THE VALUE
     public static double SPINWRIST_INTAKE_SPECIMEN = 0.85;
     public static double SPINWRIST_RELEASE_SPECIMEN = 0.27;
@@ -135,8 +136,8 @@ public class SuperStructure {
 //        armMag = hardwareMap.get(TouchSensor.class,"armMag");
         mSlideLeft.setDirection(DcMotorSimple.Direction.REVERSE);
         mSlideRight.setDirection(DcMotorSimple.Direction.FORWARD);
-        mArmRight.setDirection(DcMotorSimple.Direction.REVERSE);
-        mArmLeft.setDirection(DcMotorSimple.Direction.FORWARD);
+        mArmRight.setDirection(DcMotorSimple.Direction.FORWARD);
+        mArmLeft.setDirection(DcMotorSimple.Direction.REVERSE);
 
         mArmLeft.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
         mArmRight.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);

@@ -44,7 +44,7 @@ public abstract class AutoMaster extends LinearOpMode {
     Pose2d chamberPos_delta;
     public static double chamber_delta_x = 2;
     Pose2d preChamberPos;
-    public static double preChamber_x = 15, preChamber_y = 40;
+    public static double preChamber_x = 9, preChamber_y = 50;
     Pose2d preChamberPos1;
     public static double preChamber1_x = 6, preChamber1_y = 37;
 
@@ -82,10 +82,11 @@ public abstract class AutoMaster extends LinearOpMode {
     Pose2d pushSamplePos_delta;
 
     public static double grabSample1_x = 25.5, grabSample2_x = 34.7, grabSample3_x = 46.9;
-    public static double grabSample_y = 31;
+    public static double grabSample_y = 29;
     public static double pushSample3_x = 68, pushSample2_x = 58;
     public static double pushSample_y = 15, pushSample_heading = -90, pushSample_delta_y = 32;
-    public static double grabSample_heaidng = -10.94, throwSample_heading = 50;
+    public static double throwSample_y = 55;
+    public static double grabSample_heaidng = -10.94, throwSample_heading = 30;
 
     Pose2d intakeSpecimenPos;
     public static double intakeSpecimen_x = 40, intakeSpecimen_y = 57.2, intakeSpecimen_heading = -90;
@@ -175,9 +176,9 @@ public abstract class AutoMaster extends LinearOpMode {
         grabSamplePos_3 = new Pose2d(grabSample3_x * startSide, grabSample_y * side_color, Math.toRadians(grabSample_heaidng * side_color));
         pushSamplePos_2 = new Pose2d(pushSample2_x * startSide, pushSample_y * side_color, Math.toRadians(pushSample_heading  * side_color) );
         pushSamplePos_3 = new Pose2d(pushSample3_x * startSide, pushSample_y * side_color, Math.toRadians(pushSample_heading * side_color) );
-        throwSamplePos_1 = new Pose2d(grabSample1_x * startSide, grabSample_y * side_color, Math.toRadians(throwSample_heading * side_color));
-        throwSamplePos_2 = new Pose2d(grabSample2_x * startSide, grabSample_y * side_color, Math.toRadians(throwSample_heading * side_color));
-        throwSamplePos_3 = new Pose2d(grabSample3_x * startSide, grabSample_y * side_color, Math.toRadians( throwSample_heading * side_color));
+        throwSamplePos_1 = new Pose2d(grabSample1_x * startSide, throwSample_y * side_color, Math.toRadians(throwSample_heading * side_color));
+        throwSamplePos_2 = new Pose2d(grabSample2_x * startSide, throwSample_y * side_color, Math.toRadians(throwSample_heading * side_color));
+        throwSamplePos_3 = new Pose2d(grabSample3_x * startSide, throwSample_y * side_color, Math.toRadians( throwSample_heading * side_color));
         pushSamplePos_delta = new Pose2d(0, pushSample_delta_y * side_color, 0);
 
         telemetry.addLine("init: drive");
@@ -525,65 +526,70 @@ public abstract class AutoMaster extends LinearOpMode {
             upper.setArmPosition(SuperStructure.ARM_INTAKE);
             delay(175);
             upper.setSlidePosition_horizontal(SuperStructure.SLIDE_INTAKE_MAX);
-            upper.setSpinWristIntake_spinClockwise();
-            upper.setWristIntake();
-
-            delay(250);
-            upper.setClawGrab();
-            delay(50);
-            upper.setSlidePosition(SuperStructure.SLIDE_MIN);
-            delay(100);
-            upper.setWristPreIntake();
-            drive.moveTo(throwSamplePos_2,100);
-            upper.setArmPosition(SuperStructure.ARM_INTAKE);
-            upper.setSlidePosition_horizontal(SuperStructure.SLIDE_INTAKE_MAX);
+//            upper.setSpinWristIntake_spinClockwise();
+//            upper.setWristIntake();
             upper.setWristPreIntake();
             upper.setSpinWristIntake();
-            delay(200);
-            upper.setClawOpen();
+            delay(250);
+//            upper.setClawGrab();
+//            delay(50);
+//            upper.setSlidePosition(SuperStructure.SLIDE_MIN);
+//            delay(100);
+//            upper.setWristPreIntake();
+            drive.moveTo(throwSamplePos_1,0);
+            upper.setArmPosition(SuperStructure.ARM_PRE_INTAKE);
+//            upper.setSlidePosition_horizontal(SuperStructure.SLIDE_INTAKE_MAX);
+//            upper.setWristPreIntake();
+//            upper.setSpinWristIntake();
+//            delay(200);
+//            upper.setClawOpen();
             upper.setSlidePosition_horizontal(SuperStructure.SLIDE_MIN);
         } else if (count == 2){
             drive.moveTo(grabSamplePos_2,200);
             upper.setArmPosition(SuperStructure.ARM_INTAKE);
-            delay(75);
+            delay(175);
             upper.setSlidePosition_horizontal(SuperStructure.SLIDE_INTAKE_MAX);
-            upper.setSpinWristIntake_spinClockwise();
-            upper.setWristIntake();
-            delay(250);
-            upper.setClawGrab();
-            delay(50);
-            upper.setSlidePosition(SuperStructure.SLIDE_MIN);
-            delay(100);
-            upper.setWristPreIntake();
-            drive.moveTo(throwSamplePos_2,100);
-            upper.setArmPosition(SuperStructure.ARM_INTAKE);
-            upper.setSlidePosition_horizontal(SuperStructure.SLIDE_INTAKE_MAX);
+//            upper.setSpinWristIntake_spinClockwise();
+//            upper.setWristIntake();
             upper.setWristPreIntake();
             upper.setSpinWristIntake();
-            delay(200);
-            upper.setClawOpen();
+            delay(250);
+//            upper.setClawGrab();
+//            delay(50);
+//            upper.setSlidePosition(SuperStructure.SLIDE_MIN);
+//            delay(100);
+//            upper.setWristPreIntake();
+            drive.moveTo(throwSamplePos_2,0);
+            upper.setArmPosition(SuperStructure.ARM_PRE_INTAKE);
+//            upper.setSlidePosition_horizontal(SuperStructure.SLIDE_INTAKE_MAX);
+//            upper.setWristPreIntake();
+//            upper.setSpinWristIntake();
+//            delay(200);
+//            upper.setClawOpen();
             upper.setSlidePosition_horizontal(SuperStructure.SLIDE_MIN);
 
         } else{
             drive.moveTo(grabSamplePos_3,150);
             upper.setArmPosition(SuperStructure.ARM_INTAKE);
-            delay(75);
+            delay(175);
             upper.setSlidePosition_horizontal(SuperStructure.SLIDE_INTAKE_MAX);
-            upper.setSpinWristIntake_spinClockwise();
-            upper.setWristIntake();
-            delay(250);
-            upper.setClawGrab();
-            delay(50);
-            upper.setSlidePosition(SuperStructure.SLIDE_MIN);
-            delay(100);
-            upper.setWristPreIntake();
-            drive.moveTo(throwSamplePos_3,100);
-            upper.setArmPosition(SuperStructure.ARM_INTAKE);
-            upper.setSlidePosition_horizontal(SuperStructure.SLIDE_INTAKE_MAX);
+//            upper.setSpinWristIntake_spinClockwise();
+//            upper.setWristIntake();
             upper.setWristPreIntake();
             upper.setSpinWristIntake();
-            delay(200);
-            upper.setClawOpen();
+            delay(250);
+//            upper.setClawGrab();
+//            delay(50);
+//            upper.setSlidePosition(SuperStructure.SLIDE_MIN);
+//            delay(100);
+//            upper.setWristPreIntake();
+            drive.moveTo(throwSamplePos_3,0);
+            upper.setArmPosition(SuperStructure.ARM_PRE_INTAKE);
+//            upper.setSlidePosition_horizontal(SuperStructure.SLIDE_INTAKE_MAX);
+//            upper.setWristPreIntake();
+//            upper.setSpinWristIntake();
+//            delay(200);
+//            upper.setClawOpen();
             upper.setSlidePosition_horizontal(SuperStructure.SLIDE_MIN);
         }
     }
