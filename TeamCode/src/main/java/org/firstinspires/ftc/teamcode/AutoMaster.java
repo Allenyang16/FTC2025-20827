@@ -31,7 +31,7 @@ public abstract class AutoMaster extends LinearOpMode {
     public static double yawOffset = 0;
 
     Pose2d startPos;
-    public static double startPos_x = 39, startPos_y = 62, startPos_heading = 90;
+    public static double startPos_x = 39, startPos_y = 62, startPos_heading = -90;
     public static double startPos_chamber_x = 9, startPos_box_x = 39;
 
     Pose2d boxPos;
@@ -52,11 +52,11 @@ public abstract class AutoMaster extends LinearOpMode {
     public static double postChamber_x = 35, postChamber_y = 40;
 
     Pose2d intakeSamplePos_1;
-    public static double intake_samplePos1_x = 48, intake_samplePos1_y = 38, intake_samplePos1_heading = -90; // Degree
+    public static double intake_samplePos1_x = 46, intake_samplePos1_y = 40, intake_samplePos1_heading = -90; // Degree
     Pose2d intakeSamplePos_2;
-    public static double intake_samplePos2_x = 58, intake_samplePos2_y = 38, intake_samplePos2_heading = -90;
+    public static double intake_samplePos2_x = 56, intake_samplePos2_y = 40, intake_samplePos2_heading = -90;
     Pose2d intakeSamplePos_3;
-    public static double intake_samplePos3_x = 57, intake_samplePos3_y = 45, intake_samplePos3_heading = -120;
+    public static double intake_samplePos3_x = 52, intake_samplePos3_y = 47, intake_samplePos3_heading = -130;
     public static double sample3_positive_heading = -60;
 
     public static double intake_redSample1_x = 37, intake_redSample1_y = -47, intake_redSample1_heading = -80;
