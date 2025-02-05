@@ -38,7 +38,7 @@ public abstract class AutoMaster extends LinearOpMode {
     public static double box_x = 57, box_y = 57, box_heading = 45; // or 135 in blue
 
     Pose2d chamberPos;
-    public static double chamber_x = -10, chamber_y = 30, chamber_heading = 90;
+    public static double chamber_x = 9, chamber_y = 32.5, chamber_heading = -90;
     Pose2d chamberPos2;
     public static double chamber2_x = 8;
     Pose2d chamberPos_delta;
@@ -426,9 +426,9 @@ public abstract class AutoMaster extends LinearOpMode {
             upper.setSpinWristRelease_specimen();
             drive.setSimpleMovePower(1);
             drive.setSimpleMoveTolerance(2,2,Math.toRadians(5));
-            drive.moveTo(preChamberPos,0);
             upper.setSlidePosition(SuperStructure.SLIDE_CHAMBER_HIGH_AUTO);
             drive.moveTo(chamberPos,correcting_time);
+
 
 
         }else if (count == 2) {

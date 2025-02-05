@@ -5,7 +5,7 @@ import com.qualcomm.robotcore.eventloop.opmode.Autonomous;
 import org.firstinspires.ftc.teamcode.AutoMaster;
 
 @Autonomous
-public class AutoBlueChamber_pushSample extends AutoMaster {
+public class AutoBlueChamber_throwSample extends AutoMaster {
     @Override
     public void runOpMode() throws InterruptedException {
         side_color = BLUE;
