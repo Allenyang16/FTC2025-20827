@@ -45,7 +45,7 @@ public class AutoRedChamber_pushSample extends AutoMaster {
             intakeSpecimen();
             moveToChamber(5);
             releaseSpecimen(5);
-            dropSpecimen_toOrigin();
+
             park_observation();
         }
     }
