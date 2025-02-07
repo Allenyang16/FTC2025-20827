@@ -21,30 +21,30 @@ public class AutoRedChamber_pushSample extends AutoMaster {
 
         if(opModeIsActive()){
             moveToChamber(1);
-            releaseSpecimen(1);
+            autoUpperToOrigin();
 
             pushSample(1);
             pushSample(2);
             pushSample(3);
 
-            intakeSpecimen();
+            intakeSpecimen(1);
             moveToChamber(2);
-            releaseSpecimen(2);
+            autoUpperToOrigin();
             dropSpecimen_toOrigin();
 
-            intakeSpecimen();
+            intakeSpecimen(2);
             moveToChamber(3);
-            releaseSpecimen(3);
+            autoUpperToOrigin();
             dropSpecimen_toOrigin();
 
-            intakeSpecimen();
+            intakeSpecimen(3);
             moveToChamber(4);
-            releaseSpecimen(4);
+            autoUpperToOrigin();
             dropSpecimen_toOrigin();
 
-            intakeSpecimen();
+            intakeSpecimen(4);
             moveToChamber(5);
-            releaseSpecimen(5);
+            autoUpperToOrigin();
 
             park_observation();
         }

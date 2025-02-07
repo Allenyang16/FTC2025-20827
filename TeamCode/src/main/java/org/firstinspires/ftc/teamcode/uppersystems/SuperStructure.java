@@ -63,7 +63,7 @@ public class SuperStructure {
 
     public static int ARM_CHAMBER_HIGH_Test = 220;
     public static int ARM_INTAKE = -850;
-    public static int ARM_PRE_INTAKE = -810;
+    public static int ARM_PRE_INTAKE = -780;
     public static int ARM_POST_INTAKE = -750;
     // TODO: CHECK THIS VALUE
     public static int ARM_INTAKE_SPECIMEN = 590;

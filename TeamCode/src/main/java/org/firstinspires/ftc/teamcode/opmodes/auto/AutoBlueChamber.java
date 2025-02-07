@@ -19,25 +19,25 @@ public class AutoBlueChamber extends AutoMaster {
         }
 
         if(opModeIsActive()){
-            releaseSpecimen(1);
+            autoUpperToOrigin();
             dropSpecimen_toOrigin();
 
             intakeSample(1);
             dropSampleToHP();
-            intakeSpecimen();
-            releaseSpecimen(2);
+            intakeSpecimen(1);
+            autoUpperToOrigin();
             dropSpecimen_toOrigin();
 
             intakeSample(2);
             dropSampleToHP();
-            intakeSpecimen();
-            releaseSpecimen(1);
+            intakeSpecimen(2);
+            autoUpperToOrigin();
             dropSpecimen_toOrigin();
 
             intakeSample_3();
             dropSampleToHP();
-            intakeSpecimen();
-            releaseSpecimen(2);
+            intakeSpecimen(3);
+            autoUpperToOrigin();
             dropSpecimen_toOrigin();
             park_observation();
         }
