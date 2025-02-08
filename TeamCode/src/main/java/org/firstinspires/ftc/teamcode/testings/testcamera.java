@@ -16,10 +16,25 @@ public class testcamera extends LinearOpMode {
     @Override
     public void runOpMode() {
         // Get the camera monitor view ID
-        // Initialize the camera
         WebcamName webcamName = hardwareMap.get(WebcamName.class, "Webcam 1");
-        int cameraMonitorViewId = hardwareMap.appContext.getResources().getIdentifier("cameraMonitorViewId", "id", hardwareMap.appContext.getPackageName());
+        int cameraMonitorViewId = hardwareMap.appContext.getResources().getIdentifier(
+                "cameraMonitorViewId", "id", hardwareMap.appContext.getPackageName());
         camera = OpenCvCameraFactory.getInstance().createWebcam(webcamName, cameraMonitorViewId);
+
+        // Open the camera
+        camera.openCameraDeviceAsync(new OpenCvCamera.AsyncCameraOpenListener() {
+            @Override
+            public void onOpened() {
+                // Start streaming the camera feed
+                camera.startStreaming(320, 240, OpenCvCameraRotation.UPRIGHT);
+            }
+
+            @Override
+            public void onError(int errorCode) {
+                telemetry.addData("Camera Error", errorCode);
+                telemetry.update();
+            }
+        });
 
         // Wait for the start button to be pressed
         waitForStart();
@@ -32,20 +47,6 @@ public class testcamera extends LinearOpMode {
             // Use telemetry to display a message
             telemetry.addData("Camera Status", "Streaming...");
             telemetry.update();
-            // Open the camera
-            camera.openCameraDeviceAsync(new OpenCvCamera.AsyncCameraOpenListener() {
-                @Override
-                public void onOpened() {
-                    // Start streaming the camera feed
-                    camera.startStreaming(320, 240, OpenCvCameraRotation.UPRIGHT);
-                }
-
-                @Override
-                public void onError(int errorCode) {
-                    telemetry.addData("Camera Error", errorCode);
-                    telemetry.update();
-                }
-            });
         }
 
         // Stop streaming when done
