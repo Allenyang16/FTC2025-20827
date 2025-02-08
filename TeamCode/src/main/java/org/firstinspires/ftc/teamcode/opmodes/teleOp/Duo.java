@@ -169,11 +169,16 @@ public class Duo extends LinearOpMode {
             if(sequence == Sequence.INTAKE_SAMPLE){
                 if(grab.toTrue()){
                     if (intakeState == Duo.IntakeState.POST_NEAR || intakeState == Duo.IntakeState.POST_FAR) {
-                        upper.setArmPosition(SuperStructure.ARM_INTAKE);
-                        delay(50);
-                        upper.switchClawState();
-                        delay(50);
-                        upper.setArmPosition(SuperStructure.ARM_PRE_INTAKE);
+                        if (upper.clawState == SuperStructure.ClawState.OPEN){
+                            upper.setArmPosition(SuperStructure.ARM_INTAKE);
+                            delay(100);
+                            upper.switchClawState();
+                            delay(100);
+                            upper.setArmPosition(SuperStructure.ARM_PRE_INTAKE);
+                        }
+                        else{
+                            upper.switchClawState();
+                        }
                     }
                     else{
                         upper.switchClawState();
@@ -249,6 +254,7 @@ public class Duo extends LinearOpMode {
 
             if(sequence == Sequence.INTAKE_SPECIMEN){
                 if(grab.toTrue()){
+                    upper.setArmPosition(SuperStructure.ARM_INTAKE);
                     upper.switchClawState();
                 }
 
