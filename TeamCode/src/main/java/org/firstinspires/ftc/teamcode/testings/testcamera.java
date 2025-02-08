@@ -8,7 +8,7 @@ import org.openftc.easyopencv.OpenCvCamera;
 import org.openftc.easyopencv.OpenCvCameraFactory;
 import org.openftc.easyopencv.OpenCvCameraRotation;
 
-@TeleOp(name = "Camera Test", group = "Testing")
+@TeleOp(name = "Camera Test Status", group = "Testing")
 @Config
 public class testcamera extends LinearOpMode {
     OpenCvCamera camera;
@@ -20,21 +20,6 @@ public class testcamera extends LinearOpMode {
         WebcamName webcamName = hardwareMap.get(WebcamName.class, "Webcam 1");
         int cameraMonitorViewId = hardwareMap.appContext.getResources().getIdentifier("cameraMonitorViewId", "id", hardwareMap.appContext.getPackageName());
         camera = OpenCvCameraFactory.getInstance().createWebcam(webcamName, cameraMonitorViewId);
-        
-        // Open the camera
-        camera.openCameraDeviceAsync(new OpenCvCamera.AsyncCameraOpenListener() {
-            @Override
-            public void onOpened() {
-                // Start streaming the camera feed
-                camera.startStreaming(320, 240, OpenCvCameraRotation.UPRIGHT);
-            }
-
-            @Override
-            public void onError(int errorCode) {
-                telemetry.addData("Camera Error", errorCode);
-                telemetry.update();
-            }
-        });
 
         // Wait for the start button to be pressed
         waitForStart();
@@ -47,6 +32,20 @@ public class testcamera extends LinearOpMode {
             // Use telemetry to display a message
             telemetry.addData("Camera Status", "Streaming...");
             telemetry.update();
+            // Open the camera
+            camera.openCameraDeviceAsync(new OpenCvCamera.AsyncCameraOpenListener() {
+                @Override
+                public void onOpened() {
+                    // Start streaming the camera feed
+                    camera.startStreaming(320, 240, OpenCvCameraRotation.UPRIGHT);
+                }
+
+                @Override
+                public void onError(int errorCode) {
+                    telemetry.addData("Camera Error", errorCode);
+                    telemetry.update();
+                }
+            });
         }
 
         // Stop streaming when done
