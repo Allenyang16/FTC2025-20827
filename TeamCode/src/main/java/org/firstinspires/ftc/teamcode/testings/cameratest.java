@@ -31,7 +31,7 @@ public class cameratest extends LinearOpMode {
             @Override
             public void onOpened() {
                 // Start streaming the camera feed
-                camera.startStreaming(640, 480, OpenCvCameraRotation.UPRIGHT, 30);
+                camera.startStreaming(640, 480, OpenCvCameraRotation.UPRIGHT);
             }
 
             @Override
