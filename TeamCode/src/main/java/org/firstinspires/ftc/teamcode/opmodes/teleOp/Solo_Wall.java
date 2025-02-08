@@ -173,18 +173,19 @@ public class Solo_Wall extends LinearOpMode {
                 if(grab.toTrue()){
                     if (intakeState == IntakeState.POST_NEAR || intakeState == IntakeState.POST_FAR) {
                         upper.setArmPosition(SuperStructure.ARM_INTAKE);
-                        intakeState = IntakeState.INTAKE_SAMPLE;
-                    }
-                    else
+                        delay(50);
                         upper.switchClawState();
-                }
-                if(changeWrist.toTrue()){
-                    if(intakeState != IntakeState.INTAKE_SAMPLE) {
-                        upper.switchWristIntakeState();
-                    }
-                    else{
+                        delay(50);
                         upper.setArmPosition(SuperStructure.ARM_PRE_INTAKE);
                     }
+                    else{
+                        upper.switchClawState();
+                    }
+
+                }
+                if(changeWrist.toTrue()){
+                    upper.switchWristIntakeState();
+                    upper.setArmPosition(SuperStructure.ARM_PRE_INTAKE);
                 }
                 if(spinWristClockwise.toTrue()){
                     upper.setSpinWristIntake_spinClockwise();
@@ -269,7 +270,7 @@ public class Solo_Wall extends LinearOpMode {
 
                 if(toReleaseHighChamber.toTrue()){
                     upper.setSlidePosition_verticle(0);
-                    delay(200);
+                    delay(50);
                     upper.setArmPosition(SuperStructure.ARM_CHAMBER_HIGH_Test);
                     delay(300);
                     upper.setWristReleaseChamber();

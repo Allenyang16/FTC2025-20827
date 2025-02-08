@@ -20,14 +20,14 @@ public class AutoRedChamber extends AutoMaster {
 
 
         if(opModeIsActive()){
-            releaseSpecimen(1);
+            autoUpperToOrigin();
             dropSpecimen_toOrigin();
 
             intake_release_RedSample();
             releaseRedSample(1);
 
             intakeSpecimen_ground();
-            releaseSpecimen(2);
+            autoUpperToOrigin();
         }
     }
 }

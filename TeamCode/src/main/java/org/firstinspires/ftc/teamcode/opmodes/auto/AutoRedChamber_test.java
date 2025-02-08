@@ -19,7 +19,7 @@ public class AutoRedChamber_test extends AutoMaster {
 
         if(opModeIsActive()){
             moveToChamber(1);
-            releaseSpecimen(1);
+            autoUpperToOrigin();
 
             grabSample(1);
             grabSample(2);
@@ -27,19 +27,19 @@ public class AutoRedChamber_test extends AutoMaster {
 
             intakeSpecimen_ground();
             moveToChamber(2);
-            releaseSpecimen(2);
+            autoUpperToOrigin();
 
             intakeSpecimen_ground();
             moveToChamber(3);
-            releaseSpecimen(3);
+            autoUpperToOrigin();
 
             intakeSpecimen_ground();
             moveToChamber(4);
-            releaseSpecimen(4);
+            autoUpperToOrigin();
 
             intakeSpecimen_ground();
             moveToChamber(5);
-            releaseSpecimen(5);
+            autoUpperToOrigin();
 
             //dropSpecimen_toIntakeSpecimen(5);
             //moveToPreChamber(5);

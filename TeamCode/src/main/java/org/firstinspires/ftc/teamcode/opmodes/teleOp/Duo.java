@@ -51,7 +51,7 @@ public class Duo extends LinearOpMode {
         XCYBoolean intakeNear = new XCYBoolean(()-> gamepad2.a);
         XCYBoolean toIntakeSpecimen = new XCYBoolean(()->gamepad2.b);
         XCYBoolean toHighRelease_sample = new XCYBoolean(()-> gamepad2.dpad_up && sequence == Sequence.RUN);
-        XCYBoolean changeWrist = new XCYBoolean(()-> gamepad1.left_bumper && sequence == Sequence.INTAKE_SAMPLE);
+        XCYBoolean changeWrist = new XCYBoolean(()-> gamepad2 .left_bumper && sequence == Sequence.INTAKE_SAMPLE);
         XCYBoolean upWrist = new XCYBoolean(()-> sequence == Sequence.INTAKE_SPECIMEN && gamepad2.left_bumper);
         XCYBoolean grab = new XCYBoolean(()-> gamepad2.right_bumper);
 
@@ -168,20 +168,21 @@ public class Duo extends LinearOpMode {
 
             if(sequence == Sequence.INTAKE_SAMPLE){
                 if(grab.toTrue()){
-                    if (intakeState == IntakeState.POST_NEAR || intakeState == IntakeState.POST_FAR) {
+                    if (intakeState == Duo.IntakeState.POST_NEAR || intakeState == Duo.IntakeState.POST_FAR) {
                         upper.setArmPosition(SuperStructure.ARM_INTAKE);
-                        intakeState = IntakeState.INTAKE_SAMPLE;
-                    }
-                    else
+                        delay(50);
                         upper.switchClawState();
-                }
-                if(changeWrist.toTrue()){
-                    if(intakeState != IntakeState.INTAKE_SAMPLE) {
-                        upper.switchWristIntakeState();
-                    }
-                    else{
+                        delay(50);
                         upper.setArmPosition(SuperStructure.ARM_PRE_INTAKE);
                     }
+                    else{
+                        upper.switchClawState();
+                    }
+
+                }
+                if(changeWrist.toTrue()) {
+                    upper.switchWristIntakeState();
+                    upper.setArmPosition(SuperStructure.ARM_PRE_INTAKE);
                 }
                 if(spinWristClockwise.toTrue()){
                     upper.setSpinWristIntake_spinClockwise();
@@ -266,7 +267,7 @@ public class Duo extends LinearOpMode {
 
                 if(toReleaseHighChamber.toTrue()){
                     upper.setSlidePosition_verticle(0);
-                    delay(200);
+                    delay(50);
                     upper.setArmPosition(SuperStructure.ARM_CHAMBER_HIGH_Test);
                     delay(300);
                     upper.setWristReleaseChamber();

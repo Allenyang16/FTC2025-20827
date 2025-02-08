@@ -53,22 +53,22 @@ public class SuperStructure {
     private TouchSensor armMag = null;
 
     public static int SLIDE_BOX_HIGH = 1750, SLIDE_BOX_LOW = 500;
-    public static int SLIDE_CHAMBER_HIGH = 780, SLIDE_CHAMBER_HIGH_FIRST = 720, SLIDE_CHAMBER_LOW = 0;
+    public static int SLIDE_CHAMBER_HIGH = 780, SLIDE_CHAMBER_HIGH_AUTO = 500, SLIDE_CHAMBER_LOW = 0;
     public static int SLIDE_CHAMBER_HIGH_DOWN = 420;
     public static int SLIDE_CHAMBER_HIGH_TELEOP = 480;
     public static int SLIDE_CHAMBER_HIGH_DOWN_TELEOP = 360;
-    public static int SLIDE_INTAKE_MAX = 700, SLIDE_INTAKE_MEDIUM = 530, SLIDE_MIN = 0;
+    public static int SLIDE_INTAKE_MAX = 700, SLIDE_AUTO = 70, SLIDE_MIN = 0;
     public static int SLIDE_HANG_AUTO = 200, SLIDE_HANG_HIGH_UP = 1300, SLIDE_HANG_HIGH_DOWN = -70;
     public static int SLIDE_HANG_LOW_UP = 1200, SLIDE_HANG_LOW_DOWN = -70;
 
     public static int ARM_CHAMBER_HIGH_Test = 220;
     public static int ARM_INTAKE = -850;
-    public static int ARM_PRE_INTAKE = -810;
+    public static int ARM_PRE_INTAKE = -780;
     public static int ARM_POST_INTAKE = -750;
     // TODO: CHECK THIS VALUE
     public static int ARM_INTAKE_SPECIMEN = 590;
     public static int ARM_RELEASE_BOX = 50;
-    public static int ARM_RELEASE_CHAMBER = 160, ARM_RELEASE_CHAMBER_TELEOP = 260;// 80 for teleOp
+    public static int ARM_RELEASE_CHAMBER = -265, ARM_RELEASE_CHAMBER_TELEOP = 260;// 80 for teleOp
 
     public static int ARM_HANG_HIGH = -200, ARM_HANG_AUTO = 220;//
     public static int ARM_HANG_LOW = 200;
