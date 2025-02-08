@@ -8,30 +8,25 @@ import org.openftc.easyopencv.OpenCvCamera;
 import org.openftc.easyopencv.OpenCvCameraFactory;
 import org.openftc.easyopencv.OpenCvCameraRotation;
 
-
 @TeleOp(name = "Camera Test", group = "Testing")
 @Config
-public class cameratest extends LinearOpMode {
+public class testcamera extends LinearOpMode {
     OpenCvCamera camera;
-    cv pipeline; // Use your cv class as the pipeline
 
     @Override
-    public void runOpMode() {  
+    public void runOpMode() {
         // Get the camera monitor view ID
         // Initialize the camera
         WebcamName webcamName = hardwareMap.get(WebcamName.class, "Webcam 1");
         int cameraMonitorViewId = hardwareMap.appContext.getResources().getIdentifier("cameraMonitorViewId", "id", hardwareMap.appContext.getPackageName());
-        camera =OpenCvCameraFactory.getInstance().createWebcam(webcamName, cameraMonitorViewId);
-        // Initialize your custom pipeline
-        pipeline = new cv(); // Instantiate your cv pipeline
-        camera.setPipeline(pipeline);
-
+        camera = OpenCvCameraFactory.getInstance().createWebcam(webcamName, cameraMonitorViewId);
+        
         // Open the camera
         camera.openCameraDeviceAsync(new OpenCvCamera.AsyncCameraOpenListener() {
             @Override
             public void onOpened() {
                 // Start streaming the camera feed
-                camera.startStreaming(640, 480, OpenCvCameraRotation.UPRIGHT, 30);
+                camera.startStreaming(320, 240, OpenCvCameraRotation.UPRIGHT);
             }
 
             @Override
@@ -46,13 +41,11 @@ public class cameratest extends LinearOpMode {
 
         // Main loop
         while (opModeIsActive()) {
-            // Access the largest contour area and angle
-            double area = pipeline.getLargestContourArea();
-            double angle = pipeline.getLargestContourAngle();
+            // Placeholder for camera data processing
+            // You can add your own logic here to process camera frames if needed
 
-            // Use the area and angle as needed
-            telemetry.addData("Largest Contour Area", area);
-            telemetry.addData("Largest Contour Angle", angle);
+            // Use telemetry to display a message
+            telemetry.addData("Camera Status", "Streaming...");
             telemetry.update();
         }
 
