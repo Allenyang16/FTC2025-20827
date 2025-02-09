@@ -123,7 +123,7 @@ public class Duo extends LinearOpMode {
                 }
                 if(intakeFar.toTrue()){
                     upper.setArmPosition(SuperStructure.ARM_PRE_INTAKE);
-                    upper.setWristIntake();
+                    upper.setWristPreIntake();
                     upper.setSpinWristIntake();
                     delay(200);
                     upper.setSlidePosition_horizontal(SuperStructure.SLIDE_INTAKE_MAX);
@@ -134,7 +134,7 @@ public class Duo extends LinearOpMode {
                 if(intakeNear.toTrue()){
                     upper.setSlidePosition_horizontal(SuperStructure.SLIDE_MIN);
                     upper.setSpinWristIntake();
-                    upper.setWristIntake();
+                    upper.setWristPreIntake();
                     upper.setArmPosition(SuperStructure.ARM_PRE_INTAKE);
                     intakeState = IntakeState.POST_NEAR;
                     sequence = Sequence.INTAKE_SAMPLE;
@@ -155,8 +155,9 @@ public class Duo extends LinearOpMode {
 
                 if(toHighRelease_sample.toTrue()){
                     upper.setArmPosition(SuperStructure.ARM_RELEASE_BOX);
+//                    delay(100);
                     upper.setSlidePosition_verticle(SuperStructure.SLIDE_BOX_HIGH);
-                    upper.setWristReleaseBox();
+                    upper.setWristPreIntake();
                     upper.setSpinWristReleaseBox();
                     sequence = Sequence.RELEASE_SAMPLE;
                 }
@@ -265,20 +266,19 @@ public class Duo extends LinearOpMode {
                 }
 
                 if(toReleaseHighChamber.toTrue()){
-                    upper.setSlidePosition_verticle(0);
-                    delay(50);
-                    upper.setArmPosition(SuperStructure.ARM_CHAMBER_HIGH_Test);
-                    delay(300);
+                    upper.setSlidePosition_horizontal(0);
+                    delay(100);
                     upper.setWristReleaseChamber();
                     upper.setSpinWristIntake();
                     upper.setArmPosition(SuperStructure.ARM_RELEASE_CHAMBER_TELEOP);
+                    delay(350);
                     upper.setSlidePosition_verticle(SuperStructure.SLIDE_CHAMBER_HIGH_TELEOP);
                     sequence = Sequence.RELEASE_SPECIMEN;
                 }
 
                 if(toOrigin.toTrue() ){
                     upper.setSlidePosition_horizontal(0);
-                    delay(300);
+                    delay(250);
                     upper.setArmPosition(0);
                     upper.setWristPreIntake();
                     upper.setSpinWristIntake();

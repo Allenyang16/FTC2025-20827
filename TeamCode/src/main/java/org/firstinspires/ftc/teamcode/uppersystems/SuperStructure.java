@@ -55,7 +55,7 @@ public class SuperStructure {
     public static int SLIDE_BOX_HIGH = 1750, SLIDE_BOX_LOW = 500;
     public static int SLIDE_CHAMBER_HIGH = 780, SLIDE_CHAMBER_HIGH_AUTO = 500, SLIDE_CHAMBER_LOW = 0;
     public static int SLIDE_CHAMBER_HIGH_DOWN = 420;
-    public static int SLIDE_CHAMBER_HIGH_TELEOP = 500;
+    public static int SLIDE_CHAMBER_HIGH_TELEOP = 490;
     public static int SLIDE_CHAMBER_HIGH_DOWN_TELEOP = 360;
     public static int SLIDE_INTAKE_MAX = 700, SLIDE_AUTO = 70, SLIDE_MIN = 0;
     public static int SLIDE_HANG_AUTO = 200, SLIDE_HANG_HIGH_UP = 1300, SLIDE_HANG_HIGH_DOWN = -70;
@@ -98,7 +98,7 @@ public class SuperStructure {
     // Claw
     // TODO: TEST Value
     public static double CLAW_OPEN = 0.7;
-    public static double CLAW_GRAB = 0.26;
+    public static double CLAW_GRAB = 0.27;
     public ClawState clawState = GRAB;
     public SlideState slideState = SlideState.VERTICAL;
     public WristIntakeState wristIntakeState = WristIntakeState.PRE_INTAKE;
