@@ -89,8 +89,8 @@ public class Solo_Wall extends LinearOpMode {
                     upper.setSlidePosition_horizontal(0);
                     delay(300);
                     upper.setArmPosition(0);
-                    upper.setWristIntake();
-                    upper.setWristReleaseChamber();
+                    upper.setWristPreIntake();
+                    upper.setSpinWristIntake();
                     sequence = Sequence.RUN;
                 }
 
@@ -126,7 +126,7 @@ public class Solo_Wall extends LinearOpMode {
                 }
                 if(intakeFar.toTrue()){
                     upper.setArmPosition(SuperStructure.ARM_PRE_INTAKE);
-                    upper.setWristPreIntake();
+                    upper.setWristIntake();
                     upper.setSpinWristIntake();
                     delay(200);
                     upper.setSlidePosition_horizontal(SuperStructure.SLIDE_INTAKE_MAX);
@@ -137,7 +137,7 @@ public class Solo_Wall extends LinearOpMode {
                 if(intakeNear.toTrue()){
                     upper.setSlidePosition_horizontal(SuperStructure.SLIDE_MIN);
                     upper.setSpinWristIntake();
-                    upper.setWristPreIntake();
+                    upper.setWristIntake();
                     upper.setArmPosition(SuperStructure.ARM_PRE_INTAKE);
                     intakeState = IntakeState.POST_NEAR;
                     sequence = Sequence.INTAKE_SAMPLE;
@@ -159,7 +159,7 @@ public class Solo_Wall extends LinearOpMode {
                 if(toHighRelease_sample.toTrue()){
                     upper.setArmPosition(SuperStructure.ARM_RELEASE_BOX);
                     upper.setSlidePosition_verticle(SuperStructure.SLIDE_BOX_HIGH);
-                    upper.setWristPreIntake();
+                    upper.setWristReleaseBox();
                     upper.setSpinWristReleaseBox();
                     sequence = Sequence.RELEASE_SAMPLE;
                 }
@@ -174,9 +174,9 @@ public class Solo_Wall extends LinearOpMode {
                     if (intakeState == IntakeState.POST_NEAR || intakeState == IntakeState.POST_FAR) {
                         if (upper.clawState == SuperStructure.ClawState.OPEN){
                             upper.setArmPosition(SuperStructure.ARM_INTAKE);
-                            delay(100);
+                            delay(80);
                             upper.switchClawState();
-                            delay(100);
+                            delay(80);
                             upper.setArmPosition(SuperStructure.ARM_PRE_INTAKE);
                         }
                         else{
@@ -200,12 +200,8 @@ public class Solo_Wall extends LinearOpMode {
                 }
 
                 if(intakeFar.toTrue()) {
-                    if (intakeState == IntakeState.INTAKE_SAMPLE){
-                        upper.setArmPosition(SuperStructure.ARM_PRE_INTAKE);
-                        delay(100);
-                    }
+                    upper.setArmPosition(SuperStructure.ARM_PRE_INTAKE);
                     upper.setSlidePosition_horizontal(SuperStructure.SLIDE_INTAKE_MAX);
-                    upper.setWristPreIntake();
                     upper.setSpinWristIntake();
                     delay(200);
                     upper.setClawOpen();
@@ -213,10 +209,7 @@ public class Solo_Wall extends LinearOpMode {
                     intakeState = IntakeState.POST_FAR;
                 }
                 if(intakeNear.toTrue()){
-                    if (intakeState == IntakeState.INTAKE_SAMPLE){
-                        upper.setArmPosition(SuperStructure.ARM_PRE_INTAKE);
-                        delay(100);
-                    }
+                    upper.setArmPosition(SuperStructure.ARM_PRE_INTAKE);
                     upper.setSlidePosition_horizontal(SuperStructure.SLIDE_MIN);
                     upper.setSpinWristIntake();
                     upper.setWristPreIntake();
@@ -290,7 +283,7 @@ public class Solo_Wall extends LinearOpMode {
                     upper.setSlidePosition_horizontal(0);
                     delay(300);
                     upper.setArmPosition(0);
-                    upper.setWristIntake();
+                    upper.setWristPreIntake();
                     upper.setWristReleaseChamber();
                     sequence = Sequence.RUN;
                 }
