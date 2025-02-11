@@ -62,16 +62,16 @@ public class SuperStructure {
     public static int SLIDE_HANG_LOW_UP = 1200, SLIDE_HANG_LOW_DOWN = -70;
 
     public static int ARM_CHAMBER_HIGH_Test = 220;
-    public static int ARM_INTAKE = -850;
-    public static int ARM_PRE_INTAKE = -780;
-    public static int ARM_POST_INTAKE = -750;
+    public static int ARM_INTAKE = -970;
+    public static int ARM_PRE_INTAKE = -875;
+    public static int ARM_POST_INTAKE = -875;
     // TODO: CHECK THIS VALUE
-    public static int ARM_INTAKE_SPECIMEN = 590;
-    public static int ARM_RELEASE_BOX = 50;
-    public static int ARM_RELEASE_CHAMBER = -265, ARM_RELEASE_CHAMBER_TELEOP = 270;// 80 for teleOp
+    public static int ARM_INTAKE_SPECIMEN = 700;
+    public static int ARM_RELEASE_BOX = 90;
+    public static int ARM_RELEASE_CHAMBER = -300, ARM_RELEASE_CHAMBER_TELEOP = 310;// 80 for teleOp
 
     public static int ARM_HANG_HIGH = -200, ARM_HANG_AUTO = 220;//
-    public static int ARM_HANG_LOW = 200;
+    public static int ARM_HANG_LOW = 400;
 
 
     //New Auto
@@ -136,8 +136,8 @@ public class SuperStructure {
 //        armMag = hardwareMap.get(TouchSensor.class,"armMag");
         mSlideLeft.setDirection(DcMotorSimple.Direction.REVERSE);
         mSlideRight.setDirection(DcMotorSimple.Direction.FORWARD);
-        mArmRight.setDirection(DcMotorSimple.Direction.FORWARD);
-        mArmLeft.setDirection(DcMotorSimple.Direction.REVERSE);
+        mArmRight.setDirection(DcMotorSimple.Direction.REVERSE);
+        mArmLeft.setDirection(DcMotorSimple.Direction.FORWARD);
 
         mArmLeft.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
         mArmRight.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);

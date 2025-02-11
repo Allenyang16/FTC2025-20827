@@ -45,7 +45,7 @@ public class Solo_Wall extends LinearOpMode {
         XCYBoolean toHang = new XCYBoolean(() -> gamepad1.dpad_left && sequence == Sequence.RUN);
         XCYBoolean hang = new XCYBoolean(() -> gamepad1.dpad_right && sequence == Sequence.HANG);
         XCYBoolean toHang_high = new XCYBoolean(() -> gamepad1.dpad_left && sequence == Sequence.HANG);
-        XCYBoolean hang_high = new XCYBoolean(() -> gamepad1.dpad_right && sequence == Sequence.HANG);
+        XCYBoolean hang_high = new XCYBoolean(() -> gamepad1.dpad_up && sequence == Sequence.HANG);
 
         XCYBoolean intakeFar = new XCYBoolean(()-> gamepad1.y);
         XCYBoolean intakeNear = new XCYBoolean(()-> gamepad1.a);
@@ -95,13 +95,16 @@ public class Solo_Wall extends LinearOpMode {
                 }
 
                 if (toHang_high.toTrue()) {
-                    upper.setArmPosition(50);
+                    upper.setArmPosition(-250);
                     delay(10);
                     upper.hang_setSlide(SuperStructure.SLIDE_HANG_HIGH_UP);
-                    delay(500);
+                    delay(1000);
+                    upper.setArmPosition(200);
                 }
 
                 if (hang_high.toTrue()) {
+                    upper.setArmPosition(-300);
+                    delay(1000);
                     upper.hang_setSlide(SuperStructure.SLIDE_HANG_HIGH_DOWN);
                     delay(200);
                     upper.setArmPosition(500);

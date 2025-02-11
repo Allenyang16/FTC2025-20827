@@ -45,8 +45,8 @@ public class Duo extends LinearOpMode {
         XCYBoolean toHang = new XCYBoolean(() -> gamepad1.dpad_left && sequence == Sequence.RUN);
         XCYBoolean hang = new XCYBoolean(() -> gamepad1.dpad_right && sequence == Sequence.HANG);
         XCYBoolean toHang_high = new XCYBoolean(() -> gamepad1.dpad_left && sequence == Sequence.HANG);
-        XCYBoolean hang_high = new XCYBoolean(() -> gamepad1.dpad_right && sequence == Sequence.HANG);
 
+        XCYBoolean hang_high = new XCYBoolean(() -> gamepad2.dpad_right && sequence == Sequence.HANG);
         XCYBoolean intakeFar = new XCYBoolean(()-> gamepad2.y);
         XCYBoolean intakeNear = new XCYBoolean(()-> gamepad2.a);
         XCYBoolean toIntakeSpecimen = new XCYBoolean(()->gamepad2.b);
@@ -117,8 +117,6 @@ public class Duo extends LinearOpMode {
                 if (toHang.toTrue()) {
                     upper.setArmPosition(SuperStructure.ARM_HANG_LOW);
                     upper.hang_setSlide(SuperStructure.SLIDE_HANG_LOW_UP);
-                    delay(500);
-//                    upper.setArmPosition(SuperStructure.ARM_HANG_LOW);
                     sequence = Sequence.HANG;
                 }
                 if(intakeFar.toTrue()){
@@ -207,7 +205,7 @@ public class Duo extends LinearOpMode {
                     delay(200);
                     upper.setClawOpen();
 
-                    intakeState = IntakeState.POST_FAR;
+                    intakeState = IntakeState.INTAKE_SAMPLE;
                 }
                 if(intakeNear.toTrue()){
                     upper.setArmPosition(SuperStructure.ARM_PRE_INTAKE);
@@ -215,7 +213,7 @@ public class Duo extends LinearOpMode {
                     upper.setSpinWristIntake();
                     upper.setWristIntake();
 
-                    intakeState = IntakeState.POST_NEAR;
+                    intakeState = IntakeState.INTAKE_SAMPLE;
                 }
 
                 if (toIntakeSpecimen.toTrue()) {
@@ -229,14 +227,11 @@ public class Duo extends LinearOpMode {
                 if(toPostIntake.toTrue()){
                     upper.setWristPreIntake();
                     upper.setSpinWristIntake();
-                    if(intakeState == IntakeState.POST_FAR){
+                    if(intakeState == IntakeState.INTAKE_SAMPLE) {
+                        upper.setArmPosition(SuperStructure.ARM_POST_INTAKE);
                         upper.setSlidePosition_horizontal(SuperStructure.SLIDE_MIN);
                         intakeState = IntakeState.POST_NEAR;
-                    }else{
-                        upper.setArmPosition(SuperStructure.ARM_POST_INTAKE);
-                        intakeState = IntakeState.POST;
                     }
-                    upper.setWristPreIntake();
                 }
 
                 if(toOrigin.toTrue() && intakeState == IntakeState.POST_NEAR){
