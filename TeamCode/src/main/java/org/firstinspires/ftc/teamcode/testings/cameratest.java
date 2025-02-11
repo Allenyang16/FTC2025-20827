@@ -47,8 +47,8 @@ public class cameratest extends LinearOpMode {
         // Main loop
         while (opModeIsActive()) {
             // Access the largest contour area and angle
-            double area = pipeline.getLargestContourArea();
-            double angle = pipeline.getLargestContourAngle();
+            double area = pipeline.getSideArea();
+            double angle = pipeline.getSideAngle();
 
             // Use the area and angle as needed
             telemetry.addData("Largest Contour Area", area);
