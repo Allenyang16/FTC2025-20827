@@ -82,7 +82,8 @@ public class Solo_Wall extends LinearOpMode {
                 if (hang.toTrue()) {
                     upper.setSlidePosition_hang(SuperStructure.SLIDE_HANG_LOW_DOWN);
                     delay(1800);
-                    upper.setArmPosition(130);
+                        upper.setArmPosition(180);
+
                 }
 
                 if (toOrigin.toTrue()) {
@@ -95,8 +96,8 @@ public class Solo_Wall extends LinearOpMode {
                 }
 
                 if (toHang_high.toTrue()) {
-                    upper.setArmPosition(50);
-                    delay(10);
+                    upper.setArmPosition(80);
+                    delay(100);
                     upper.hang_setSlide(SuperStructure.SLIDE_HANG_HIGH_UP);
                     delay(500);
                 }
@@ -104,9 +105,18 @@ public class Solo_Wall extends LinearOpMode {
                 if (hang_high.toTrue()) {
                     upper.hang_setSlide(SuperStructure.SLIDE_HANG_HIGH_DOWN);
                     delay(200);
-                    upper.setArmPosition(500);
+                    upper.setArmPosition(-600);
                     delay(1000);
-                    upper.setArmPosition(0);
+                    while(upper.getSlidePosition() > 200){
+                        delay(100);
+                        if(toHang_high.toTrue()){
+                            break;
+                        }
+                    }
+                    upper.setArmPosition(150);
+                    if(upper.getSlidePosition() < 50) {
+                        upper.setArmPosition(0);
+                    }
                 }
             }
 
