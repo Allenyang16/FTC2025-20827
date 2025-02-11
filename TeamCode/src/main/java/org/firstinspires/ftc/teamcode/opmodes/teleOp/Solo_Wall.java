@@ -82,7 +82,7 @@ public class Solo_Wall extends LinearOpMode {
                 if (hang.toTrue()) {
                     upper.setSlidePosition_hang(SuperStructure.SLIDE_HANG_LOW_DOWN);
                     delay(1800);
-                    upper.setArmPosition(130);
+                    upper.setArmPosition(-50);
                 }
 
                 if (toOrigin.toTrue()) {
@@ -95,21 +95,29 @@ public class Solo_Wall extends LinearOpMode {
                 }
 
                 if (toHang_high.toTrue()) {
-                    upper.setArmPosition(-250);
-                    delay(10);
+                    upper.setArmPosition(-80);
+                    delay(100);
                     upper.hang_setSlide(SuperStructure.SLIDE_HANG_HIGH_UP);
-                    delay(1000);
-                    upper.setArmPosition(200);
+                    delay(200);
+                    upper.setArmPosition(120);
                 }
 
                 if (hang_high.toTrue()) {
-                    upper.setArmPosition(-300);
-                    delay(1000);
                     upper.hang_setSlide(SuperStructure.SLIDE_HANG_HIGH_DOWN);
-                    delay(200);
-                    upper.setArmPosition(500);
+                    delay(50);
+                    upper.setArmPosition(-900);
                     delay(1000);
-                    upper.setArmPosition(0);
+                    while (upper.getSlidePosition() > 200) {
+                        delay(100);
+                        if (toHang_high.toTrue()) {
+                            break;
+                        }
+                    }
+                    upper.setArmPosition(150);
+                    upper.setSlidePosition(0);
+                    if (upper.getSlidePosition() < 50) {
+                        upper.setArmPosition(-100);
+                    }
                 }
             }
 
@@ -177,7 +185,7 @@ public class Solo_Wall extends LinearOpMode {
                     if (intakeState == IntakeState.POST_NEAR || intakeState == IntakeState.POST_FAR) {
                         if (upper.clawState == SuperStructure.ClawState.OPEN){
                             upper.setArmPosition(SuperStructure.ARM_INTAKE);
-                            delay(80);
+                            delay(120);
                             upper.switchClawState();
                             delay(80);
                             upper.setArmPosition(SuperStructure.ARM_PRE_INTAKE);
