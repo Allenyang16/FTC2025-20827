@@ -55,7 +55,7 @@ public class SuperStructure {
     public static int SLIDE_BOX_HIGH = 1750, SLIDE_BOX_LOW = 500;
     public static int SLIDE_CHAMBER_HIGH = 780, SLIDE_CHAMBER_HIGH_AUTO = 500, SLIDE_CHAMBER_LOW = 0;
     public static int SLIDE_CHAMBER_HIGH_DOWN = 420;
-    public static int SLIDE_CHAMBER_HIGH_TELEOP = 480;
+    public static int SLIDE_CHAMBER_HIGH_TELEOP = 490;
     public static int SLIDE_CHAMBER_HIGH_DOWN_TELEOP = 360;
     public static int SLIDE_INTAKE_MAX = 700, SLIDE_AUTO = 70, SLIDE_MIN = 0;
     public static int SLIDE_HANG_AUTO = 200, SLIDE_HANG_HIGH_UP = 1300, SLIDE_HANG_HIGH_DOWN = -70;
@@ -63,15 +63,15 @@ public class SuperStructure {
 
     public static int ARM_CHAMBER_HIGH_Test = 220;
     public static int ARM_INTAKE = -850;
-    public static int ARM_PRE_INTAKE = -750;
+    public static int ARM_PRE_INTAKE = -780;
     public static int ARM_POST_INTAKE = -750;
     // TODO: CHECK THIS VALUE
     public static int ARM_INTAKE_SPECIMEN = 590;
     public static int ARM_RELEASE_BOX = 50;
-    public static int ARM_RELEASE_CHAMBER = -265, ARM_RELEASE_CHAMBER_TELEOP = 260;// 80 for teleOp
+    public static int ARM_RELEASE_CHAMBER = -265, ARM_RELEASE_CHAMBER_TELEOP = 270;// 80 for teleOp
 
     public static int ARM_HANG_HIGH = -200, ARM_HANG_AUTO = 220;//
-    public static int ARM_HANG_LOW = 200;
+    public static int ARM_HANG_LOW = 250;
 
 
     //New Auto
@@ -98,7 +98,7 @@ public class SuperStructure {
     // Claw
     // TODO: TEST Value
     public static double CLAW_OPEN = 0.7;
-    public static double CLAW_GRAB = 0.26;
+    public static double CLAW_GRAB = 0.27;
     public ClawState clawState = GRAB;
     public SlideState slideState = SlideState.VERTICAL;
     public WristIntakeState wristIntakeState = WristIntakeState.PRE_INTAKE;
@@ -268,10 +268,12 @@ public class SuperStructure {
     }
     public void setWristIntakeSpecimenGround(){
         mWrist.setPosition(WRIST_INTAKE_SPECIMEN_GROUND);
+        wristIntakeState = WristIntakeState.INTAKE_SPECIMEN;
     }
 
     public void setWristPostRelease(){
         mWrist.setPosition(WRIST_INTAKE);
+        wristIntakeState = WristIntakeState.PRE_INTAKE;
     }
     public void setWristReleaseBox(){
         mWrist.setPosition(WRIST_RELEASE_BOX_HIGH);
@@ -280,10 +282,6 @@ public class SuperStructure {
     public void setWristReleaseChamber(){
         mWrist.setPosition(WRIST_INTAKE_PARALLEL_GROUND);
         wristIntakeState = WristIntakeState.RELEASE_SPECIMEN;
-    }
-
-    public void setWristHide(){
-        mWrist.setPosition(WRIST_RELEASE_CHAMBER_LOW);
     }
 
     public enum WristIntakeState {
@@ -332,7 +330,7 @@ public class SuperStructure {
         } else if (wristIntakeState == WristIntakeState.PRE_INTAKE) {
             return 1.0;
         } else if (wristIntakeState == WristIntakeState.INTAKE_SPECIMEN) {
-            return 0.6;
+            return 0.3;
         } else if (wristIntakeState == WristIntakeState.RELEASE_SAMPLE) {
             if(getSlidePosition() < 1500){
                 return 0.9;
@@ -350,9 +348,9 @@ public class SuperStructure {
         if(wristIntakeState == WristIntakeState.INTAKE){
             return 0.35;
         } else if (wristIntakeState == WristIntakeState.PRE_INTAKE) {
-            return 0.9;
+            return 1.0;
         } else if (wristIntakeState == WristIntakeState.INTAKE_SPECIMEN) {
-            return 0.3;
+            return 0.2;
         } else if (wristIntakeState == WristIntakeState.RELEASE_SAMPLE) {
             if(getSlidePosition() < 2500){
                 return 0.5;

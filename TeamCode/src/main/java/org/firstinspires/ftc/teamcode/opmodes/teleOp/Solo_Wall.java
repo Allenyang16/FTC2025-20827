@@ -82,21 +82,22 @@ public class Solo_Wall extends LinearOpMode {
                 if (hang.toTrue()) {
                     upper.setSlidePosition_hang(SuperStructure.SLIDE_HANG_LOW_DOWN);
                     delay(1800);
-                    upper.setArmPosition(100);
+                        upper.setArmPosition(180);
+
                 }
 
                 if (toOrigin.toTrue()) {
                     upper.setSlidePosition_horizontal(0);
                     delay(300);
                     upper.setArmPosition(0);
-                    upper.setWristIntake();
-                    upper.setWristReleaseChamber();
+                    upper.setWristPreIntake();
+                    upper.setSpinWristIntake();
                     sequence = Sequence.RUN;
                 }
 
                 if (toHang_high.toTrue()) {
-                    upper.setArmPosition(50);
-                    delay(10);
+                    upper.setArmPosition(80);
+                    delay(100);
                     upper.hang_setSlide(SuperStructure.SLIDE_HANG_HIGH_UP);
                     delay(500);
                 }
@@ -104,9 +105,18 @@ public class Solo_Wall extends LinearOpMode {
                 if (hang_high.toTrue()) {
                     upper.hang_setSlide(SuperStructure.SLIDE_HANG_HIGH_DOWN);
                     delay(200);
-                    upper.setArmPosition(500);
+                    upper.setArmPosition(-600);
                     delay(1000);
-                    upper.setArmPosition(0);
+                    while(upper.getSlidePosition() > 200){
+                        delay(100);
+                        if(toHang_high.toTrue()){
+                            break;
+                        }
+                    }
+                    upper.setArmPosition(150);
+                    if(upper.getSlidePosition() < 50) {
+                        upper.setArmPosition(0);
+                    }
                 }
             }
 
@@ -136,8 +146,8 @@ public class Solo_Wall extends LinearOpMode {
 
                 if(intakeNear.toTrue()){
                     upper.setSlidePosition_horizontal(SuperStructure.SLIDE_MIN);
-                    upper.setSpinWristIntake();
                     upper.setWristPreIntake();
+                    upper.setWristIntake();
                     upper.setArmPosition(SuperStructure.ARM_PRE_INTAKE);
                     intakeState = IntakeState.POST_NEAR;
                     sequence = Sequence.INTAKE_SAMPLE;
@@ -174,9 +184,9 @@ public class Solo_Wall extends LinearOpMode {
                     if (intakeState == IntakeState.POST_NEAR || intakeState == IntakeState.POST_FAR) {
                         if (upper.clawState == SuperStructure.ClawState.OPEN){
                             upper.setArmPosition(SuperStructure.ARM_INTAKE);
-                            delay(100);
+                            delay(80);
                             upper.switchClawState();
-                            delay(100);
+                            delay(80);
                             upper.setArmPosition(SuperStructure.ARM_PRE_INTAKE);
                         }
                         else{
@@ -200,12 +210,8 @@ public class Solo_Wall extends LinearOpMode {
                 }
 
                 if(intakeFar.toTrue()) {
-                    if (intakeState == IntakeState.INTAKE_SAMPLE){
-                        upper.setArmPosition(SuperStructure.ARM_PRE_INTAKE);
-                        delay(100);
-                    }
+                    upper.setArmPosition(SuperStructure.ARM_PRE_INTAKE);
                     upper.setSlidePosition_horizontal(SuperStructure.SLIDE_INTAKE_MAX);
-                    upper.setWristPreIntake();
                     upper.setSpinWristIntake();
                     delay(200);
                     upper.setClawOpen();
@@ -213,10 +219,7 @@ public class Solo_Wall extends LinearOpMode {
                     intakeState = IntakeState.POST_FAR;
                 }
                 if(intakeNear.toTrue()){
-                    if (intakeState == IntakeState.INTAKE_SAMPLE){
-                        upper.setArmPosition(SuperStructure.ARM_PRE_INTAKE);
-                        delay(100);
-                    }
+                    upper.setArmPosition(SuperStructure.ARM_PRE_INTAKE);
                     upper.setSlidePosition_horizontal(SuperStructure.SLIDE_MIN);
                     upper.setSpinWristIntake();
                     upper.setWristPreIntake();
@@ -277,11 +280,11 @@ public class Solo_Wall extends LinearOpMode {
                 if(toReleaseHighChamber.toTrue()){
                     upper.setSlidePosition_verticle(0);
                     delay(50);
-                    upper.setArmPosition(SuperStructure.ARM_CHAMBER_HIGH_Test);
-                    delay(300);
+
                     upper.setWristReleaseChamber();
                     upper.setSpinWristIntake();
                     upper.setArmPosition(SuperStructure.ARM_RELEASE_CHAMBER_TELEOP);
+                    delay(350);
                     upper.setSlidePosition_verticle(SuperStructure.SLIDE_CHAMBER_HIGH_TELEOP);
                     sequence = Sequence.RELEASE_SPECIMEN;
                 }
@@ -290,7 +293,7 @@ public class Solo_Wall extends LinearOpMode {
                     upper.setSlidePosition_horizontal(0);
                     delay(300);
                     upper.setArmPosition(0);
-                    upper.setWristIntake();
+                    upper.setWristPreIntake();
                     upper.setWristReleaseChamber();
                     sequence = Sequence.RUN;
                 }
