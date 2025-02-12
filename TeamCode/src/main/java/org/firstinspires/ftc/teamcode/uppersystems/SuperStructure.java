@@ -67,10 +67,10 @@ public class SuperStructure {
     public static int ARM_POST_INTAKE = -875;
     // TODO: CHECK THIS VALUE
     public static int ARM_INTAKE_SPECIMEN = 700;
-    public static int ARM_RELEASE_BOX = 90;
+    public static int ARM_RELEASE_BOX = 95;
     public static int ARM_RELEASE_CHAMBER = -300, ARM_RELEASE_CHAMBER_TELEOP = 320;// 80 for teleOp
 
-    public static int ARM_HANG_HIGH = -200, ARM_HANG_AUTO = 220;//
+    public static int ARM_HANG_HIGH = -200, ARM_HANG_AUTO = -220;//
     public static int ARM_HANG_LOW = 400;
 
 
@@ -94,6 +94,7 @@ public class SuperStructure {
     // TODO: CHANGE THE VALUE
     public static double SPINWRIST_INTAKE_SPECIMEN = 0.85;
     public static double SPINWRIST_RELEASE_SPECIMEN = 0.27;
+    public static double SPINWRIST_AUTO = 0.7;
     
     // Claw
     // TODO: TEST Value
@@ -383,6 +384,9 @@ public class SuperStructure {
     }
     public void setSpinWristIntake_spinCounterClockwise(){
         mSpinWrist.setPosition(SPINWRIST_INTAKE_COUNTERCLOCKWISE);
+    }
+    public void setSpinWristAuto(){
+        mSpinWrist.setPosition(SPINWRIST_AUTO);
     }
 
 
