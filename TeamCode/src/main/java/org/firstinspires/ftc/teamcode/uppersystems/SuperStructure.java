@@ -135,8 +135,8 @@ public class SuperStructure {
         mSpinWrist = hardwareMap.get(Servo.class,"spinWrist");
 
 //        armMag = hardwareMap.get(TouchSensor.class,"armMag");
-        mSlideLeft.setDirection(DcMotorSimple.Direction.REVERSE);
-        mSlideRight.setDirection(DcMotorSimple.Direction.FORWARD);
+        mSlideLeft.setDirection(DcMotorSimple.Direction.FORWARD);
+        mSlideRight.setDirection(DcMotorSimple.Direction.REVERSE);
         mArmRight.setDirection(DcMotorSimple.Direction.REVERSE);
         mArmLeft.setDirection(DcMotorSimple.Direction.FORWARD);
 
