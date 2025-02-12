@@ -84,44 +84,44 @@ public class cv extends OpenCvPipeline {
         List<MatOfPoint> ctr_red = new ArrayList<>();
         List<MatOfPoint> ctr_yellow = new ArrayList<>();
 
-        Imgproc.bilateralFilter(input,blur,5, 15, 15);
-        Imgproc.cvtColor(input, hsv, Imgproc.COLOR_BGR2HSV);
-        Core.inRange(hsv, lower_blue, upper_blue, blue_mask);
-        Core.inRange(hsv, lower_red, upper_red, red_mask);
-        Core.inRange(hsv, lower_yellow, upper_yellow, yellow_mask);
+        try {
+            Imgproc.cvtColor(input, hsv, Imgproc.COLOR_BGR2HSV);
+            Core.inRange(hsv, lower_blue, upper_blue, blue_mask);
+            Core.inRange(hsv, lower_red, upper_red, red_mask);
+            Core.inRange(hsv, lower_yellow, upper_yellow, yellow_mask);
 
 
-        Core.bitwise_and(input, input, maskedFrame_blue, blue_mask);
-        Core.bitwise_and(input, input, maskedFrame_red, red_mask);
-        Core.bitwise_and(input, input, maskedFrame_yellow, yellow_mask);
+            Core.bitwise_and(input, input, maskedFrame_blue, blue_mask);
+            Core.bitwise_and(input, input, maskedFrame_red, red_mask);
+            Core.bitwise_and(input, input, maskedFrame_yellow, yellow_mask);
 
-        Imgproc.findContours(blue_mask, ctr_blue, hierarchy_blue, Imgproc.RETR_TREE, Imgproc.CHAIN_APPROX_SIMPLE);
-        Imgproc.findContours(red_mask, ctr_red, hierarchy_red, Imgproc.RETR_TREE, Imgproc.CHAIN_APPROX_SIMPLE);
-        Imgproc.findContours(yellow_mask, ctr_yellow, hierarchy_yellow, Imgproc.RETR_TREE, Imgproc.CHAIN_APPROX_SIMPLE);
+            Imgproc.findContours(blue_mask, ctr_blue, hierarchy_blue, Imgproc.RETR_TREE, Imgproc.CHAIN_APPROX_SIMPLE);
+            Imgproc.findContours(red_mask, ctr_red, hierarchy_red, Imgproc.RETR_TREE, Imgproc.CHAIN_APPROX_SIMPLE);
+            Imgproc.findContours(yellow_mask, ctr_yellow, hierarchy_yellow, Imgproc.RETR_TREE, Imgproc.CHAIN_APPROX_SIMPLE);
 
-        // ... existing code ...
+            // ... existing code ...
 
 
 
 // ... existing code ...
 
-        List<MatOfPoint> filtered_contours_side = new ArrayList<>();
-        int MIN_CONTOUR_AREA = 200;
-        for(MatOfPoint contour : ctr_blue) {
-            if (Imgproc.contourArea(contour) > MIN_CONTOUR_AREA) {
-                filtered_contours_side.add(contour);
-            }
-        }
+//            List<MatOfPoint> filtered_contours_side = new ArrayList<>();
+            int MIN_CONTOUR_AREA = 200;
+//            for(MatOfPoint contour : ctr_blue) {
+//                if (Imgproc.contourArea(contour) > MIN_CONTOUR_AREA) {
+//                    filtered_contours_side.add(contour);
+//                }
+//            }
 
-        List<MatOfPoint> filtered_contours_yellow = new ArrayList<>();
-        for(MatOfPoint contour : ctr_yellow) {
-            if (Imgproc.contourArea(contour) > MIN_CONTOUR_AREA) {
-                filtered_contours_yellow.add(contour);
+            List<MatOfPoint> filtered_contours_yellow = new ArrayList<>();
+            for(MatOfPoint contour : ctr_yellow) {
+                if (Imgproc.contourArea(contour) > MIN_CONTOUR_AREA) {
+                    filtered_contours_yellow.add(contour);
+                }
             }
-        }
 
-        findRect(filtered_contours_side,SIDE);
-        findRect(filtered_contours_yellow,YELLOW);
+//            findRect(filtered_contours_side,SIDE);
+            findRect(filtered_contours_yellow,YELLOW);
 
 //        if (!filtered_contours_side.isEmpty()) {
 //            MatOfPoint largestContour = Collections.max(ctr_blue, Comparator.comparingDouble(Imgproc::contourArea));
@@ -190,18 +190,35 @@ public class cv extends OpenCvPipeline {
 //
 //            largestContourAngle = angle; // Update the angle
 //        }
-         return frame;
+             return frame;
+        } finally {
+            // Release all Mat objects
+            frame.release();
+            framed.release();
+            hsv.release();
+            blue_mask.release();
+            blank.release();
+            red_mask.release();
+            yellow_mask.release();
+            maskedFrame_blue.release();
+            maskedFrame_red.release();
+            maskedFrame_yellow.release();
+            blur.release();
+            hierarchy_blue.release();
+            hierarchy_red.release();
+            hierarchy_yellow.release();
+        }
     }
 
-    // Getter for the largest contour area
-    public double getSideArea() {
-        return sideArea;
-    }
-
-    // Getter for the largest contour angle
-    public double getSideAngle() {
-        return sideAngle;
-    }
+//    // Getter for the largest contour area
+//    public double getSideArea() {
+//        return sideArea;
+//    }
+//
+//    // Getter for the largest contour angle
+//    public double getSideAngle() {
+//        return sideAngle;
+//    }
     public double getSideAreaYellow() {
         return yellowArea;
     }

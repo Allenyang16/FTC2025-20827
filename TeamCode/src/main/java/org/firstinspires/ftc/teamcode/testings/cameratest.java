@@ -13,24 +13,19 @@ import org.openftc.easyopencv.OpenCvCameraRotation;
 @Config
 public class cameratest extends LinearOpMode {
     OpenCvCamera camera;
-    cv pipeline; // Use your cv class as the pipeline
+    DetectPipeline pipeline; // Use your cv class as the pipeline
 
     @Override
     public void runOpMode() {  
         // Get the camera monitor view ID
         // Initialize the camera
-        WebcamName webcamName = hardwareMap.get(WebcamName.class, "Webcam 1");
         int cameraMonitorViewId = hardwareMap.appContext.getResources().getIdentifier("cameraMonitorViewId", "id", hardwareMap.appContext.getPackageName());
-        camera =OpenCvCameraFactory.getInstance().createWebcam(webcamName, cameraMonitorViewId);
-        // Initialize your custom pipeline
-        pipeline = new cv(); // Instantiate your cv pipeline
-        camera.setPipeline(pipeline);
-
-        // Open the camera
+        camera = OpenCvCameraFactory.getInstance().createWebcam(hardwareMap.get(WebcamName.class, "Webcam 1"), cameraMonitorViewId);
+        pipeline = new DetectPipeline();
         camera.openCameraDeviceAsync(new OpenCvCamera.AsyncCameraOpenListener() {
             @Override
             public void onOpened() {
-                // Start streaming the camera feed
+                camera.setPipeline(pipeline);
                 camera.startStreaming(640, 480, OpenCvCameraRotation.UPRIGHT);
             }
 
@@ -46,13 +41,7 @@ public class cameratest extends LinearOpMode {
 
         // Main loop
         while (opModeIsActive()) {
-            // Access the largest contour area and angle
-            double area = pipeline.getSideArea();
-            double angle = pipeline.getSideAngle();
-
-            // Use the area and angle as needed
-            telemetry.addData("Largest Contour Area", area);
-            telemetry.addData("Largest Contour Angle", angle);
+            telemetry.addData("angle",pipeline.getAngle());
             telemetry.update();
         }
 
