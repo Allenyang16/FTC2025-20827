@@ -1,3 +1,4 @@
+//已经不使用了
 package org.firstinspires.ftc.teamcode.testings;
 
 import org.opencv.core.Core;
@@ -124,7 +125,7 @@ public class cv extends OpenCvPipeline {
             findRect(filtered_contours_yellow,YELLOW);
 
 //        if (!filtered_contours_side.isEmpty()) {
-//            MatOfPoint largestContour = Collections.max(ctr_blue, Comparator.comparingDouble(Imgproc::contourArea));
+            MatOfPoint largestContour = Collections.max(ctr_blue, Comparator.comparingDouble(Imgproc::contourArea));
 //            largestContourArea = Imgproc.contourArea(largestContour); // Update the area
 //
 //            // Convert MatOfPoint to MatOfPoint2f
