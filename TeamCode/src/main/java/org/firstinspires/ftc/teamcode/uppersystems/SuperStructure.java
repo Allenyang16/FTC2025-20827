@@ -63,8 +63,8 @@ public class SuperStructure {
 
     public static int ARM_CHAMBER_HIGH_Test = 220;
     public static int ARM_INTAKE = -970;
-    public static int ARM_PRE_INTAKE = -875;
-    public static int ARM_POST_INTAKE = -875;
+    public static int ARM_PRE_INTAKE = -900;
+    public static int ARM_POST_INTAKE = -900;
     // TODO: CHECK THIS VALUE
     public static int ARM_INTAKE_SPECIMEN = 700;
     public static int ARM_RELEASE_BOX = 95;
@@ -79,12 +79,12 @@ public class SuperStructure {
 
 
     // WRIST
-    public static double WRIST_INTAKE = 0.02, WRIST_INTAKE_PARALLEL_GROUND = 0.29;
-    public static double WRIST_INTAKE_SPECIMEN = 0.4, WRIST_INTAKE_SPECIMEN_GROUND = 0.08;
+    public static double WRIST_INTAKE = 0.62, WRIST_INTAKE_PARALLEL_GROUND = 0.9;
+    public static double WRIST_INTAKE_SPECIMEN = 1, WRIST_INTAKE_SPECIMEN_GROUND = 0.7;
 
     // TODO: Retest
-    public static double WRIST_RELEASE_BOX_HIGH = 0.4, WRIST_RELEASE_BOX_LOW = 0.28;
-    public static double WRIST_RELEASE_CHAMBER_HIGH = 0.02, WRIST_RELEASE_CHAMBER_LOW = 0.8;
+    public static double WRIST_RELEASE_BOX_HIGH = 1, WRIST_RELEASE_BOX_LOW = 0.28;
+    public static double WRIST_RELEASE_CHAMBER_HIGH = 0.9, WRIST_RELEASE_CHAMBER_LOW = 0.8;
 
     // Spin Wrist
     public static double SPINWRIST_INTAKE = 0.27;

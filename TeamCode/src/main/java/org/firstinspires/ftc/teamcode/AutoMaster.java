@@ -34,7 +34,7 @@ public abstract class AutoMaster extends LinearOpMode {
     public static double startPos_chamber_x = 9, startPos_box_x = 39;
 
     Pose2d boxPos;
-    public static double box_x = 56, box_y = 58, box_heading = 45; // or 135 in blue
+    public static double box_x = 56, box_y = 58, boxRed_heading = 45, boxBlue_heading = -135; // or 135 in blue
 
     Pose2d chamberPos;
     public static double chamber_x = 9, chamber_y = 32.5, chamber_heading = -90;
@@ -105,8 +105,12 @@ public abstract class AutoMaster extends LinearOpMode {
     Pose2d dropSamplePos;
     public static double dropSampleToHP_x = 50;
 
-    public static Pose2d park_box = new Pose2d(-26,-10,Math.toRadians(90));
-    public static double park_box_x = 22, park_box_y = 10, parkRed_box_heading = 0, parkBlue_box_heading = 180;
+    //Getting Sample From the Field
+    public static Pose2d runToField = new Pose2d(-24,-10,Math.toRadians(90));
+    public static double runToField_x = 24, runToField_y = 10, runToFieldRed_heading = 0, runToFieldBlue_heading = 180;
+
+    public static Pose2d park_box = new Pose2d(-24,-10,Math.toRadians(90));
+    public static double park_box_x = 24, park_box_y = 10, parkRed_box_heading = 0, parkBlue_box_heading = 180;
     public static Pose2d prePark_box;
     public static double prePark_box_x = 45, prePark_box_y = 10;
 
@@ -129,14 +133,16 @@ public abstract class AutoMaster extends LinearOpMode {
 
         startPos = new Pose2d(startPos_x * startSide ,startPos_y * side_color,Math.toRadians(startPos_heading * side_color));
         if(side_color == RED){
-            boxPos = new Pose2d(box_x * startSide, box_y * side_color, Math.toRadians(box_heading));
+            boxPos = new Pose2d(box_x * startSide, box_y * side_color, Math.toRadians(boxRed_heading));
             park_box = new Pose2d(park_box_x * startSide, park_box_y * side_color, Math.toRadians(parkRed_box_heading));
             prePark_box = new Pose2d(prePark_box_x * startSide, prePark_box_y * side_color, Math.toRadians(parkRed_box_heading));
+            runToField = new Pose2d(runToField_x * startSide, runToField_y * side_color, Math.toRadians(runToFieldRed_heading));
             yawOffset = 0;
         }else{
-            boxPos = new Pose2d(box_x * startSide, box_y * side_color, Math.toRadians(-135));
+            boxPos = new Pose2d(box_x * startSide, box_y * side_color, Math.toRadians(boxBlue_heading));
             park_box = new Pose2d(park_box_x * startSide, park_box_y * side_color, Math.toRadians(parkBlue_box_heading));
             prePark_box = new Pose2d(prePark_box_x * startSide, prePark_box_y * side_color, Math.toRadians(parkBlue_box_heading));
+            runToField = new Pose2d(runToField_x * startSide, runToField_y * side_color, Math.toRadians(runToFieldBlue_heading));
             yawOffset = Math.toRadians(-180);
         }
         park_chamber = new Pose2d(park_chamber_x * startSide,park_chamber_y * side_color,Math.toRadians(park_chamber_heading * side_color));
@@ -638,6 +644,19 @@ public abstract class AutoMaster extends LinearOpMode {
             drive.moveTo(pushSamplePos_3,0);
             drive.moveTo(pushSamplePos_3.plus(pushSamplePos_delta),0);
         }
+    }
+
+    public void runToFieldToGrabSample(){
+        drive.moveTo(runToField,0);
+        upper.setArmPosition(0);
+        upper.setSlidePosition(0);
+        upper.setWristPreIntake();
+        upper.setSpinWristIntake();
+        upper.setClawOpen();
+    }
+
+    public void recognizeSample(){
+
     }
 
     public void park_box(){
