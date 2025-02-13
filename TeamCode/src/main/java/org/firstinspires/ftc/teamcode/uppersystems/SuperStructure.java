@@ -44,6 +44,12 @@ public class SuperStructure {
     private final PIDFController slideRightPidCtrl_Horizontal;
     public static PIDCoefficients slideRightPidConf_Vertical = new PIDCoefficients(0.009, 0.000, 0.00);
     private final PIDFController slideRightPidCtrl_Vertical;
+
+    public static PIDCoefficients slideLeftPidConf_Hang = new PIDCoefficients(0.004, 0.00, 0.00);
+    private final PIDFController slideLeftPidCtrl_Hang;
+    public static PIDCoefficients slideRightPidConf_Hang = new PIDCoefficients(0.009, 0.000, 0.00);
+    private final PIDFController slideRightPidCtrl_Hang;
+
     private List<PIDFController> slidePidCtrl;
 
     private Servo mClaw = null;
@@ -123,7 +129,10 @@ public class SuperStructure {
         slideRightPidCtrl_Horizontal = new PIDFController(slideRightPidConf_Horizontal);
         slideRightPidCtrl_Vertical = new PIDFController(slideRightPidConf_Vertical);
 
-        slidePidCtrl = Arrays.asList(slideLeftPidCtrl_Horizontal,slideLeftPidCtrl_Vertical,slideRightPidCtrl_Horizontal,slideRightPidCtrl_Vertical);
+        slideRightPidCtrl_Hang = new PIDFController(slideRightPidConf_Hang);
+        slideLeftPidCtrl_Hang = new PIDFController(slideLeftPidConf_Hang);
+
+        slidePidCtrl = Arrays.asList(slideLeftPidCtrl_Horizontal,slideLeftPidCtrl_Vertical,slideRightPidCtrl_Horizontal,slideRightPidCtrl_Vertical,slideRightPidCtrl_Hang,slideLeftPidCtrl_Hang);
 
         mArmLeft = hardwareMap.get(DcMotorEx.class,"armLeft");
         mArmRight = hardwareMap.get(DcMotorEx.class, "armRight");
@@ -179,7 +188,10 @@ public class SuperStructure {
         } else if (slideState == SlideState.VERTICAL) {
             mSlideRight.setPower(slideRightPidCtrl_Vertical.update(mSlideRight.getCurrentPosition()));
             mSlideLeft.setPower(slideLeftPidCtrl_Vertical.update(mSlideLeft.getCurrentPosition()));
-        }else{
+        } else if (slideState == SlideState.HANG){
+            mSlideRight.setPower(slideRightPidCtrl_Hang.update(mSlideRight.getCurrentPosition()));
+            mSlideLeft.setPower(slideLeftPidCtrl_Hang.update(mSlideLeft.getCurrentPosition()));
+        } else {
             mSlideRight.setPower(slideRightPidCtrl_Vertical.update(mSlideRight.getCurrentPosition()));
             mSlideLeft.setPower(slideLeftPidCtrl_Vertical.update(mSlideLeft.getCurrentPosition()));
         }
@@ -469,8 +481,8 @@ public class SuperStructure {
         slideState = SlideState.HANG;
         delay(50);
         slideTargetPosition = pos;
-        slideLeftPidCtrl_Vertical.setTargetPosition(slideTargetPosition);
-        slideRightPidCtrl_Vertical.setTargetPosition(slideTargetPosition);
+        slideLeftPidCtrl_Hang.setTargetPosition(slideTargetPosition);
+        slideRightPidCtrl_Hang.setTargetPosition(slideTargetPosition);
     }
     public void setSlidePower(double power){
         mSlideRight.setPower(power);
@@ -490,7 +502,7 @@ public class SuperStructure {
     public enum SlideState{
         HORIZONTAL(slideLeftPidConf_Horizontal),
         VERTICAL(slideLeftPidConf_Vertical),
-        HANG(slideLeftPidConf_Vertical);
+        HANG(slideLeftPidConf_Hang);
 
 
         private final PIDCoefficients pidCoefficients;
