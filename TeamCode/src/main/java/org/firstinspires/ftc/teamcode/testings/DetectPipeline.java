@@ -22,6 +22,8 @@ public class DetectPipeline extends OpenCvPipeline{
     public static Scalar upper_yellow = new Scalar(30, 255, 255);
     public static int min_detect_area = 200;
     public static double recangle;
+    public static double recCenterX, recCenterY;
+    public static double horizontalDistance, verticalDistance;
     Mat hsv = new Mat();
     Mat yellow_mask = new Mat();
     List<MatOfPoint> ctr_yellow = new ArrayList<>();
@@ -33,21 +35,33 @@ public Mat processFrame(Mat input){
         Imgproc.findContours(yellow_mask, ctr_yellow, new Mat(), Imgproc.RETR_LIST, Imgproc.CHAIN_APPROX_SIMPLE);
         if (!ctr_yellow.isEmpty()) {
             // Find the largest contour
-//            MatOfPoint largestContour = ctr_yellow.get(0);
-//            double maxArea = Imgproc.contourArea(largestContour);
-//            for (MatOfPoint contour : ctr_yellow) {
-//                double area = Imgproc.contourArea(contour);
-//                if (area > maxArea) {
-//                    maxArea = area;
-//                    largestContour = contour;
-//                }
-//            }
+
+            List<MatOfPoint> filtered_contours_yellow = new ArrayList<>();
+            for(MatOfPoint contour : ctr_yellow) {
+                if (Imgproc.contourArea(contour) > min_detect_area) {
+                    filtered_contours_yellow.add(contour);
+                }
+            }
             MatOfPoint largestContour = Collections.max(ctr_yellow, Comparator.comparingDouble(Imgproc::contourArea));
             RotatedRect rec = Imgproc.minAreaRect(new MatOfPoint2f(largestContour.toArray()));
             Point[] boxPoints = new Point[4];
             rec.points(boxPoints);
-            //TODO：检测出来的角度不定，有可能是轮廓与垂直面的夹角，也有可能是轮廓与水平面的夹角
-            double angle = rec.angle;
+            Point recCenter = rec.center;
+            recCenterX = recCenter.x;
+            recCenterY = recCenter.y;
+
+            double cameraCenterX = 320;
+            double cameraCenterY = 240;
+
+            horizontalDistance = recCenterX - cameraCenterX;
+            verticalDistance = recCenterY - cameraCenterY;
+
+// 计算第一条边的斜率
+            double deltaY = boxPoints[1].y - boxPoints[0].y;
+            double deltaX = boxPoints[1].x - boxPoints[0].x;
+            double angle = Math.toDegrees(Math.atan2(deltaY, deltaX));
+
+// 确保角度在 [0, 180) 范围内
             recangle = angle;
         }
         return yellow_mask;
@@ -55,5 +69,11 @@ public Mat processFrame(Mat input){
 public double getAngle(){
     return recangle;
 }
+public double getPositionX(){
+        return recCenterX;
+    }
+public double getPositionY(){
+        return recCenterY;
+    }
 
 }

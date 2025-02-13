@@ -7,6 +7,7 @@ import org.firstinspires.ftc.robotcore.external.hardware.camera.WebcamName;
 import org.openftc.easyopencv.OpenCvCamera;
 import org.openftc.easyopencv.OpenCvCameraFactory;
 import org.openftc.easyopencv.OpenCvCameraRotation;
+import org.firstinspires.ftc.teamcode.uppersystems.SuperStructure;
 
 
 @TeleOp(name = "Camera Test Area and Angle", group = "Testing")
@@ -41,8 +42,20 @@ public class cameratest extends LinearOpMode {
 
         // Main loop
         while (opModeIsActive()) {
-            telemetry.addData("angle",pipeline.getAngle());
+            double angle = pipeline.getAngle();
+            telemetry.addData("angle",angle);
+            telemetry.addData("x",pipeline.getPositionX());
+            telemetry.addData("y",pipeline.getPositionY());
             telemetry.update();
+//            if(angle>= 60 && angle <= 90){
+//                telemetry.addData("angle 1",angle);
+//            }
+//            else if(angle>= 0 && angle <= 30){
+//                telemetry.addData("angle 2",angle);
+//            }
+//            else if (angle>= 30 && angle <= 60){
+//                telemetry.addData("angle 3",angle);
+//            }
         }
 
         // Stop streaming when done
