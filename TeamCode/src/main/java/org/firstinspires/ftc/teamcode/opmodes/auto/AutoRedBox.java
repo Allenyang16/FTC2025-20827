@@ -17,25 +17,27 @@ public class AutoRedBox extends AutoMaster {
         }
 
         if(opModeIsActive()){
-            moveToDrop_sample();
+            moveToDrop_sample(0);
             toOrigin();
 
             intakeSample(1);
-            moveToDrop_sample();
+            moveToDrop_sample(1);
             toOrigin();
 
             intakeSample(2);
-            moveToDrop_sample();
+            moveToDrop_sample(2);
             toOrigin();
 
             intakeSample_3();
-            moveToDrop_sample();
+            moveToDrop_sample(3);
             toOrigin();
 
+/*
             runToFieldToGrabSample();
             recognizeSample();
-            moveToDrop_sample();
+            moveToDrop_sample(4);
             toOrigin();
+ */
 
             park_box();
         }
