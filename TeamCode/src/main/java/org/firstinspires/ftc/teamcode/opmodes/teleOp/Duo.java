@@ -36,7 +36,11 @@ public class Duo extends LinearOpMode {
             upper.update();
             XCYBoolean.bulkRead();
             telemetry.update();
-            drive.setGlobalPower(upper.translation_coefficient() * gamepad1.left_stick_y, upper.translation_coefficient() * gamepad1.left_stick_x, upper.heading_coefficient() * gamepad1.right_stick_x);
+            if (sequence == Duo.Sequence.HANG) {
+                drive.setGlobalPower(0, 0, 0);
+            }else {
+                drive.setGlobalPower(upper.translation_coefficient() * gamepad1.left_stick_y, upper.translation_coefficient() * gamepad1.left_stick_x, upper.heading_coefficient() * gamepad1.right_stick_x);
+            }
         };
         drive.setUpdateRunnable(update);
         upper.setUpdateRunnable(update);
@@ -112,6 +116,7 @@ public class Duo extends LinearOpMode {
                 if (toHang.toTrue()) {
                     upper.setArmPosition(SuperStructure.ARM_HANG_LOW);
                     upper.hang_setSlide(SuperStructure.SLIDE_HANG_LOW_UP);
+                    delay(500);
                     sequence = Sequence.HANG;
                 }
                 if(intakeFar.toTrue()){

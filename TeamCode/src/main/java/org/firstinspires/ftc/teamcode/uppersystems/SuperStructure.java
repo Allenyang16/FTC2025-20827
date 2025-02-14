@@ -79,6 +79,8 @@ public class SuperStructure {
     public static int ARM_HANG_HIGH = -200, ARM_HANG_AUTO = -220;//
     public static int ARM_HANG_LOW = 400;
 
+    public double slidePower = 0;
+    public double armPower = 0;
 
     //New Auto
     public static int ARM_AUTO_CHAMBER = 160;
@@ -546,6 +548,18 @@ public class SuperStructure {
         for(PIDFController pidfController: slidePidCtrl){
             pidfController.setOutputBounds(-bounds,bounds);
         }
+    }
+
+    public void setUpperHang(){
+        mSlideLeft.setPower(slidePower);
+        mSlideRight.setPower(slidePower);
+        mArmLeft.setPower(armPower);
+        mArmRight.setPower(armPower);
+
+        mSlideRight.setMode(DcMotor.RunMode.RUN_WITHOUT_ENCODER);
+        mSlideLeft.setMode(DcMotor.RunMode.RUN_WITHOUT_ENCODER);
+        mArmRight.setMode(DcMotor.RunMode.RUN_WITHOUT_ENCODER);
+        mArmLeft.setMode(DcMotor.RunMode.RUN_WITHOUT_ENCODER);
     }
 
 
