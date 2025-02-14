@@ -107,6 +107,7 @@ public class SuperStructure {
     // Claw
     // TODO: TEST Value
     public static double CLAW_OPEN = 0.7;
+    public static double CLAW_OPENLarge = 0.85;
     public static double CLAW_GRAB = 0.27;
     public ClawState clawState = GRAB;
     public SlideState slideState = SlideState.VERTICAL;
@@ -259,6 +260,12 @@ public class SuperStructure {
         delay(200);
         clawState = OPEN;
     }
+    public void setClawOpenLarge(){
+        mClaw.setPosition(CLAW_OPENLarge);
+        delay(200);
+        clawState = OPEN;
+    }
+
     public void setClawGrab(){
         mClaw.setPosition(CLAW_GRAB);
         delay(200);

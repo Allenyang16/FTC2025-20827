@@ -258,26 +258,30 @@ public abstract class AutoMaster extends LinearOpMode {
 
             delay(200);
             upper.setSlidePosition_verticle(SuperStructure.SLIDE_BOX_HIGH);
+            delay(50);
             upper.setWristReleaseBox();
             delay(200);
             drive.setSimpleMoveTolerance(0.8,0.8,Math.toRadians(3));
             drive.setSimpleMovePower(0.35);
             drive.moveTo(boxPos,150);
 
-            upper.setClawOpen();
+            upper.setClawOpenLarge();
             delay(50);
         } else {
             upper.setArmPosition(SuperStructure.ARM_RELEASE_BOX);
             upper.setSpinWristIntake_specimen();
 
             upper.setSlidePosition_verticle(SuperStructure.SLIDE_BOX_HIGH);
+            delay(50);
+
+            
             upper.setWristReleaseBox();
             delay(200);
             drive.setSimpleMoveTolerance(0.8,0.8,Math.toRadians(3));
             drive.setSimpleMovePower(0.4);
             drive.moveTo(boxPos,150);
 
-            upper.setClawOpen();
+            upper.setClawOpenLarge();
             delay(50);
         }
     }
