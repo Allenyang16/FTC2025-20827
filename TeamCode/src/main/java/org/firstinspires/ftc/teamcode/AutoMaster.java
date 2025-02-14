@@ -8,6 +8,7 @@ import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
 import com.qualcomm.robotcore.hardware.DcMotor;
 
 import org.firstinspires.ftc.teamcode.drive.NewMecanumDrive;
+//import org.firstinspires.ftc.teamcode.testings.DetectPipeline;
 import org.firstinspires.ftc.teamcode.trajectorysequence.TrajectorySequence;
 import org.firstinspires.ftc.teamcode.uppersystems.SuperStructure;
 
@@ -122,6 +123,8 @@ public abstract class AutoMaster extends LinearOpMode {
 
 
     protected void initHardware() throws InterruptedException{
+//        DetectPipeline pipeline = new DetectPipeline();
+//        drive.camera.setPipeline(pipeline);
 
         if(side_color == RED && startSide == POSITIVE){
             startPos_x = startPos_chamber_x;
@@ -656,7 +659,7 @@ public abstract class AutoMaster extends LinearOpMode {
     }
 
     public void recognizeSample(){
-
+//        double cameraAngle = drive.getCameraAngle();
     }
 
     public void park_box(){
