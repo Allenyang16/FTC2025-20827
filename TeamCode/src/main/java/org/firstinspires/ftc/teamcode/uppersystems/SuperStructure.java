@@ -102,7 +102,7 @@ public class SuperStructure {
     // TODO: CHANGE THE VALUE
     public static double SPINWRIST_INTAKE_SPECIMEN = 0.85;
     public static double SPINWRIST_RELEASE_SPECIMEN = 0.27;
-    public static double SPINWRIST_AUTO = 0.7;
+    public static double SPINWRIST_AUTO = 0.76;
     
     // Claw
     // TODO: TEST Value
