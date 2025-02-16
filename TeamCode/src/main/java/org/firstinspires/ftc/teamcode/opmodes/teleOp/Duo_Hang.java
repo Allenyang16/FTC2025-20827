@@ -166,6 +166,7 @@ public class Duo_Hang extends LinearOpMode {
                     upper.setSpinWristIntake();
                     delay(200);
                     upper.setSlidePosition_horizontal(SuperStructure.SLIDE_INTAKE_MAX);
+                    
                     intakeState = Duo.IntakeState.POST_FAR;
                     sequence = Duo.Sequence.INTAKE_SAMPLE;
                 }
@@ -175,6 +176,7 @@ public class Duo_Hang extends LinearOpMode {
                     upper.setSpinWristIntake();
                     upper.setWristPreIntake();
                     upper.setArmPosition(SuperStructure.ARM_PRE_INTAKE);
+
                     intakeState = Duo.IntakeState.POST_NEAR;
                     sequence = Duo.Sequence.INTAKE_SAMPLE;
                 }
@@ -202,7 +204,15 @@ public class Duo_Hang extends LinearOpMode {
                 }
 
                 if (grab.toTrue()) {
-                    upper.switchClawState();
+                    if (upper.clawState == SuperStructure.ClawState.OPEN){
+                        upper.setArmPosition(SuperStructure.ARM_INTAKE);
+                        delay(100);
+                        upper.switchClawState();
+                        delay(100);
+                        upper.setWristPreIntake();
+                    } else {
+                        upper.switchClawState();
+                    }
                 }
             }
 
