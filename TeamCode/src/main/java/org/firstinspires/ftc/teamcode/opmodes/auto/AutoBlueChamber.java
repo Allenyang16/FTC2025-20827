@@ -22,19 +22,19 @@ public class AutoBlueChamber extends AutoMaster {
             autoUpperToOrigin();
             dropSpecimen_toOrigin();
 
-            intakeSample(1);
+            dropSampletoIntakeSample(1);
             dropSampleToHP();
             intakeSpecimen(1);
             autoUpperToOrigin();
             dropSpecimen_toOrigin();
 
-            intakeSample(2);
+            dropSampletoIntakeSample(2);
             dropSampleToHP();
             intakeSpecimen(2);
             autoUpperToOrigin();
             dropSpecimen_toOrigin();
 
-            intakeSample_3();
+            dropSampleToIntakeSample_3();
             dropSampleToHP();
             intakeSpecimen(3);
             autoUpperToOrigin();
