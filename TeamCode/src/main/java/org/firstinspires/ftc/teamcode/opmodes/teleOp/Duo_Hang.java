@@ -110,28 +110,6 @@ public class Duo_Hang extends LinearOpMode {
             }
 
             if (sequence == Duo.Sequence.HANG) {
-                if (hang.toTrue()) {
-                    upper.setSlidePosition_hang(SuperStructure.SLIDE_HANG_LOW_DOWN);
-                    delay(1800);
-                    upper.setArmPosition(100);
-                }
-
-                if (toOrigin.toTrue()) {
-                    upper.setSlidePosition_horizontal(0);
-                    delay(300);
-                    upper.setArmPosition(0);
-                    upper.setWristPreIntake();
-                    upper.setWristReleaseChamber();
-                    sequence = Duo.Sequence.RUN;
-                }
-
-                if (toHang_high.toTrue()) {
-                    upper.setArmPosition(80);
-                    delay(10);
-                    upper.hang_setSlide(SuperStructure.SLIDE_HANG_HIGH_UP);
-                    delay(500);
-
-                }
                 if (gamepad1.dpad_up) {
                     coe = 0;
                     while(true) {
@@ -159,6 +137,17 @@ public class Duo_Hang extends LinearOpMode {
                     upper.hang_setSlide(SuperStructure.SLIDE_HANG_LOW_UP);
                     delay(500);
                     sequence = Duo.Sequence.HANG;
+                }
+                if (hang.toTrue()) {
+                    upper.setSlidePosition_hang(SuperStructure.SLIDE_HANG_LOW_DOWN);
+                    delay(1800);
+                    upper.setArmPosition(100);
+                }
+                if (toHang_high.toTrue()) {
+                    upper.setArmPosition(80);
+                    delay(10);
+                    upper.hang_setSlide(SuperStructure.SLIDE_HANG_HIGH_UP);
+                    delay(500);
                 }
                 if (intakeFar.toTrue()) {
                     upper.setArmPosition(SuperStructure.ARM_PRE_INTAKE);
