@@ -74,7 +74,7 @@ public class Duo_Hang extends LinearOpMode {
 
         XCYBoolean resetHeading = new XCYBoolean(() -> gamepad1.x);
         XCYBoolean toOrigin = new XCYBoolean(() -> (gamepad1.left_stick_button));
-        XCYBoolean toPostIntake = new XCYBoolean(() -> (intakeState != Duo.IntakeState.SPECIMEN) && gamepad1.right_stick_button);
+        XCYBoolean toPostIntake = new XCYBoolean(() -> (gamepad1.right_stick_button));
         XCYBoolean toHang = new XCYBoolean(() -> gamepad1.dpad_left && sequence == Duo.Sequence.RUN);
         XCYBoolean hang = new XCYBoolean(() -> gamepad1.dpad_right && sequence == Duo.Sequence.HANG);
         XCYBoolean toHang_high = new XCYBoolean(() -> gamepad1.dpad_left && sequence == Duo.Sequence.HANG);
@@ -255,7 +255,7 @@ public class Duo_Hang extends LinearOpMode {
                     upper.setArmPosition(SuperStructure.ARM_PRE_INTAKE);
                     upper.setSlidePosition_horizontal(SuperStructure.SLIDE_MIN);
                     upper.setSpinWristIntake();
-                    upper.setWristIntake();
+                    upper.setWristPreIntake();
 
                     intakeState = Duo.IntakeState.INTAKE_SAMPLE;
                 }
