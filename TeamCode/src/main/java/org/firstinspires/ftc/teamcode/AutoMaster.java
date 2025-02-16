@@ -89,7 +89,7 @@ public abstract class AutoMaster extends LinearOpMode {
 
     public static double grabSample1_x = 25.5, grabSample2_x = 34.7, grabSample3_x = 46.9;
     public static double grabSample_y = 29;
-    public static double pushSample1_x = 49, pushSample2_x = 58, pushSample3_x = 64, midpoint_x = 38;
+    public static double pushSample1_x = 49, pushSample2_x = 58, pushSample3_x = 65, midpoint_x = 38;
     public static double pushSample_y = 16, midpoint1_y = 36, pushSample_heading = -90, pushSample_delta_y = 32;
     public static double throwSample_y = 55;
     public static double grabSample_heaidng = -10.94, throwSample_heading = 30;
