@@ -3,6 +3,8 @@ package org.firstinspires.ftc.teamcode.opmodes.teleOp;
 import com.acmerobotics.roadrunner.geometry.Pose2d;
 import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
 import com.qualcomm.robotcore.eventloop.opmode.TeleOp;
+import com.qualcomm.robotcore.hardware.DcMotor;
+import com.qualcomm.robotcore.hardware.DcMotorSimple;
 
 import org.firstinspires.ftc.teamcode.AutoMaster;
 import org.firstinspires.ftc.teamcode.XCYBoolean;
@@ -14,27 +16,51 @@ import java.util.Locale;
 @TeleOp (name = "TeleOp_SoloJi")
 public class Solo_Ji extends LinearOpMode {
     Runnable update;
+    int coe = 1;
     enum Sequence{
         RUN, INTAKE_SAMPLE, INTAKE_SPECIMEN, RELEASE_SAMPLE,RELEASE_SPECIMEN, HANG
     }
     enum IntakeState{
     INTAKE_SAMPLE, POST_FAR,POST_NEAR,POST,SPECIMEN
     }
+    enum HangState{
+        HANG,HANG_OPENLOOP
+    }
     private Sequence sequence;
     private IntakeState intakeState;
+    private HangState hangState;
+
+    private DcMotor mArmLeft = null;
+    private DcMotor mArmRight = null;
+    private DcMotor mSlideLeft = null;
+    private DcMotor mSlideRight = null;
 
     @Override
     public void runOpMode() throws InterruptedException {
+        mArmLeft = hardwareMap.get(DcMotor.class, "armLeft");
+        mArmRight = hardwareMap.get(DcMotor.class, "armRight");
+        mSlideLeft = hardwareMap.get(DcMotor.class, "slideLeft");
+        mSlideRight = hardwareMap.get(DcMotor.class, "slideRight");
+
+        mSlideLeft.setDirection(DcMotorSimple.Direction.FORWARD);
+        mSlideRight.setDirection(DcMotorSimple.Direction.REVERSE);
+        mArmRight.setDirection(DcMotorSimple.Direction.REVERSE);
+        mArmLeft.setDirection(DcMotorSimple.Direction.FORWARD);
+
+        mArmLeft.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
+        mArmRight.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
+        mSlideLeft.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
+        mSlideRight.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
+
         SuperStructure upper = new SuperStructure(this);
         NewMecanumDrive drive = new NewMecanumDrive(hardwareMap);
         sequence = Sequence.RUN;
-
         update = ()->{
             drive.update();
             upper.update();
             XCYBoolean.bulkRead();
             telemetry.update();
-            drive.setGlobalPower(upper.translation_coefficient() * gamepad1.left_stick_y, upper.translation_coefficient() * gamepad1.left_stick_x, upper.heading_coefficient() * (gamepad1.right_stick_x));
+            drive.setGlobalPower(coe*upper.translation_coefficient() * gamepad1.left_stick_y, coe*upper.translation_coefficient() * gamepad1.left_stick_x, coe*upper.heading_coefficient() * (gamepad1.right_stick_x));
         };
         drive.setUpdateRunnable(update);
         upper.setUpdateRunnable(update);
@@ -45,7 +71,7 @@ public class Solo_Ji extends LinearOpMode {
         XCYBoolean toHang = new XCYBoolean(() -> gamepad1.dpad_left && sequence == Sequence.RUN);
         XCYBoolean hang = new XCYBoolean(() -> gamepad1.dpad_right && sequence == Sequence.HANG);
         XCYBoolean toHang_high = new XCYBoolean(() -> gamepad1.dpad_left && sequence == Sequence.HANG);
-        XCYBoolean hang_high = new XCYBoolean(() -> gamepad1.dpad_up && sequence == Sequence.HANG);
+        //XCYBoolean hang_high = new XCYBoolean(() -> gamepad1.dpad_up && sequence == Sequence.HANG);
 
         XCYBoolean intakeFar = new XCYBoolean(()-> gamepad1.y);
         XCYBoolean intakeNear = new XCYBoolean(()-> gamepad1.a);
@@ -69,6 +95,7 @@ public class Solo_Ji extends LinearOpMode {
         drive.setYawHeading(AutoMaster.yawOffset);
 
         intakeState = IntakeState.POST_NEAR;
+        hangState = HangState.HANG;
         waitForStart();
 
         while (opModeIsActive()){
@@ -79,11 +106,6 @@ public class Solo_Ji extends LinearOpMode {
             }
 
             if (sequence == Sequence.HANG) {
-                if (hang.toTrue()) {
-                    upper.setSlidePosition_hang(SuperStructure.SLIDE_HANG_LOW_DOWN);
-                    delay(1800);
-                    upper.setArmPosition(-50);
-                }
 
                 if (toOrigin.toTrue()) {
                     upper.setSlidePosition_horizontal(0);
@@ -93,31 +115,35 @@ public class Solo_Ji extends LinearOpMode {
                     upper.setSpinWristIntake();
                     sequence = Sequence.RUN;
                 }
-
+                if (hang.toTrue()) {
+                    upper.setSlidePosition_hang(SuperStructure.SLIDE_HANG_LOW_DOWN);
+                    delay(1800);
+                    upper.setArmPosition(-50);
+                }
                 if (toHang_high.toTrue()) {
                     upper.setArmPosition(-80);
                     delay(100);
                     upper.hang_setSlide(SuperStructure.SLIDE_HANG_HIGH_UP);
                     delay(200);
                     upper.setArmPosition(120);
-                }
+                    sequence = Sequence.HANG;
+                    hangState = HangState.HANG_OPENLOOP;
 
-                if (hang_high.toTrue()) {
-                    upper.hang_setSlide(SuperStructure.SLIDE_HANG_HIGH_DOWN);
-                    delay(50);
-                    upper.setArmPosition(-900);
-                    delay(1000);
-                    while (upper.getSlidePosition() > 200) {
-                        delay(100);
-                        if (toHang_high.toTrue()) {
-                            break;
+                }
+                if (sequence == Sequence.HANG && hangState == HangState.HANG_OPENLOOP) {
+                    if (gamepad1.dpad_up) {
+                        coe = 0;
+                        while(true) {
+                            upper.slidePower = -gamepad1.left_stick_y;
+                            upper.armPower = gamepad1.right_stick_y;
+                            upper.setUpperHang();
+                            if (toOrigin.toTrue()) {
+                                coe = 1;
+                                break;
+                            }
                         }
                     }
-                    upper.setArmPosition(150);
-                    upper.setSlidePosition(0);
-                    if (upper.getSlidePosition() < 50) {
-                        upper.setArmPosition(-100);
-                    }
+
                 }
             }
 
@@ -132,8 +158,8 @@ public class Solo_Ji extends LinearOpMode {
                     upper.setArmPosition(SuperStructure.ARM_HANG_LOW);
                     upper.hang_setSlide(SuperStructure.SLIDE_HANG_LOW_UP);
                     delay(500);
-//                    upper.setArmPosition(SuperStructure.ARM_HANG_LOW);
                     sequence = Sequence.HANG;
+//                    upper.setArmPosition(SuperStructure.ARM_HANG_LOW);
                 }
                 if(intakeFar.toTrue()){
                     upper.setArmPosition(SuperStructure.ARM_PRE_INTAKE);

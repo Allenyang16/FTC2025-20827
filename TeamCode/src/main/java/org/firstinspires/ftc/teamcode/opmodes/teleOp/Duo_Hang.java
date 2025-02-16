@@ -27,11 +27,14 @@ public class Duo_Hang extends LinearOpMode {
     enum IntakeState {
         INTAKE_SAMPLE, POST_FAR, POST_NEAR, POST, SPECIMEN
     }
-
+    enum HangState {
+        HANG, HANG_OPENLOOP
+    }
 
 
     private Duo.Sequence sequence;
     private Duo.IntakeState intakeState;
+    //private Duo.HangState hangState;
 
     private DcMotor mArmLeft = null;
     private DcMotor mArmRight = null;
@@ -66,7 +69,7 @@ public class Duo_Hang extends LinearOpMode {
             XCYBoolean.bulkRead();
             telemetry.update();
 
-                drive.setGlobalPower(coe*upper.translation_coefficient() * gamepad1.left_stick_y, coe*upper.translation_coefficient() * gamepad1.left_stick_x, coe*upper.heading_coefficient() * gamepad1.right_stick_x);
+            drive.setGlobalPower(coe*upper.translation_coefficient() * gamepad1.left_stick_y, coe*upper.translation_coefficient() * gamepad1.left_stick_x, coe*upper.heading_coefficient() * gamepad1.right_stick_x);
 
         };
         drive.setUpdateRunnable(update);
@@ -76,8 +79,8 @@ public class Duo_Hang extends LinearOpMode {
         XCYBoolean toOrigin = new XCYBoolean(() -> (gamepad1.left_stick_button));
         XCYBoolean toPostIntake = new XCYBoolean(() -> (intakeState != Duo.IntakeState.SPECIMEN) && gamepad1.right_stick_button);
         XCYBoolean toHang = new XCYBoolean(() -> gamepad1.dpad_left && sequence == Duo.Sequence.RUN);
-        XCYBoolean hang = new XCYBoolean(() -> gamepad1.dpad_right && sequence == Duo.Sequence.HANG);
-        XCYBoolean toHang_high = new XCYBoolean(() -> gamepad1.dpad_left && sequence == Duo.Sequence.HANG);
+        XCYBoolean hang = new XCYBoolean(() -> gamepad1.dpad_right && sequence == Duo.Sequence.RUN);
+        XCYBoolean toHang_high = new XCYBoolean(() -> gamepad1.dpad_left && sequence == Duo.Sequence.RUN);
 
         XCYBoolean toHangOpenLoop = new XCYBoolean(() -> gamepad1.dpad_up && sequence == Duo.Sequence.HANG);
         XCYBoolean intakeFar = new XCYBoolean(() -> gamepad2.y);
@@ -99,6 +102,7 @@ public class Duo_Hang extends LinearOpMode {
         drive.setYawHeading(AutoMaster.yawOffset);
 
         intakeState = Duo.IntakeState.POST_NEAR;
+        //hangState = Duo.HangState.HANG;
         waitForStart();
 
         while (opModeIsActive()) {
@@ -136,7 +140,6 @@ public class Duo_Hang extends LinearOpMode {
                     upper.setArmPosition(SuperStructure.ARM_HANG_LOW);
                     upper.hang_setSlide(SuperStructure.SLIDE_HANG_LOW_UP);
                     delay(500);
-                    sequence = Duo.Sequence.HANG;
                 }
                 if (hang.toTrue()) {
                     upper.setSlidePosition_hang(SuperStructure.SLIDE_HANG_LOW_DOWN);
@@ -148,6 +151,7 @@ public class Duo_Hang extends LinearOpMode {
                     delay(10);
                     upper.hang_setSlide(SuperStructure.SLIDE_HANG_HIGH_UP);
                     delay(500);
+                    sequence = Duo.Sequence.HANG;
                 }
                 if (intakeFar.toTrue()) {
                     upper.setArmPosition(SuperStructure.ARM_PRE_INTAKE);
