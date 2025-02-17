@@ -3,6 +3,8 @@ package org.firstinspires.ftc.teamcode.testings;
 import com.acmerobotics.dashboard.FtcDashboard;
 import com.acmerobotics.dashboard.config.Config;
 import com.acmerobotics.dashboard.telemetry.MultipleTelemetry;
+import com.acmerobotics.roadrunner.control.PIDCoefficients;
+import com.acmerobotics.roadrunner.control.PIDFController;
 import com.acmerobotics.roadrunner.geometry.Pose2d;
 import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
 import com.qualcomm.robotcore.eventloop.opmode.TeleOp;
@@ -17,6 +19,9 @@ public class Heading_Pid_Test extends LinearOpMode {
     public static double kP_heading = 0.01;
     public static double kI_heading = 0;
     public static double kD_heading = 0;
+
+    public static PIDCoefficients headingPid = new PIDCoefficients(kP_heading, kI_heading, kD_heading);
+    private PIDFController turnPID;
 
     // 可在FTC Dashboard上调整的目标角度（度）
     public static double targetHeadingDegrees = 90;
@@ -61,7 +66,7 @@ public class Heading_Pid_Test extends LinearOpMode {
                     new Pose2d(
                             0,
                             0,
-                            pidOutput
+                            targetHeading
                     )
             );
 
