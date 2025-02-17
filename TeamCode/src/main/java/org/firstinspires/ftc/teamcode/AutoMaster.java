@@ -35,7 +35,7 @@ public abstract class AutoMaster extends LinearOpMode {
     public static double startPos_chamber_x = 9, startPos_box_x = 39;
 
     Pose2d boxPos;
-    public static double box_x = 54.5, box_y = 56.5, boxRed_heading = 45, boxBlue_heading = -135; // or 135 in blue
+    public static double box_x = 56, box_y = 56, boxRed_heading = 45, boxBlue_heading = -135; // or 135 in blue
 
     Pose2d chamberPos;
     public static double chamber_x = 9, chamber_y = 32.5, chamber_heading = -90;
@@ -249,30 +249,33 @@ public abstract class AutoMaster extends LinearOpMode {
             delay(200);
             upper.setArmPosition(SuperStructure.ARM_RELEASE_BOX);
             upper.setSpinWristIntake_specimen();
+            upper.setWristPreIntake();
             delay(200);
             upper.setSlidePosition_verticle(SuperStructure.SLIDE_BOX_HIGH);
-            upper.setWristPreIntake();
+            //upper.setWristPreIntake();
 
             drive.setSimpleMoveTolerance(0.8, 0.8, Math.toRadians(3));
             drive.setSimpleMovePower(0.35);
             drive.moveTo(boxPos, correcting_time);
 
             upper.setWristReleaseBox();
+            //delay(150);
             delay(150);
             upper.setClawOpenLarge();
-            delay(150);
+            //delay(150);
+            delay(100);
             upper.setWristIntake();
 //            delay(50);
         } else if (count == 2) {
             upper.setArmPosition(SuperStructure.ARM_RELEASE_BOX);
             upper.setSpinWristIntake_specimen();
+            upper.setWristPreIntake();
             delay(200);
             upper.setSlidePosition_verticle(SuperStructure.SLIDE_BOX_HIGH);
-            upper.setWristPreIntake();
 
             drive.setSimpleMoveTolerance(0.8, 0.8, Math.toRadians(3));
-            drive.setSimpleMovePower(0.4);
             delay(100);
+            drive.setSimpleMovePower(0.4);
             drive.moveTo(boxPos, correcting_time);
 
             upper.setWristReleaseBox();
@@ -280,17 +283,15 @@ public abstract class AutoMaster extends LinearOpMode {
             upper.setClawOpenLarge();
             delay(150);
             upper.setWristIntake();
-//            delay(50);
         } else {
             upper.setArmPosition(SuperStructure.ARM_RELEASE_BOX);
             upper.setSpinWristIntake_specimen();
+            upper.setWristPreIntake();
             delay(200);
             upper.setSlidePosition_verticle(SuperStructure.SLIDE_BOX_HIGH);
-            upper.setWristPreIntake();
 
             drive.setSimpleMoveTolerance(0.8, 0.8, Math.toRadians(3));
             drive.setSimpleMovePower(0.4);
-            delay(100);
             drive.moveTo(boxPos, correcting_time);
 
             upper.setWristReleaseBox();
