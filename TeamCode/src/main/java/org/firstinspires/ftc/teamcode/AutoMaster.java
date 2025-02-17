@@ -262,7 +262,7 @@ public abstract class AutoMaster extends LinearOpMode {
             upper.setClawOpenLarge();
             delay(150);
             upper.setWristIntake();
-//            delay(50);
+            delay(100);
         } else if (count == 2) {
             upper.setArmPosition(SuperStructure.ARM_RELEASE_BOX);
             upper.setSpinWristIntake_specimen();
