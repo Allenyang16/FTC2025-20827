@@ -243,8 +243,8 @@ public abstract class AutoMaster extends LinearOpMode {
         drive.moveTo(new Pose2d(48,-48,0),0);
     }
 
-    protected void moveToDrop_sample(int count){
-        if(count == 3){
+    protected void moveToDrop_sample(int count) {
+        if (count == 3) {
             upper.setSlidePosition_horizontal(0);
             delay(200);
             upper.setArmPosition(SuperStructure.ARM_RELEASE_BOX);
@@ -253,9 +253,27 @@ public abstract class AutoMaster extends LinearOpMode {
             upper.setSlidePosition_verticle(SuperStructure.SLIDE_BOX_HIGH);
             upper.setWristPreIntake();
 
-            drive.setSimpleMoveTolerance(0.8,0.8,Math.toRadians(3));
+            drive.setSimpleMoveTolerance(0.8, 0.8, Math.toRadians(3));
             drive.setSimpleMovePower(0.35);
-            drive.moveTo(boxPos,correcting_time);
+            drive.moveTo(boxPos, correcting_time);
+
+            upper.setWristReleaseBox();
+            delay(150);
+            upper.setClawOpenLarge();
+            delay(150);
+            upper.setWristIntake();
+//            delay(50);
+        } else if (count == 2) {
+            upper.setArmPosition(SuperStructure.ARM_RELEASE_BOX);
+            upper.setSpinWristIntake_specimen();
+            delay(200);
+            upper.setSlidePosition_verticle(SuperStructure.SLIDE_BOX_HIGH);
+            upper.setWristPreIntake();
+
+            drive.setSimpleMoveTolerance(0.8, 0.8, Math.toRadians(3));
+            drive.setSimpleMovePower(0.4);
+            delay(100);
+            drive.moveTo(boxPos, correcting_time);
 
             upper.setWristReleaseBox();
             delay(150);
@@ -270,16 +288,16 @@ public abstract class AutoMaster extends LinearOpMode {
             upper.setSlidePosition_verticle(SuperStructure.SLIDE_BOX_HIGH);
             upper.setWristPreIntake();
 
-            drive.setSimpleMoveTolerance(0.8,0.8,Math.toRadians(3));
+            drive.setSimpleMoveTolerance(0.8, 0.8, Math.toRadians(3));
             drive.setSimpleMovePower(0.4);
-            drive.moveTo(boxPos,correcting_time);
+            delay(100);
+            drive.moveTo(boxPos, correcting_time);
 
             upper.setWristReleaseBox();
             delay(150);
             upper.setClawOpenLarge();
             delay(150);
             upper.setWristIntake();
-//            delay(50);
         }
     }
     protected void moveToStartPos(){
@@ -298,7 +316,7 @@ public abstract class AutoMaster extends LinearOpMode {
             delay(550);
             upper.setWristPreIntake();
             upper.setArmPosition(SuperStructure.ARM_INTAKE);
-            drive.moveTo(intakeSamplePos_1, correcting_time2);
+            drive.moveTo(intakeSamplePos_1, correcting_time);
         } else if (count == 2) {
             drive.setSimpleMovePower(0.35);
             drive.setSimpleMoveTolerance(1,1,Math.toRadians(3));
@@ -310,7 +328,7 @@ public abstract class AutoMaster extends LinearOpMode {
             delay(550);
             upper.setWristPreIntake();
             upper.setArmPosition(SuperStructure.ARM_INTAKE);
-            drive.moveTo(intakeSamplePos_2, correcting_time2);
+            drive.moveTo(intakeSamplePos_2, correcting_time);
         }
 
         upper.setWristIntake();
@@ -327,7 +345,7 @@ public abstract class AutoMaster extends LinearOpMode {
         upper.setSlidePosition(0);
         delay(550);
         upper.setArmPosition(SuperStructure.ARM_PRE_INTAKE);
-        drive.moveTo(intakeSamplePos_3,150);
+        drive.moveTo(intakeSamplePos_3,100);
 
         upper.setSlidePosition_horizontal(SuperStructure.SLIDE_INTAKE_MAX);
         delay(350);
