@@ -74,7 +74,7 @@ public class SuperStructure {
     // TODO: CHECK THIS VALUE
     public static int ARM_INTAKE_SPECIMEN = 700;
     public static int ARM_RELEASE_BOX = 95;
-    public static int ARM_RELEASE_CHAMBER = -300, ARM_RELEASE_CHAMBER_TELEOP = 320;// 80 for teleOp
+    public static int ARM_RELEASE_CHAMBER = -320, ARM_RELEASE_CHAMBER_TELEOP = 320;// 80 for teleOp
 
     public static int ARM_HANG_HIGH = -200, ARM_HANG_AUTO = -220;//
     public static int ARM_HANG_LOW = 400;
