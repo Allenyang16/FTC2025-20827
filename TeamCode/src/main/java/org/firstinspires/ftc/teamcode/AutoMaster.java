@@ -8,7 +8,7 @@ import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
 import com.qualcomm.robotcore.hardware.DcMotor;
 
 import org.firstinspires.ftc.teamcode.drive.NewMecanumDrive;
-//import org.firstinspires.ftc.teamcode.testings.DetectPipeline;
+import org.firstinspires.ftc.teamcode.subsystems.Vision;
 import org.firstinspires.ftc.teamcode.trajectorysequence.TrajectorySequence;
 import org.firstinspires.ftc.teamcode.uppersystems.SuperStructure;
 
@@ -24,6 +24,7 @@ public abstract class AutoMaster extends LinearOpMode {
     protected int side_color;
 
     private NewMecanumDrive drive;
+    private Vision vision;
     private SuperStructure upper;
     private Runnable update;
 
@@ -203,6 +204,7 @@ public abstract class AutoMaster extends LinearOpMode {
         telemetry.addLine("init: drive");
         telemetry.update();
         drive = new NewMecanumDrive(hardwareMap);
+        vision = new Vision(hardwareMap,telemetry);
         drive.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
 
 
@@ -228,6 +230,8 @@ public abstract class AutoMaster extends LinearOpMode {
 
         telemetry.addLine("init: trajectory");
         telemetry.update();
+        telemetry.addLine("init: vision");
+        vision.initializeCamera();
     }
 
     public void resetPosAndIMU(){
@@ -717,6 +721,9 @@ public abstract class AutoMaster extends LinearOpMode {
     }
 
     public void recognizeSample(){
+        drive.moveTo(new Pose2d(runToField.getX()+vision.getSamplePosition(0,0),runToField.getY(),runToField.getHeading()),200);
+        vision.turnClaw(0);
+
 //        double cameraAngle = drive.getCameraAngle();
     }
 
