@@ -153,6 +153,7 @@ public class Duo_Hang extends LinearOpMode {
                     upper.setArmPosition(SuperStructure.ARM_HANG_LOW);
                     upper.hang_setSlide(SuperStructure.SLIDE_HANG_LOW_UP);
                     delay(500);
+                    sequence = Duo.Sequence.HANG;
                 }
                 if (intakeFar.toTrue()) {
                     upper.setArmPosition(SuperStructure.ARM_PRE_INTAKE);
