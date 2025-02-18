@@ -144,13 +144,14 @@ public class Duo_Hang extends LinearOpMode {
                 if (hang.toTrue()) {
                     upper.setSlidePosition_hang(SuperStructure.SLIDE_HANG_LOW_DOWN);
                     delay(1800);
-                    upper.setArmPosition(100);
+                    upper.setArmPosition(-50);
                 }
                 if (toHang_high.toTrue()) {
-                    upper.setArmPosition(80);
+                    upper.setArmPosition(-80);
                     delay(10);
                     upper.hang_setSlide(SuperStructure.SLIDE_HANG_HIGH_UP);
                     delay(500);
+                    upper.setArmPosition(50);
                     sequence = Duo.Sequence.HANG;
                 }
                 if (intakeFar.toTrue()) {

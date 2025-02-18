@@ -38,13 +38,13 @@ public abstract class AutoMaster extends LinearOpMode {
     public static double box_x = 56, box_y = 56, boxRed_heading = 45, boxBlue_heading = -135; // or 135 in blue
 
     Pose2d chamberPos;
-    public static double chamber_x = 9, chamber_y = 31, chamber_heading = -90;
+    public static double chamber_x = 5, chamber_y = 31, chamber_heading = -90;
     Pose2d chamberPos2;
     public static double chamber2_x = 8;
     Pose2d chamberPos_delta;
     Pose2d chamberPos_delta2;
     public static double chamber_delta_x = 1.5;
-    public static double chamber_delta_x2 = 2;
+    public static double chamber_delta_x2 = 3;
 
     Pose2d preChamberPos;
     public static double preChamber_x = 9, preChamber_y = 50;
@@ -95,7 +95,7 @@ public abstract class AutoMaster extends LinearOpMode {
     public static double grabSample_heaidng = -10.94, throwSample_heading = 30;
 
     Pose2d intakeSpecimenPos;
-    public static double intakeSpecimen_x = 40, intakeSpecimen_y = 57.2, intakeSpecimen_heading = -90;
+    public static double intakeSpecimen_x = 40, intakeSpecimen_y = 57.5, intakeSpecimen_heading = -90;
     Pose2d intakeSpecimenPrePos_ground;
     public static double pre_intakeSpecimen_x_ground = 22, pre_intakeSpecimen_y_ground = 43;
     Pose2d intakeSpecimenPos_ground;

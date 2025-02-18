@@ -77,7 +77,7 @@ public class SuperStructure {
     public static int ARM_RELEASE_CHAMBER = -320, ARM_RELEASE_CHAMBER_TELEOP = 320;// 80 for teleOp
 
     public static int ARM_HANG_HIGH = -200, ARM_HANG_AUTO = -220;//
-    public static int ARM_HANG_LOW = 400;
+    public static int ARM_HANG_LOW = 380;
 
     public double slidePower = 0;
     public double armPower = 0;
