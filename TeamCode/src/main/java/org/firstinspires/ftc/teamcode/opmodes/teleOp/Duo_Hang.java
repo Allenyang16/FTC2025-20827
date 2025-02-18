@@ -34,7 +34,7 @@ public class Duo_Hang extends LinearOpMode {
 
     private Duo.Sequence sequence;
     private Duo.IntakeState intakeState;
-    //private Duo.HangState hangState;
+    private Duo_Hang.HangState hangState;
 
     private DcMotor mArmLeft = null;
     private DcMotor mArmRight = null;
@@ -79,8 +79,8 @@ public class Duo_Hang extends LinearOpMode {
         XCYBoolean toOrigin = new XCYBoolean(() -> (gamepad1.left_stick_button));
         XCYBoolean toPostIntake = new XCYBoolean(() -> (gamepad1.right_stick_button));
         XCYBoolean toHang = new XCYBoolean(() -> gamepad1.dpad_left && sequence == Duo.Sequence.RUN);
-        XCYBoolean hang = new XCYBoolean(() -> gamepad1.dpad_right && sequence == Duo.Sequence.RUN);
-        XCYBoolean toHang_high = new XCYBoolean(() -> gamepad1.dpad_left && sequence == Duo.Sequence.RUN);
+        XCYBoolean hang = new XCYBoolean(() -> gamepad1.dpad_right && sequence == Duo.Sequence.HANG);
+        XCYBoolean toHang_high = new XCYBoolean(() -> gamepad1.dpad_left && sequence == Duo.Sequence.HANG);
 
         XCYBoolean toHangOpenLoop = new XCYBoolean(() -> gamepad1.dpad_up && sequence == Duo.Sequence.HANG);
         XCYBoolean intakeFar = new XCYBoolean(() -> gamepad2.y);
@@ -102,7 +102,7 @@ public class Duo_Hang extends LinearOpMode {
         drive.setYawHeading(AutoMaster.yawOffset);
 
         intakeState = Duo.IntakeState.POST_NEAR;
-        //hangState = Duo.HangState.HANG;
+        hangState = Duo_Hang.HangState.HANG;
         waitForStart();
 
         while (opModeIsActive()) {
@@ -112,8 +112,21 @@ public class Duo_Hang extends LinearOpMode {
             if (resetHeading.toTrue()) {
                 drive.resetHeading();
             }
-
-            if (sequence == Duo.Sequence.HANG) {
+            if (hang.toTrue()) {
+                upper.setSlidePosition_hang(SuperStructure.SLIDE_HANG_LOW_DOWN);
+                delay(1800);
+                upper.setArmPosition(-50);
+            }
+            if (toHang_high.toTrue()) {
+                upper.setArmPosition(-80);
+                delay(100);
+                upper.hang_setSlide(SuperStructure.SLIDE_HANG_HIGH_UP);
+                delay(200);
+                upper.setArmPosition(50);
+                sequence = Duo.Sequence.HANG;
+                hangState = HangState.HANG_OPENLOOP;
+            }
+            if (sequence == Duo.Sequence.HANG && hangState ==HangState.HANG_OPENLOOP) {
                 if (gamepad1.dpad_up) {
                     coe = 0;
                     while(true) {
@@ -140,19 +153,6 @@ public class Duo_Hang extends LinearOpMode {
                     upper.setArmPosition(SuperStructure.ARM_HANG_LOW);
                     upper.hang_setSlide(SuperStructure.SLIDE_HANG_LOW_UP);
                     delay(500);
-                }
-                if (hang.toTrue()) {
-                    upper.setSlidePosition_hang(SuperStructure.SLIDE_HANG_LOW_DOWN);
-                    delay(1800);
-                    upper.setArmPosition(-50);
-                }
-                if (toHang_high.toTrue()) {
-                    upper.setArmPosition(-80);
-                    delay(10);
-                    upper.hang_setSlide(SuperStructure.SLIDE_HANG_HIGH_UP);
-                    delay(500);
-                    upper.setArmPosition(50);
-                    sequence = Duo.Sequence.HANG;
                 }
                 if (intakeFar.toTrue()) {
                     upper.setArmPosition(SuperStructure.ARM_PRE_INTAKE);
@@ -265,17 +265,14 @@ public class Duo_Hang extends LinearOpMode {
                 if (toPostIntake.toTrue()) {
                     upper.setWristPreIntake();
                     upper.setSpinWristIntake();
-                    if (intakeState == Duo.IntakeState.INTAKE_SAMPLE) {
-                        upper.setArmPosition(SuperStructure.ARM_POST_INTAKE);
-                        upper.setSlidePosition_horizontal(SuperStructure.SLIDE_MIN);
-                        intakeState = Duo.IntakeState.POST_NEAR;
-                    }
+                    upper.setArmPosition(SuperStructure.ARM_POST_INTAKE);
+                    upper.setSlidePosition_horizontal(SuperStructure.SLIDE_MIN);
+                    intakeState = Duo.IntakeState.POST_NEAR;
                 }
 
                 if (toOrigin.toTrue() && intakeState == Duo.IntakeState.POST_NEAR) {
                     upper.setSpinWristIntake();
                     upper.setArmPosition(0);
-                    sequence = Duo.Sequence.RUN;
                 }
             }
 

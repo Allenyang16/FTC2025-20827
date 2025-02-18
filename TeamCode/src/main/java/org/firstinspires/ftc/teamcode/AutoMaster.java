@@ -59,7 +59,7 @@ public abstract class AutoMaster extends LinearOpMode {
     Pose2d intakeSamplePos_2;
     public static double intake_samplePos2_x = 56.3, intake_samplePos2_y = 40, intake_samplePos2_heading = -90;
     Pose2d intakeSamplePos_3;
-    public static double intake_samplePos3_x = 56.5, intake_samplePos3_y = 48, intake_samplePos3_heading = -105;
+    public static double intake_samplePos3_x = 56.5, intake_samplePos3_y = 48, intake_samplePos3_heading = -115;
     public static double sample3_positive_heading = -60;
 
     public static double intake_redSample1_x = 37, intake_redSample1_y = -47, intake_redSample1_heading = -80;
