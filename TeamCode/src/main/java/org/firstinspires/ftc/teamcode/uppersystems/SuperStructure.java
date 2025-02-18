@@ -64,8 +64,8 @@ public class SuperStructure {
     public static int SLIDE_CHAMBER_HIGH_TELEOP = 520;
     public static int SLIDE_CHAMBER_HIGH_DOWN_TELEOP = 360;
     public static int SLIDE_INTAKE_MAX = 700, SLIDE_AUTO = 70, SLIDE_MIN = 0;
-    public static int SLIDE_HANG_AUTO = 200, SLIDE_HANG_HIGH_UP = 1300, SLIDE_HANG_HIGH_DOWN = 100;
-    public static int SLIDE_HANG_LOW_UP = 1200, SLIDE_HANG_LOW_DOWN = 0;
+    public static int SLIDE_HANG_AUTO = 200, SLIDE_HANG_HIGH_UP = 1300, SLIDE_HANG_HIGH_DOWN = 600;
+    public static int SLIDE_HANG_LOW_UP = 1000, SLIDE_HANG_LOW_DOWN = 0;
 
     public static int ARM_CHAMBER_HIGH_Test = 220;
     public static int ARM_INTAKE = -970;
@@ -425,6 +425,15 @@ public class SuperStructure {
             armLeftPidCtrl.setOutputBounds(-1,1);
         }
     }
+    public void disableArmMotor(){
+        mArmLeft.setMotorDisable();
+        mArmRight.setMotorDisable();
+    }
+    public void enableArmMotor(){
+        mArmLeft.setMotorEnable();
+        mArmRight.setMotorEnable();
+    }
+
 
     public void resetArm(){
         mArmLeft.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);

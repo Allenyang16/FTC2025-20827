@@ -117,6 +117,7 @@ public class Duo_Hang extends LinearOpMode {
                 delay(1800);
                 upper.setArmPosition(-50);
             }
+
             if (toHang_high.toTrue()) {
                 upper.setArmPosition(-80);
                 delay(100);
@@ -274,6 +275,7 @@ public class Duo_Hang extends LinearOpMode {
                 if (toOrigin.toTrue() && intakeState == Duo.IntakeState.POST_NEAR) {
                     upper.setSpinWristIntake();
                     upper.setArmPosition(0);
+                    sequence = Duo.Sequence.RUN;
                 }
             }
 
