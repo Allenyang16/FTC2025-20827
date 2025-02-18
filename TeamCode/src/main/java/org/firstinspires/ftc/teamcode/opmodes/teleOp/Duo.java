@@ -102,8 +102,14 @@ public class Duo extends LinearOpMode {
                     delay(10);
                     upper.hang_setSlide(SuperStructure.SLIDE_HANG_HIGH_UP);
                     delay(500);
-
+                    upper.disableArmMotor();
+                    upper.hang_setSlide(SuperStructure.SLIDE_HANG_HIGH_DOWN); //
+                    upper.enableArmMotor();
+                    upper.setArmPosition(SuperStructure.ARM_HANG_HIGH);
+                    delay(500);
+                    upper.hang_setSlide(0);
                 }
+
             }
 
             if(sequence == Sequence.RUN){
