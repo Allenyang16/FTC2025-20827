@@ -95,7 +95,7 @@ public class Duo_Hang extends LinearOpMode {
         XCYBoolean spinWristCounterClockwise = new XCYBoolean(() -> gamepad2.left_trigger > 0 && sequence == Duo.Sequence.INTAKE_SAMPLE);
         XCYBoolean toReleaseHighChamber = new XCYBoolean(() -> intakeState == Duo.IntakeState.SPECIMEN && gamepad2.dpad_up);
         XCYBoolean toPullDownSpecimen = new XCYBoolean(() -> intakeState == Duo.IntakeState.SPECIMEN && gamepad2.dpad_down);
-        XCYBoolean resetSlide = new XCYBoolean(() -> sequence == Duo.Sequence.RUN && gamepad2.right_stick_button);
+        XCYBoolean resetSlide = new XCYBoolean(() -> sequence == Duo.Sequence.RUN && gamepad1.right_stick_button);
 
         upper.initialize();
         drive.setPoseEstimate(AutoMaster.endPos);
@@ -127,10 +127,11 @@ public class Duo_Hang extends LinearOpMode {
                 sequence = Duo.Sequence.HANG;
                 hangState = HangState.HANG_OPENLOOP;
             }
+
             if (sequence == Duo.Sequence.HANG && hangState ==HangState.HANG_OPENLOOP) {
                 if (gamepad1.dpad_up) {
                     coe = 0;
-                    while(true) {
+                    while (true) {
                         upper.slidePower = -gamepad1.left_stick_y;
                         upper.armPower = gamepad1.right_stick_y;
                         upper.setUpperHang();
@@ -140,7 +141,6 @@ public class Duo_Hang extends LinearOpMode {
                         }
                     }
                 }
-
             }
 
             if (sequence == Duo.Sequence.RUN) {

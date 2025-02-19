@@ -31,14 +31,14 @@ public abstract class AutoMaster extends LinearOpMode {
     public static double yawOffset = 0;
 
     Pose2d startPos;
-    public static double startPos_x = 39, startPos_y = 60.5, startPos_heading = -90;
+    public static double startPos_x = 39, startPos_y = 62, startPos_heading = -90;
     public static double startPos_chamber_x = 9, startPos_box_x = 39;
 
     Pose2d boxPos;
     public static double box_x = 56, box_y = 56, boxRed_heading = 45, boxBlue_heading = -135; // or 135 in blue
 
     Pose2d chamberPos;
-    public static double chamber_x = 5, chamber_y = 31, chamber_heading = -90;
+    public static double chamber_x = 2, chamber_y = 31, chamber_heading = -90;
     Pose2d chamberPos2;
     public static double chamber2_x = 8;
     Pose2d chamberPos_delta;
@@ -47,7 +47,7 @@ public abstract class AutoMaster extends LinearOpMode {
     public static double chamber_delta_x2 = 3;
 
     Pose2d preChamberPos;
-    public static double preChamber_x = 9, preChamber_y = 50;
+    public static double preChamber_x = 2, preChamber_y = 50;
     Pose2d preChamberPos1;
     public static double preChamber1_x = 6, preChamber1_y = 37;
 
@@ -438,10 +438,10 @@ public abstract class AutoMaster extends LinearOpMode {
             drive.setSimpleMovePower(1);
             drive.setSimpleMoveTolerance(3,3,Math.toRadians(5));
             upper.setSpinWristRelease_specimen();
-            drive.moveTo(preChamberPos.minus(chamberPos_delta2),50);
+            drive.moveTo(preChamberPos.plus(chamberPos_delta).plus(chamberPos_delta).plus(chamberPos_delta),50);
             delay(25);
             upper.setSlidePosition(SuperStructure.SLIDE_CHAMBER_HIGH_AUTO);
-            drive.moveTo(chamberPos.minus(chamberPos_delta2),0);
+            drive.moveTo(chamberPos.plus(chamberPos_delta).plus(chamberPos_delta).plus(chamberPos_delta),0);
             delay(25);
             /*
             TrajectorySequence releaseSpecimen4 = drive.trajectorySequenceBuilder(new Pose2d(40 * startSide, 58 * side_color, Math.toRadians(-90 * side_color)))
@@ -454,10 +454,10 @@ public abstract class AutoMaster extends LinearOpMode {
             drive.setSimpleMovePower(1);
             drive.setSimpleMoveTolerance(3,3,Math.toRadians(5));
             upper.setSpinWristRelease_specimen();
-            drive.moveTo(preChamberPos.minus(chamberPos_delta2).minus(chamberPos_delta2),50);
+            drive.moveTo(preChamberPos.plus(chamberPos_delta).plus(chamberPos_delta).plus(chamberPos_delta).plus(chamberPos_delta),50);
             delay(25);
             upper.setSlidePosition(SuperStructure.SLIDE_CHAMBER_HIGH_AUTO);
-            drive.moveTo(chamberPos.minus(chamberPos_delta2).minus(chamberPos_delta2),0);
+            drive.moveTo(chamberPos.plus(chamberPos_delta).plus(chamberPos_delta).plus(chamberPos_delta).plus(chamberPos_delta),0);
             delay(25);
 
             /*TrajectorySequence releaseSpecimen5 = drive.trajectorySequenceBuilder(new Pose2d(40 * startSide, 58 * side_color, Math.toRadians(-90 * side_color)))

@@ -61,23 +61,23 @@ public class SuperStructure {
     public static int SLIDE_BOX_HIGH = 1750, SLIDE_BOX_LOW = 500;
     public static int SLIDE_CHAMBER_HIGH = 780, SLIDE_CHAMBER_HIGH_AUTO = 500, SLIDE_CHAMBER_LOW = 0;
     public static int SLIDE_CHAMBER_HIGH_DOWN = 420;
-    public static int SLIDE_CHAMBER_HIGH_TELEOP = 520;
+    public static int SLIDE_CHAMBER_HIGH_TELEOP = 540;
     public static int SLIDE_CHAMBER_HIGH_DOWN_TELEOP = 360;
     public static int SLIDE_INTAKE_MAX = 700, SLIDE_AUTO = 70, SLIDE_MIN = 0;
     public static int SLIDE_HANG_AUTO = 200, SLIDE_HANG_HIGH_UP = 1300, SLIDE_HANG_HIGH_DOWN = 600;
-    public static int SLIDE_HANG_LOW_UP = 1000, SLIDE_HANG_LOW_DOWN = 0;
+    public static int SLIDE_HANG_LOW_UP = 1200, SLIDE_HANG_LOW_DOWN = 0;
 
     public static int ARM_CHAMBER_HIGH_Test = 220;
     public static int ARM_INTAKE = -970;
-    public static int ARM_PRE_INTAKE = -900;
-    public static int ARM_POST_INTAKE = -900;
+    public static int ARM_PRE_INTAKE = -890;
+    public static int ARM_POST_INTAKE = -890;
     // TODO: CHECK THIS VALUE
     public static int ARM_INTAKE_SPECIMEN = 700;
     public static int ARM_RELEASE_BOX = 95;
-    public static int ARM_RELEASE_CHAMBER = -320, ARM_RELEASE_CHAMBER_TELEOP = 320;// 80 for teleOp
+    public static int ARM_RELEASE_CHAMBER = -320, ARM_RELEASE_CHAMBER_TELEOP = 340;// 80 for teleOp
 
     public static int ARM_HANG_HIGH = -200, ARM_HANG_AUTO = -220;//
-    public static int ARM_HANG_LOW = 380;
+    public static int ARM_HANG_LOW = 350;
 
     public double slidePower = 0;
     public double armPower = 0;
