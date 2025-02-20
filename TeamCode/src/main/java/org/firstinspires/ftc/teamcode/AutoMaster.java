@@ -27,7 +27,7 @@ public abstract class AutoMaster extends LinearOpMode {
     private SuperStructure upper;
     private Runnable update;
 
-    public static int correcting_time = 100;
+    public static int correcting_time = 100, correcting_time2 = 200;
     public static double yawOffset = 0;
 
     Pose2d startPos;
@@ -231,6 +231,66 @@ public abstract class AutoMaster extends LinearOpMode {
         drive.moveTo(new Pose2d(48,48,0),0);
         delay(5000);
         drive.moveTo(new Pose2d(48,-48,0),0);
+    }
+
+    protected void moveToDrop_sample1(){
+        drive.setSimpleMoveTolerance(0.6,0.6,Math.toRadians(3));
+        drive.setSimpleMovePower(0.85);
+
+        upper.setSlidePosition(0);
+        upper.setArmPosition(SuperStructure.ARM_RELEASE_BOX);
+        upper.setSpinWristIntake_specimen();
+        drive.moveTo(boxPos,correcting_time2);
+        // Drop
+        dropSample();
+    }
+
+    protected void dropSample(){
+        upper.setSlidePosition_verticle(SuperStructure.SLIDE_BOX_HIGH);
+        delay(750);
+        upper.setWristReleaseBox();
+        delay(210);
+        upper.setClawOpen();
+    }
+
+    public void intakeSample(int count){
+        drive.setSimpleMovePower(0.5);
+        drive.setSimpleMoveTolerance(0.4,0.4,Math.toRadians(4));
+
+        upper.setWristPreIntake();
+        upper.setSpinWristIntake();
+        upper.setArmPosition(SuperStructure.ARM_INTAKE);
+        if(count == 1){
+            drive.moveTo(intakeSamplePos_1, correcting_time2);
+        } else if (count == 2) {
+            drive.moveTo(intakeSamplePos_2, correcting_time2);
+        }
+        upper.setWristIntake();
+        delay(200);
+        upper.setClawGrab();
+    }
+
+    protected void intakeSample_3(){
+        drive.setSimpleMovePower(0.6);
+        drive.setSimpleMoveTolerance(0.4,0.4,Math.toRadians(4));
+        upper.setWristPreIntake();
+        upper.setArmPosition(SuperStructure.ARM_INTAKE);
+
+        drive.moveTo(intakeSamplePos_3, correcting_time2);
+        upper.setSlidePosition_horizontal(SuperStructure.SLIDE_INTAKE_MAX);
+        delay(400);
+        upper.setWristIntake();
+        delay(200);
+        upper.setClawGrab();
+        delay(100);
+    }
+
+    protected void toOrigin(){
+        upper.setWristIntake();
+        upper.setArmPosition(0);
+        delay(200);
+        upper.setSlidePosition(0);
+        delay(700);
     }
 
     protected void moveToDrop_sample(int count) {
