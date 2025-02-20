@@ -45,9 +45,9 @@ public class SuperStructure {
     public static PIDCoefficients slideRightPidConf_Vertical = new PIDCoefficients(0.009, 0.000, 0.00);
     private final PIDFController slideRightPidCtrl_Vertical;
 
-    public static PIDCoefficients slideLeftPidConf_Hang = new PIDCoefficients(0.004, 0.00, 0.00);
+    public static PIDCoefficients slideLeftPidConf_Hang = new PIDCoefficients(0.004, 0.003, 0.00);
     private final PIDFController slideLeftPidCtrl_Hang;
-    public static PIDCoefficients slideRightPidConf_Hang = new PIDCoefficients(0.009, 0.000, 0.00);
+    public static PIDCoefficients slideRightPidConf_Hang = new PIDCoefficients(0.009, 0.003, 0.00);
     private final PIDFController slideRightPidCtrl_Hang;
 
     private List<PIDFController> slidePidCtrl;
@@ -95,14 +95,14 @@ public class SuperStructure {
     public static double WRIST_RELEASE_CHAMBER_HIGH = 0.73, WRIST_RELEASE_CHAMBER_LOW = 0.8;
 
     // Spin Wrist
-    public static double SPINWRIST_INTAKE = 0.27;
+    public static double SPINWRIST_INTAKE = 0.1;
 
-    public static double SPINWRIST_INTAKE_CLOCKWISE = 0.55;
-    public static double SPINWRIST_INTAKE_COUNTERCLOCKWISE = 0.27;
+    public static double SPINWRIST_INTAKE_CLOCKWISE = 0.1;
+    public static double SPINWRIST_INTAKE_COUNTERCLOCKWISE = 0.43;
     // TODO: CHANGE THE VALUE
-    public static double SPINWRIST_INTAKE_SPECIMEN = 0.85;
-    public static double SPINWRIST_RELEASE_SPECIMEN = 0.27;
-    public static double SPINWRIST_AUTO = 0.76;
+    public static double SPINWRIST_INTAKE_SPECIMEN = 0.73;
+    public static double SPINWRIST_RELEASE_SPECIMEN = 0.1;
+    public static double SPINWRIST_AUTO = 0.6;
     
     // Claw
     // TODO: TEST Value
