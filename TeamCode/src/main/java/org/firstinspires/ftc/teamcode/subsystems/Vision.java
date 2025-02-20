@@ -169,6 +169,7 @@ public class Vision {
                     angleRadians = Math.atan2(deltaY, deltaX);
 
                 }
+                //斜45º，角度*cos45º
                 irlAngle = Math.atan(Math.tan(angleRadians)*0.707);
                 irlAngleDegree = Math.toDegrees(irlAngle);
                 if(irlAngleDegree != defaultValue){
