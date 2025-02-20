@@ -119,6 +119,7 @@ public class Vision {
         if (result != null) {
             double tX = result.getTx();
             double tY = result.getTy();
+            //像素转英寸
             irlY = ((Math.tan(Math.toRadians(tX + 45)) * yPixelToInch)-slideOffset)*inchToSlideNumber;
             irlX = tY * pixelToInch - cameraOffset;
             if(resultType == 0){
@@ -142,7 +143,7 @@ public class Vision {
                 List<List<Double>> corners = cr.getTargetCorners();
                 double angleRadians = 0;
                 if (corners.size() >= 4) {
-                    // 获取角点 0 和角点 1 的坐标
+                    
                     double x0 = corners.get(0).get(0);
                     double y0 = corners.get(0).get(1);
                     double x1 = corners.get(1).get(0);
@@ -152,11 +153,11 @@ public class Vision {
 
                     double length01 = Math.sqrt(Math.pow(x1 - x0, 2) + Math.pow(y1 - y0, 2));
 
-                    // 计算 corner0 到 corner3 的距离
+                    
                     double length03 = Math.sqrt(Math.pow(x3 - x0, 2) + Math.pow(y3 - y0, 2));
                     double deltaY;
                     double deltaX;
-                    // 计算角点 0 和角点 1 形成的直线的角度
+                
                     if (length01 > length03) {
                         deltaX = x1 - x0;
                         deltaY = y1 - y0;
