@@ -410,7 +410,7 @@ public abstract class AutoMaster extends LinearOpMode {
             drive.setSimpleMoveTolerance(3,3,Math.toRadians(5));
             drive.setSimpleMovePower(0.8);
             drive.moveTo(preIntakeSpecimenPos_wall,0);
-            drive.setSimpleMovePower(0.4);
+            drive.setSimpleMovePower(0.3);
             drive.setSimpleMoveTolerance(1,1,Math.toRadians(3));
             drive.moveTo(intakeSpecimenPos,100);
         } else {
