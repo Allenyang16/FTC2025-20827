@@ -84,6 +84,8 @@ public class NewMecanumDrive extends MecanumDrive{
 
     private Runnable updateRunnable;
 
+    private boolean isReleaseSpecDriveRunning = false;
+
     public void setUpdateRunnable(Runnable updateRunnable) {
         this.updateRunnable = updateRunnable;
     }
@@ -288,6 +290,7 @@ public class NewMecanumDrive extends MecanumDrive{
     }
 
     public void setGlobalPower(double x, double y, double rx) {
+        if(isReleaseSpecDriveRunning) return;
         double botHeading = odo.getHeading() - yawHeading;
         double rotX = x * Math.cos(-botHeading) - y * Math.sin(-botHeading);
         double rotY = x * Math.sin(-botHeading) + y * Math.cos(-botHeading);
@@ -305,6 +308,29 @@ public class NewMecanumDrive extends MecanumDrive{
         rightFront.setPower(frontRightPower);
         rightRear.setPower(backRightPower);
     }
+
+    public void setGlobalPower(double x, double y, double rx, double backPower) {
+        if(backPower == 0) isReleaseSpecDriveRunning = true;
+        isReleaseSpecDriveRunning = true;
+        double botHeading = odo.getHeading() - yawHeading;
+        double rotX = x * Math.cos(-botHeading) - y * Math.sin(-botHeading);
+        rotX -= backPower;
+        double rotY = x * Math.sin(-botHeading) + y * Math.cos(-botHeading);
+
+        rotX = rotX * 1.1;
+
+        double denominator = Math.max(Math.abs(rotY) + Math.abs(rotX) + Math.abs(rx), 1);
+        double frontLeftPower = (rotY + rotX + rx) / denominator;;
+        double backLeftPower = (rotY - rotX + rx) / denominator; ;
+        double frontRightPower = (rotY - rotX - rx) / denominator;
+        double backRightPower = (rotY + rotX - rx) / denominator;
+
+        leftFront.setPower(frontLeftPower);
+        leftRear.setPower(backLeftPower);
+        rightFront.setPower(frontRightPower);
+        rightRear.setPower(backRightPower);
+    }
+
 
     public void resetHeading(){
         yawHeading = odo.getHeading();

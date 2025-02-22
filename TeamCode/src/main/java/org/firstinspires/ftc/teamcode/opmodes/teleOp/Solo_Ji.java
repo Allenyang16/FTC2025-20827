@@ -351,9 +351,14 @@ public class Solo_Ji extends LinearOpMode {
                 if(grab.toTrue()){
                     upper.switchClawState();
                     delay(50);
-                    upper.setWristIntakeSpecimen();
+                    upper.setWristReleaseChamberTeleop();
                     sequence = Sequence.RUN;
                     intakeState = IntakeState.POST_NEAR;
+
+                    drive.setGlobalPower(coe*upper.translation_coefficient() * gamepad1.left_stick_y, coe*upper.translation_coefficient() * gamepad1.left_stick_x, coe*upper.heading_coefficient() * (gamepad1.right_stick_x), 0.3);
+                    delay(300);
+                    drive.setGlobalPower(coe*upper.translation_coefficient() * gamepad1.left_stick_y, coe*upper.translation_coefficient() * gamepad1.left_stick_x, coe*upper.heading_coefficient() * (gamepad1.right_stick_x), 0);
+
                     upper.setSlidePosition_verticle(SuperStructure.SLIDE_MIN);
                     upper.setWristPreIntake();
                     upper.setSpinWristIntake();

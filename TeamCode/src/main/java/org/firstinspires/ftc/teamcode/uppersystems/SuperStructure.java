@@ -93,16 +93,16 @@ public class SuperStructure {
     // TODO: Retest
     public static double WRIST_RELEASE_BOX_HIGH = 0.85, WRIST_RELEASE_BOX_LOW = 0.28;
     public static double WRIST_RELEASE_CHAMBER_HIGH = 0.73, WRIST_RELEASE_CHAMBER_LOW = 0.8;
-
+    public static double WRIST_RELEASE_CHAMBER_TELEOP = 0.9;
     // Spin Wrist
-    public static double SPINWRIST_INTAKE = 0.13;
+    public static double SPINWRIST_INTAKE = 0.15;
 
-    public static double SPINWRIST_INTAKE_CLOCKWISE = 0.13;
-    public static double SPINWRIST_INTAKE_COUNTERCLOCKWISE = 0.44;
+    public static double SPINWRIST_INTAKE_CLOCKWISE = 0.15;
+    public static double SPINWRIST_INTAKE_COUNTERCLOCKWISE = 0.45;
     // TODO: CHANGE THE VALUE
-    public static double SPINWRIST_INTAKE_SPECIMEN = 0.75;
-    public static double SPINWRIST_RELEASE_SPECIMEN = 0.13;
-    public static double SPINWRIST_AUTO = 0.61;
+    public static double SPINWRIST_INTAKE_SPECIMEN = 0.77;
+    public static double SPINWRIST_RELEASE_SPECIMEN = 0.15;
+    public static double SPINWRIST_AUTO = 0.62;
     
     // Claw
     // TODO: TEST Value
@@ -303,6 +303,10 @@ public class SuperStructure {
     }
     public void setWristReleaseChamber(){
         mWrist.setPosition(WRIST_INTAKE_PARALLEL_GROUND);
+        wristIntakeState = WristIntakeState.RELEASE_SPECIMEN;
+    }
+    public void setWristReleaseChamberTeleop(){
+        mWrist.setPosition(WRIST_RELEASE_CHAMBER_TELEOP);
         wristIntakeState = WristIntakeState.RELEASE_SPECIMEN;
     }
 
