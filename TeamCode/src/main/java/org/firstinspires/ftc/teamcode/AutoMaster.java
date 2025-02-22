@@ -35,7 +35,7 @@ public abstract class AutoMaster extends LinearOpMode {
     public static double startPos_chamber_x = 9, startPos_box_x = 39;
 
     Pose2d boxPos;
-    public static double box_x = 56, box_y = 56, boxRed_heading = 45, boxBlue_heading = -140; // or 135 in blue
+    public static double box_x = 56.5, box_y = 56.5, boxRed_heading = 45, boxBlue_heading = -135; // or 135 in blue
 
     Pose2d chamberPos;
     public static double chamber_x = 2, chamber_y = 31, chamber_heading = -90;
@@ -57,9 +57,9 @@ public abstract class AutoMaster extends LinearOpMode {
     Pose2d intakeSamplePos_1;
     public static double intake_samplePos1_x = 46.2, intake_samplePos1_y = 40, intake_samplePos1_heading = -90; // Degree
     Pose2d intakeSamplePos_2;
-    public static double intake_samplePos2_x = 56.3, intake_samplePos2_y = 40, intake_samplePos2_heading = -90;
+    public static double intake_samplePos2_x = 56.3, intake_samplePos2_y = 39, intake_samplePos2_heading = -90;
     Pose2d intakeSamplePos_3;
-    public static double intake_samplePos3_x = 52.5, intake_samplePos3_y = 44.5, intake_samplePos3_heading = -130;
+    public static double intake_samplePos3_x = 52.5, intake_samplePos3_y = 46, intake_samplePos3_heading = -130;
     public static double sample3_positive_heading = -60;
 
 
@@ -272,7 +272,7 @@ public abstract class AutoMaster extends LinearOpMode {
         upper.setSpinWristAuto();
         delay(150);
         upper.setArmPosition(SuperStructure.ARM_INTAKE);
-        delay(100);
+        delay(200);
         upper.setClawGrab();
         delay(100);
     }
