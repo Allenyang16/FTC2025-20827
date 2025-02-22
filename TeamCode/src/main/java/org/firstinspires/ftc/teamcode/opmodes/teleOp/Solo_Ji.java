@@ -90,7 +90,7 @@ public class Solo_Ji extends LinearOpMode {
         XCYBoolean toPullDownSpecimen = new XCYBoolean(()-> intakeState == IntakeState.SPECIMEN && gamepad1.dpad_down);
         XCYBoolean resetSlide = new XCYBoolean(()-> sequence == Sequence.RUN && gamepad1.right_stick_button);
 
-        upper.initialize();
+        //upper.initialize();
         drive.setPoseEstimate(AutoMaster.endPos);
         drive.setYawHeading(AutoMaster.yawOffset);
 
@@ -117,10 +117,13 @@ public class Solo_Ji extends LinearOpMode {
                 }
                 if (hang.toTrue()) {
                     upper.setSlidePosition_hang(SuperStructure.SLIDE_HANG_LOW_DOWN);
-                    delay(1800);
-                    upper.setArmPosition(-50);
+                    delay(1300);
                 }
                 if (toHang_high.toTrue()) {
+                    upper.setArmPosition(100);
+                    delay(500);
+                    upper.setArmPosition(-50);
+                    delay(1000);
                     upper.setArmPosition(-80);
                     delay(100);
                     upper.hang_setSlide(SuperStructure.SLIDE_HANG_HIGH_UP);
@@ -355,8 +358,8 @@ public class Solo_Ji extends LinearOpMode {
                     sequence = Sequence.RUN;
                     intakeState = IntakeState.POST_NEAR;
 
-                    drive.setGlobalPower(coe*upper.translation_coefficient() * gamepad1.left_stick_y, coe*upper.translation_coefficient() * gamepad1.left_stick_x, coe*upper.heading_coefficient() * (gamepad1.right_stick_x), 0.3);
-                    delay(300);
+                    drive.setGlobalPower(coe*upper.translation_coefficient() * gamepad1.left_stick_y, coe*upper.translation_coefficient() * gamepad1.left_stick_x, coe*upper.heading_coefficient() * (gamepad1.right_stick_x), 0.6);
+                    delay(200);
                     drive.setGlobalPower(coe*upper.translation_coefficient() * gamepad1.left_stick_y, coe*upper.translation_coefficient() * gamepad1.left_stick_x, coe*upper.heading_coefficient() * (gamepad1.right_stick_x), 0);
 
                     upper.setSlidePosition_verticle(SuperStructure.SLIDE_MIN);
