@@ -211,9 +211,9 @@ public class Solo_Ji extends LinearOpMode {
                     if (intakeState == IntakeState.POST_NEAR || intakeState == IntakeState.POST_FAR) {
                         if (upper.clawState == SuperStructure.ClawState.OPEN){
                             upper.setArmPosition(SuperStructure.ARM_INTAKE);
-                            delay(120);
+                            delay(100);
                             upper.switchClawState();
-                            delay(80);
+                            //delay(80);
                             upper.setArmPosition(SuperStructure.ARM_PRE_INTAKE);
                         }
                         else{

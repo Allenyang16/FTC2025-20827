@@ -310,12 +310,16 @@ public class NewMecanumDrive extends MecanumDrive{
     }
 
     public void setGlobalPower(double x, double y, double rx, double backPower) {
-        if(backPower == 0) isReleaseSpecDriveRunning = true;
-        isReleaseSpecDriveRunning = true;
+        if (backPower == 0) {
+            isReleaseSpecDriveRunning = false;
+        }
+        else {
+            isReleaseSpecDriveRunning = true;
+        }
         double botHeading = odo.getHeading() - yawHeading;
         double rotX = x * Math.cos(-botHeading) - y * Math.sin(-botHeading);
-        rotX -= backPower;
         double rotY = x * Math.sin(-botHeading) + y * Math.cos(-botHeading);
+        rotY += backPower;
 
         rotX = rotX * 1.1;
 
