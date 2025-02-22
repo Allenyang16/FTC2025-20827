@@ -57,6 +57,7 @@ public class SuperStructure {
     private Servo mWrist = null;
 
     private TouchSensor armMag = null;
+    private SpinWrist wristMode = SpinWrist.DEG_45;
 
     public static int SLIDE_BOX_HIGH = 1750, SLIDE_BOX_LOW = 500;
     public static int SLIDE_CHAMBER_HIGH = 780, SLIDE_CHAMBER_HIGH_AUTO = 500, SLIDE_CHAMBER_LOW = 0;
@@ -97,8 +98,10 @@ public class SuperStructure {
     // Spin Wrist
     public static double SPINWRIST_INTAKE = 0.15;
 
-    public static double SPINWRIST_INTAKE_CLOCKWISE = 0.15;
-    public static double SPINWRIST_INTAKE_COUNTERCLOCKWISE = 0.45;
+    public static double SPINWRIST_INTAKE_0 = 0.15;
+    public static double SPINWRIST_INTAKE_45 = 0.3;
+    public static double SPINWRIST_INTAKE_90 = 0.45;
+
     // TODO: CHANGE THE VALUE
     public static double SPINWRIST_INTAKE_SPECIMEN = 0.77;
     public static double SPINWRIST_RELEASE_SPECIMEN = 0.15;
@@ -108,7 +111,7 @@ public class SuperStructure {
     // TODO: TEST Value
     public static double CLAW_OPEN = 0.52;
     public static double CLAW_OPENLarge = 0.85;
-    public static double CLAW_GRAB = 0.26;
+    public static double CLAW_GRAB = 0.28;
     public ClawState clawState = GRAB;
     public SlideState slideState = SlideState.VERTICAL;
     public WristIntakeState wristIntakeState = WristIntakeState.PRE_INTAKE;
@@ -405,13 +408,36 @@ public class SuperStructure {
         mSpinWrist.setPosition(SPINWRIST_RELEASE_SPECIMEN);
     }
     public void setSpinWristIntake_spinClockwise(){
-        mSpinWrist.setPosition(SPINWRIST_INTAKE_CLOCKWISE);
+        wristMode = SpinWrist.DEG_0;
+        mSpinWrist.setPosition(wristMode.spinWristVal);
     }
+
     public void setSpinWristIntake_spinCounterClockwise(){
-        mSpinWrist.setPosition(SPINWRIST_INTAKE_COUNTERCLOCKWISE);
+        switch (wristMode) {
+            case DEG_0:
+                wristMode = SpinWrist.DEG_45;
+                break;
+            case DEG_45:
+                wristMode = SpinWrist.DEG_90;
+                break;
+        }
+        mSpinWrist.setPosition(wristMode.spinWristVal);
     }
+
     public void setSpinWristAuto(){
         mSpinWrist.setPosition(SPINWRIST_AUTO);
+    }
+
+
+    public enum SpinWrist {
+        DEG_0(SPINWRIST_INTAKE_0),
+        DEG_45(SPINWRIST_INTAKE_45),
+        DEG_90(SPINWRIST_INTAKE_90);
+
+        private final double spinWristVal;
+        SpinWrist(double spinWristVal) {
+            this.spinWristVal = spinWristVal;
+        }
     }
 
 
