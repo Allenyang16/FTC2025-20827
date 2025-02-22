@@ -350,13 +350,17 @@ public class Solo_Ji extends LinearOpMode {
 
                 if(grab.toTrue()){
                     upper.switchClawState();
+                    delay(50);
+                    upper.setWristIntakeSpecimen();
                     sequence = Sequence.RUN;
                     intakeState = IntakeState.POST_NEAR;
                     upper.setSlidePosition_verticle(SuperStructure.SLIDE_MIN);
                     upper.setWristPreIntake();
                     upper.setSpinWristIntake();
                     upper.setArmPosition(0);
-                    sequence = Sequence.RUN;
+                    upper.setWristPreIntake();
+
+
 
                 }
             }

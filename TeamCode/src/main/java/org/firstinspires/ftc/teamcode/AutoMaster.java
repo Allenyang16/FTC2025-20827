@@ -225,7 +225,7 @@ public abstract class AutoMaster extends LinearOpMode {
     protected void moveToDrop_sample1(int count){
         drive.setSimpleMoveTolerance(1,1,Math.toRadians(5));
         if (count == 1){
-            drive.setSimpleMovePower(0.7/);
+            drive.setSimpleMovePower(0.7);
 
             upper.setSlidePosition(0);
             upper.setArmPosition(SuperStructure.ARM_RELEASE_BOX);
