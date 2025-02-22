@@ -59,7 +59,7 @@ public abstract class AutoMaster extends LinearOpMode {
     Pose2d intakeSamplePos_2;
     public static double intake_samplePos2_x = 56.3, intake_samplePos2_y = 39, intake_samplePos2_heading = -90;
     Pose2d intakeSamplePos_3;
-    public static double intake_samplePos3_x = 52.5, intake_samplePos3_y = 46, intake_samplePos3_heading = -130;
+    public static double intake_samplePos3_x = 52.5, intake_samplePos3_y = 46, intake_samplePos3_heading = -125;
     public static double sample3_positive_heading = -60;
 
 
@@ -222,16 +222,27 @@ public abstract class AutoMaster extends LinearOpMode {
         drive.moveTo(new Pose2d(48,-48,0),0);
     }
 
-    protected void moveToDrop_sample1(){
+    protected void moveToDrop_sample1(int count){
         drive.setSimpleMoveTolerance(1,1,Math.toRadians(5));
-        drive.setSimpleMovePower(0.85);
+        if (count == 1){
+            drive.setSimpleMovePower(0.7/);
 
-        upper.setSlidePosition(0);
-        upper.setArmPosition(SuperStructure.ARM_RELEASE_BOX);
-        upper.setSpinWristIntake_specimen();
-        drive.moveTo(boxPos,correcting_time2);
-        // Drop
-        dropSample();
+            upper.setSlidePosition(0);
+            upper.setArmPosition(SuperStructure.ARM_RELEASE_BOX);
+            upper.setSpinWristIntake_specimen();
+            drive.moveTo(boxPos,correcting_time2);
+            // Drop
+            dropSample();
+        }else{
+            drive.setSimpleMovePower(0.85);
+
+            upper.setSlidePosition(0);
+            upper.setArmPosition(SuperStructure.ARM_RELEASE_BOX);
+            upper.setSpinWristIntake_specimen();
+            drive.moveTo(boxPos,correcting_time2);
+            // Drop
+            dropSample();
+        }
     }
 
     protected void dropSample(){

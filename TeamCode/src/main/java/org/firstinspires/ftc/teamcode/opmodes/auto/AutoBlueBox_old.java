@@ -18,19 +18,19 @@ public class AutoBlueBox_old extends AutoMaster {
 
         if(opModeIsActive()){
 
-            moveToDrop_sample1();
+            moveToDrop_sample1(1);
             toOrigin();
 
             intakeSample(1);
-            moveToDrop_sample1();
+            moveToDrop_sample1(2);
             toOrigin();
 
             intakeSample(2);
-            moveToDrop_sample1();
+            moveToDrop_sample1(3);
             toOrigin();
 
             intakeSample_3();
-            moveToDrop_sample1();
+            moveToDrop_sample1(4);
             toOrigin();
 
 
