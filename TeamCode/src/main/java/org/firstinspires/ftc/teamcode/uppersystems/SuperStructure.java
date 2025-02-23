@@ -444,6 +444,7 @@ public class SuperStructure {
     // Arm
     private int armTargetPosition;
     public void setArmPosition(int pos){
+        wristMode = SpinWrist.DEG_0;
         armTargetPosition = pos;
         armLeftPidCtrl.setTargetPosition(armTargetPosition);
         armRightPidCtrl.setTargetPosition(armTargetPosition);
