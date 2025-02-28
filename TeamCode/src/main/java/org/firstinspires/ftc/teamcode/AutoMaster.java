@@ -1,9 +1,10 @@
 package org.firstinspires.ftc.teamcode;
 
+import static org.firstinspires.ftc.teamcode.uppersystems.SuperStructure.SLIDE_CHAMBER_HIGH;
+
 import com.acmerobotics.dashboard.config.Config;
 import com.acmerobotics.roadrunner.geometry.Pose2d;
 import com.acmerobotics.roadrunner.geometry.Vector2d;
-import com.acmerobotics.roadrunner.trajectory.Trajectory;
 import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
 import com.qualcomm.robotcore.hardware.DcMotor;
 
@@ -19,8 +20,8 @@ public abstract class AutoMaster extends LinearOpMode {
     public static final int RED = -1;
     public static final int BLUE = 1;
 
-    protected int startSide;
-    protected int side_color;
+    public static int startSide;
+    public static int side_color;
 
     private NewMecanumDrive drive;
     //private Vision vision;
@@ -457,15 +458,17 @@ public abstract class AutoMaster extends LinearOpMode {
     }
 
     public void moveToChamber(int count){
-        upper.setWristReleaseChamber();
-        upper.setArmPosition(SuperStructure.ARM_RELEASE_CHAMBER);
+
 
         if(count == 1) {
             upper.setSpinWristRelease_specimen();
             drive.setSimpleMovePower(0.9);
             drive.setSimpleMoveTolerance(3,3,Math.toRadians(5));
             upper.setSlidePosition(SuperStructure.SLIDE_CHAMBER_HIGH_AUTO);
-            drive.moveTo(chamberPos,0);
+            TrajectorySequence releaseSpecimen1 = drive.trajectorySequenceBuilder(new Pose2d(40 * startSide, 58 * side_color, Math.toRadians(-90 * side_color)))
+                    .lineToConstantHeading(new Vector2d((chamber_x)* startSide, chamber_y * side_color))
+                    .build();
+            drive.followTrajectorySequence(releaseSpecimen1);
             delay(25);
 
         }else if (count == 2) {
@@ -475,12 +478,13 @@ public abstract class AutoMaster extends LinearOpMode {
             drive.moveTo(preChamberPos.plus(chamberPos_delta),50);
             //delay(25);
             upper.setSlidePosition(SuperStructure.SLIDE_CHAMBER_HIGH_AUTO);
-            drive.moveTo(chamberPos.plus(chamberPos_delta),0);
-            delay(25);
-           /* TrajectorySequence releaseSpecimen2 = drive.trajectorySequenceBuilder(new Pose2d(40 * startSide, 58 * side_color, Math.toRadians(-90 * side_color)))
-                    .lineToConstantHeading(new Vector2d(9 * startSide, 39.5 * side_color))
+           // drive.moveTo(chamberPos.plus(chamberPos_delta),0);
+
+           TrajectorySequence releaseSpecimen2 = drive.trajectorySequenceBuilder(new Pose2d(40 * startSide, 58 * side_color, Math.toRadians(-90 * side_color)))
+                    .lineToConstantHeading(new Vector2d((chamber_x+(count-1)*chamber_delta_x)* startSide, chamber_y * side_color))
                     .build();
-            drive.followTrajectorySequence(releaseSpecimen2);*/
+            drive.followTrajectorySequence(releaseSpecimen2);
+            delay(25);
 
 
         } else if (count == 3) {
@@ -490,12 +494,12 @@ public abstract class AutoMaster extends LinearOpMode {
             drive.moveTo(preChamberPos.plus(chamberPos_delta).plus(chamberPos_delta),50);
             delay(25);
             upper.setSlidePosition(SuperStructure.SLIDE_CHAMBER_HIGH_AUTO);
-            drive.moveTo(chamberPos.plus(chamberPos_delta).plus(chamberPos_delta),0);
-            delay(25);
-            /*TrajectorySequence releaseSpecimen3 = drive.trajectorySequenceBuilder(new Pose2d(40 * startSide, 58 * side_color, Math.toRadians(-90 * side_color)))
-                    .lineToConstantHeading(new Vector2d(10 * startSide, 37 * side_color))
+            //drive.moveTo(chamberPos.plus(chamberPos_delta).plus(chamberPos_delta),0);
+            TrajectorySequence releaseSpecimen3 = drive.trajectorySequenceBuilder(new Pose2d(40 * startSide, 58 * side_color, Math.toRadians(-90 * side_color)))
+                    .lineToConstantHeading(new Vector2d((chamber_x+(count-1)*chamber_delta_x)* startSide, chamber_y * side_color))
                    .build();
-            drive.followTrajectorySequence(releaseSpecimen3);*/
+            drive.followTrajectorySequence(releaseSpecimen3);
+            delay(25);
 
         } else if (count == 4) {
             drive.setSimpleMovePower(1);
@@ -506,12 +510,12 @@ public abstract class AutoMaster extends LinearOpMode {
             upper.setSlidePosition(SuperStructure.SLIDE_CHAMBER_HIGH_AUTO);
             drive.moveTo(chamberPos.plus(chamberPos_delta).plus(chamberPos_delta).plus(chamberPos_delta),0);
             delay(25);
-            /*
+
             TrajectorySequence releaseSpecimen4 = drive.trajectorySequenceBuilder(new Pose2d(40 * startSide, 58 * side_color, Math.toRadians(-90 * side_color)))
-                    .lineToConstantHeading(new Vector2d(11 * startSide, 37 * side_color))
+                    .lineToConstantHeading(new Vector2d((chamber_x+(count-1)*chamber_delta_x)* startSide, chamber_y * side_color))
                     .build();
             drive.followTrajectorySequence(releaseSpecimen4);
-            */
+
 
         } else if (count == 5) {
             drive.setSimpleMovePower(1);
@@ -523,12 +527,15 @@ public abstract class AutoMaster extends LinearOpMode {
             drive.moveTo(chamberPos.plus(chamberPos_delta).plus(chamberPos_delta).plus(chamberPos_delta).plus(chamberPos_delta),0);
             delay(25);
 
-            /*TrajectorySequence releaseSpecimen5 = drive.trajectorySequenceBuilder(new Pose2d(40 * startSide, 58 * side_color, Math.toRadians(-90 * side_color)))
-                    .lineToConstantHeading(new Vector2d(12 * startSide, 37 * side_color))
+            TrajectorySequence releaseSpecimen5 = drive.trajectorySequenceBuilder(new Pose2d(40 * startSide, 58 * side_color, Math.toRadians(-90 * side_color)))
+                    .lineToConstantHeading(new Vector2d((chamber_x+(count-1)*chamber_delta_x)* startSide, chamber_y * side_color))
                     .build();
-            drive.followTrajectorySequence(releaseSpecimen5);*/
+            drive.followTrajectorySequence(releaseSpecimen5);
 
         }
+        upper.setWristIntake();
+        upper.setArmPosition(SuperStructure.ARM_RELEASE_CHAMBER); //find correct value for updown release
+        upper.setSlidePosition(SLIDE_CHAMBER_HIGH);//find corrrect value
     }
     protected void autoUpperToOrigin(){
         //delay(200);
@@ -542,7 +549,10 @@ public abstract class AutoMaster extends LinearOpMode {
     }
 
     protected void dropSpecimen_toOrigin(){
-        drive.moveTo(postChamberPos,0);
+        TrajectorySequence post_releaseSpecimen = drive.trajectorySequenceBuilder(new Pose2d(40 * startSide, 58 * side_color, Math.toRadians(-90 * side_color)))
+                .lineToConstantHeading(new Vector2d(intakeSpecimen_x,pre_intakeSpecimen_y_wall))
+                .build();
+        drive.followTrajectorySequence(post_releaseSpecimen);
     }
 
     public void park_observation(){

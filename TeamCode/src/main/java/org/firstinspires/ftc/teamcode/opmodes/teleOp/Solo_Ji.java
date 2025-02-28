@@ -185,6 +185,7 @@ public class Solo_Ji extends LinearOpMode {
                 }
 
                 if (toIntakeSpecimen.toTrue()) {
+
                     upper.setSpinWristIntake_specimen();
                     upper.setArmPosition(SuperStructure.ARM_PRE_INTAKE);
                     delay(300);
