@@ -57,8 +57,8 @@ import XCYOS.Task;
 
 @Config
 public class NewMecanumDrive extends MecanumDrive{
-    public static PIDCoefficients TRANSLATIONAL_PID = new PIDCoefficients(10, 0, 0);
-    public static PIDCoefficients HEADING_PID = new PIDCoefficients(8, 0, 1); //8
+    public static PIDCoefficients TRANSLATIONAL_PID = new PIDCoefficients(6, 0, 0);
+    public static PIDCoefficients HEADING_PID = new PIDCoefficients(7, 0, 0); //8
 
     public static double LATERAL_MULTIPLIER = 1;
 
@@ -224,6 +224,11 @@ public class NewMecanumDrive extends MecanumDrive{
         } else if (signal != null) {
             setDriveSignal(signal);
         }
+    }
+
+
+    public void update_odometry(){
+            odo.update();
     }
 
     public void waitForIdle() {

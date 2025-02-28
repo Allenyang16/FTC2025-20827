@@ -58,6 +58,7 @@ public class Solo_Ji extends LinearOpMode {
         sequence = Sequence.RUN;
         update = ()->{
             drive.update();
+            drive.update_odometry();
             upper.update();
             XCYBoolean.bulkRead();
             telemetry.update();
@@ -376,8 +377,9 @@ public class Solo_Ji extends LinearOpMode {
             }
 
 
-            String data = String.format(Locale.US, "{X: %.3f, Y: %.3f, H: %.3f}", current_pos.getX(), current_pos.getY(), Math.toDegrees(current_pos.getHeading()));
-            telemetry.addData("Position: ", data);
+            //String data = String.format(Locale.US, "{X: %.3f, Y: %.3f, H: %.3f}", current_pos.getX(), current_pos.getY(), Math.toDegrees(current_pos.getHeading()));
+            //telemetry.addData("Position: ", data);
+            telemetry.addData("heading",Math.toDegrees((drive.getRawExternalHeading())%(2*Math.PI)));
             telemetry.addData("Sequence: ", sequence);
             telemetry.addData("Intake State: ", intakeState);
             telemetry.addData("Trans coefficient", upper.translation_coefficient());
