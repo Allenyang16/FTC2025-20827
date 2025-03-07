@@ -97,16 +97,16 @@ public class SuperStructure {
     public static double WRIST_RELEASE_CHAMBER_HIGH = 0.75, WRIST_RELEASE_CHAMBER_LOW = 0.8;
     public static double WRIST_RELEASE_CHAMBER_TELEOP = 0.75;
     // Spin Wrist
-    public static double SPINWRIST_INTAKE = 0.15;
+    public static double SPINWRIST_INTAKE = 0.12;
 
-    public static double SPINWRIST_INTAKE_0 = 0.15;
+    public static double SPINWRIST_INTAKE_0 = 0.12;
     public static double SPINWRIST_INTAKE_45 = 0.3;
-    public static double SPINWRIST_INTAKE_90 = 0.45;
+    public static double SPINWRIST_INTAKE_90 = 0.48;
 
     // TODO: CHANGE THE VALUE
-    public static double SPINWRIST_INTAKE_SPECIMEN = 0.77;
-    public static double SPINWRIST_RELEASE_SPECIMEN = 0.15;
-    public static double SPINWRIST_AUTO = 0.62;
+    public static double SPINWRIST_INTAKE_SPECIMEN = 0.86;
+    public static double SPINWRIST_RELEASE_SPECIMEN = 0.12;
+    public static double SPINWRIST_AUTO = 0.77;
     
     // Claw
     // TODO: TEST Value
