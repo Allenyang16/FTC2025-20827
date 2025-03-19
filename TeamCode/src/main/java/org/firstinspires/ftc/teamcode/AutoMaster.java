@@ -34,11 +34,11 @@ public abstract class AutoMaster extends LinearOpMode {
     public static double startPos_x = 39, startPos_y = 62, startPos_heading = -90;
     public static double startPos_chamber_x = 9, startPos_box_x = 39;
 
-    Pose2d boxPos;
+    public Pose2d boxPos;
     public static double box_x = 56.5, box_y = 56.5, boxRed_heading = 45, boxBlue_heading = -135; // or 135 in blue
 
-    Pose2d chamberPos;
-    public static double chamber_x = 2, chamber_y = 31, chamber_heading = -90;
+    public Pose2d chamberPos;
+    public static double chamber_x = 2, chamber_y = 30, chamber_heading = -90;
     Pose2d chamberPos2;
     public static double chamber2_x = 8;
     Pose2d chamberPos_delta;
@@ -47,7 +47,7 @@ public abstract class AutoMaster extends LinearOpMode {
     public static double chamber_delta_x2 = 3;
 
     Pose2d preChamberPos;
-    public static double preChamber_x = 2, preChamber_y = 50;
+    public static double preChamber_x = 2, preChamber_y = 43;
     Pose2d preChamberPos1;
     public static double preChamber1_x = 6, preChamber1_y = 37;
 
@@ -77,14 +77,14 @@ public abstract class AutoMaster extends LinearOpMode {
     public static double grabSample_heaidng = -10.94, throwSample_heading = 30;
 
     Pose2d intakeSpecimenPos;
-    public static double intakeSpecimen_x = 40, intakeSpecimen_y = 57.5, intakeSpecimen_heading = -90;
+    public static double intakeSpecimen_x = 40, intakeSpecimen_y = 57.4, intakeSpecimen_heading = -90;
     Pose2d intakeSpecimenPrePos_ground;
     public static double pre_intakeSpecimen_x_ground = 22, pre_intakeSpecimen_y_ground = 43;
     Pose2d intakeSpecimenPos_ground;
     public static double intakeSpecimen_ground_x = 24, intakeSpecimen_ground_y = 45, intakeSpecimen_ground_heading = 50;
 
     Pose2d preIntakeSpecimenPos_wall;
-    public static double pre_intakeSpecimen_y_wall = 52;
+    public static double pre_intakeSpecimen_y_wall = 53;
     Pose2d dropSamplePos;
     public static double dropSampleToHP_x = 50;
 
@@ -472,7 +472,7 @@ public abstract class AutoMaster extends LinearOpMode {
             drive.setSimpleMovePower(1);
             drive.setSimpleMoveTolerance(3,3,Math.toRadians(5));
             upper.setSpinWristRelease_specimen();
-            drive.moveTo(preChamberPos.plus(chamberPos_delta),50);
+            drive.moveTo(preChamberPos.plus(chamberPos_delta),0);
             //delay(25);
             upper.setSlidePosition(SuperStructure.SLIDE_CHAMBER_HIGH_AUTO);
             drive.moveTo(chamberPos.plus(chamberPos_delta),0);
@@ -487,7 +487,7 @@ public abstract class AutoMaster extends LinearOpMode {
             drive.setSimpleMovePower(1);
             drive.setSimpleMoveTolerance(3,3,Math.toRadians(5));
             upper.setSpinWristRelease_specimen();
-            drive.moveTo(preChamberPos.plus(chamberPos_delta).plus(chamberPos_delta),50);
+            drive.moveTo(preChamberPos.plus(chamberPos_delta).plus(chamberPos_delta),0);
             delay(25);
             upper.setSlidePosition(SuperStructure.SLIDE_CHAMBER_HIGH_AUTO);
             drive.moveTo(chamberPos.plus(chamberPos_delta).plus(chamberPos_delta),0);
@@ -501,7 +501,7 @@ public abstract class AutoMaster extends LinearOpMode {
             drive.setSimpleMovePower(1);
             drive.setSimpleMoveTolerance(3,3,Math.toRadians(5));
             upper.setSpinWristRelease_specimen();
-            drive.moveTo(preChamberPos.plus(chamberPos_delta).plus(chamberPos_delta).plus(chamberPos_delta),50);
+            drive.moveTo(preChamberPos.plus(chamberPos_delta).plus(chamberPos_delta).plus(chamberPos_delta),0);
             delay(25);
             upper.setSlidePosition(SuperStructure.SLIDE_CHAMBER_HIGH_AUTO);
             drive.moveTo(chamberPos.plus(chamberPos_delta).plus(chamberPos_delta).plus(chamberPos_delta),0);
@@ -517,7 +517,7 @@ public abstract class AutoMaster extends LinearOpMode {
             drive.setSimpleMovePower(1);
             drive.setSimpleMoveTolerance(3,3,Math.toRadians(5));
             upper.setSpinWristRelease_specimen();
-            drive.moveTo(preChamberPos.plus(chamberPos_delta).plus(chamberPos_delta).plus(chamberPos_delta).plus(chamberPos_delta),50);
+            drive.moveTo(preChamberPos.plus(chamberPos_delta).plus(chamberPos_delta).plus(chamberPos_delta).plus(chamberPos_delta),0);
             delay(25);
             upper.setSlidePosition(SuperStructure.SLIDE_CHAMBER_HIGH_AUTO);
             drive.moveTo(chamberPos.plus(chamberPos_delta).plus(chamberPos_delta).plus(chamberPos_delta).plus(chamberPos_delta),0);

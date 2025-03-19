@@ -216,9 +216,9 @@ public class Duo_Hang extends LinearOpMode {
                 if (grab.toTrue()) {
                     if (upper.clawState == SuperStructure.ClawState.OPEN) {
                         upper.setArmPosition(SuperStructure.ARM_INTAKE);
-                        delay(100);
+                        delay(120);
                         upper.switchClawState();
-                        delay(100);
+                        delay(120);
                         upper.setArmPosition(SuperStructure.ARM_PRE_INTAKE);
                     } else {
                         upper.switchClawState();

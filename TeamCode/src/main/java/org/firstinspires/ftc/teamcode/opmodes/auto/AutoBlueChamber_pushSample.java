@@ -30,17 +30,17 @@ public class AutoBlueChamber_pushSample extends AutoMaster {
             intakeSpecimen(1);
             moveToChamber(2);
             autoUpperToOrigin();
-            dropSpecimen_toOrigin();
+           // dropSpecimen_toOrigin();
 
             intakeSpecimen(2);
             moveToChamber(3);
             autoUpperToOrigin();
-            dropSpecimen_toOrigin();
+            //dropSpecimen_toOrigin();
 
             intakeSpecimen(3);
             moveToChamber(4);
             autoUpperToOrigin();
-            dropSpecimen_toOrigin();
+            //dropSpecimen_toOrigin();
 
             intakeSpecimen(4);
             moveToChamber(5);

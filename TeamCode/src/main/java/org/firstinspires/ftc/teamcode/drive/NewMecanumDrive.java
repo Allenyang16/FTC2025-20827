@@ -401,8 +401,8 @@ public class NewMecanumDrive extends MecanumDrive{
     public static TrajectoryAccelerationConstraint getAccelerationConstraint(double maxAccel) {
         return new ProfileAccelerationConstraint(maxAccel);
     }
-    public static PIDCoefficients translationPid_x = new PIDCoefficients(0.20, 0.003, 0.03);
-    public static PIDCoefficients translationPid_y = new PIDCoefficients(0.20, 0.003, 0.03);
+    public static PIDCoefficients translationPid_x = new PIDCoefficients(0.20, 0.003, 0.032);
+    public static PIDCoefficients translationPid_y = new PIDCoefficients(0.20, 0.003, 0.032);
     public static PIDCoefficients headingPid = new PIDCoefficients(1.2, 0.15, 0.15);
 
     private PIDFController transPID_x;
@@ -446,6 +446,11 @@ public class NewMecanumDrive extends MecanumDrive{
     }
 
 //    @Deprecated
+    private boolean intermittent = false;
+    public void setIntermittent(boolean intermittent) {
+        this.intermittent = intermittent;
+    }
+
     public void moveTo(Pose2d endPose, int correctTime_ms) {
         initSimpleMove(endPose);
         while (isBusy())
@@ -545,5 +550,8 @@ public class NewMecanumDrive extends MecanumDrive{
     }
     public double getLeftFrontMotorPower(){
         return leftFront.getPower();
+    }
+
+    public void moveTo(Pose2d endPos) {
     }
 }

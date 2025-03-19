@@ -29,20 +29,20 @@ public class SuperStructure {
     private DcMotorEx mSlideLeft = null;
     private DcMotorEx mSlideRight = null;
 
-    public static PIDCoefficients armLeftPidConf = new PIDCoefficients(0.009, 0.00, 0.00);
+    public static PIDCoefficients armLeftPidConf = new PIDCoefficients(0.009, 0.00015, 0.00033);
     private final PIDFController armLeftPidCtrl;
 
-    public static PIDCoefficients armRightPidConf = new PIDCoefficients(0.009, 0.00, 0.00);
+    public static PIDCoefficients armRightPidConf = new PIDCoefficients(0.009, 0.00015, 0.00033);
     private final PIDFController armRightPidCtrl;
 
-    public static PIDCoefficients slideLeftPidConf_Horizontal = new PIDCoefficients(0.004, 0.00, 0.00);
+    public static PIDCoefficients slideLeftPidConf_Horizontal = new PIDCoefficients(0.004, 0.00007, 0.00);
     private final PIDFController slideLeftPidCtrl_Horizontal;
-    public static PIDCoefficients slideLeftPidConf_Vertical = new PIDCoefficients(0.0095, 0.000, 0.00);
+    public static PIDCoefficients slideLeftPidConf_Vertical = new PIDCoefficients(0.0095, 0.00007, 0.00);
     private final PIDFController slideLeftPidCtrl_Vertical;
 
-    public static PIDCoefficients slideRightPidConf_Horizontal = new PIDCoefficients(0.004, 0.00, 0.00);
+    public static PIDCoefficients slideRightPidConf_Horizontal = new PIDCoefficients(0.004, 0.00007, 0.00);
     private final PIDFController slideRightPidCtrl_Horizontal;
-    public static PIDCoefficients slideRightPidConf_Vertical = new PIDCoefficients(0.009, 0.000, 0.00);
+    public static PIDCoefficients slideRightPidConf_Vertical = new PIDCoefficients(0.009, 0.00007, 0.00);
     private final PIDFController slideRightPidCtrl_Vertical;
 
     public static PIDCoefficients slideLeftPidConf_Hang = new PIDCoefficients(0.004, 0.003, 0.00);
@@ -71,7 +71,7 @@ public class SuperStructure {
     public static int ARM_CHAMBER_HIGH_Test = 220;
     public static int ARM_INTAKE = -970;
     public static int ARM_PRE_INTAKE = -890;
-    public static int ARM_POST_INTAKE = -890;
+    public static int ARM_POST_INTAKE = -900;
     // TODO: CHECK THIS VALUE
     public static int ARM_INTAKE_SPECIMEN = 700;
     public static int ARM_RELEASE_BOX = 95;
@@ -92,7 +92,7 @@ public class SuperStructure {
     public static double WRIST_INTAKE_SPECIMEN = 0.9, WRIST_INTAKE_SPECIMEN_GROUND = 0.4;
 
     // TODO: Retest
-    public static double WRIST_RELEASE_BOX_HIGH = 0.85, WRIST_RELEASE_BOX_LOW = 0.28;
+    public static double WRIST_RELEASE_BOX_HIGH = 0.95, WRIST_RELEASE_BOX_LOW = 0.28;
     public static double WRIST_RELEASE_CHAMBER_HIGH = 0.75, WRIST_RELEASE_CHAMBER_LOW = 0.8;
     public static double WRIST_RELEASE_CHAMBER_TELEOP = 0.75;
     // Spin Wrist
