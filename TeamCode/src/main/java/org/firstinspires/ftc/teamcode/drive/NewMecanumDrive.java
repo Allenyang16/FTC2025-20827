@@ -419,7 +419,7 @@ public class NewMecanumDrive extends MecanumDrive{
 
     private double simpleMove_x_Tolerance = 1.25, simpleMove_y_Tolerance = 1.25, simpleMoveRotationTolerance = Math.toRadians(10);
     private double simpleMovePower = 0.95;
-    private boolean simpleMoveIsActivate = false;
+    public boolean simpleMoveIsActivate = false;
 
     public void setSimpleMoveTolerance(double translation_x, double translation_y, double rotation) {
         simpleMove_x_Tolerance = translation_x;
@@ -451,15 +451,20 @@ public class NewMecanumDrive extends MecanumDrive{
     }
 
 //    @Deprecated
-    public void moveTo(Pose2d endPose, int correctTime_ms) {
+    public void moveTo(Pose2d endPose, int correctTime_ms,Runnable runWhileMoving) {
+
+        long startTime = System.currentTimeMillis();
+        simpleMoveInDistress = false;
         initSimpleMove(endPose);
-        while (isBusy())
+        while (isBusy()) {
             updateRunnable.run();
-        long endTime = System.currentTimeMillis() + correctTime_ms;
-        while (endTime > System.currentTimeMillis())
-            updateRunnable.run();
-        simpleMoveIsActivate = false;
-        setMotorPowers(0, 0, 0, 0);
+            runWhileMoving.run();
+            // Optional: 超时处理逻辑
+             if (System.currentTimeMillis() - startTime > 10000) {
+                 setMotorPowers(0, 0, 0, 0);  // 停止电机
+                 simpleMoveInDistress = true;  // 标记异常状态
+             }
+        }
     }
 
     private Pose2d getSimpleMovePosition() {
