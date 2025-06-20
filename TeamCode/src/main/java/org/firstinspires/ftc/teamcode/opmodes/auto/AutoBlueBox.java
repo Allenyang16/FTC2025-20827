@@ -1,5 +1,6 @@
 package org.firstinspires.ftc.teamcode.opmodes.auto;
 
+import com.arcrobotics.ftclib.geometry.Pose2d;
 import com.qualcomm.robotcore.eventloop.opmode.Autonomous;
 
 import org.firstinspires.ftc.teamcode.AutoMaster;
@@ -33,6 +34,7 @@ public class AutoBlueBox extends AutoMaster {
             runToFieldToGrabSample();
             recognizeSample();
             moveToDrop_sample(4);
+
  */
 
             park_box();

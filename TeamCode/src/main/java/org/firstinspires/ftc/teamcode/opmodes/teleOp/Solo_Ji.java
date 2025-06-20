@@ -7,6 +7,7 @@ import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
 import com.qualcomm.robotcore.eventloop.opmode.TeleOp;
 import com.qualcomm.robotcore.hardware.DcMotor;
 import com.qualcomm.robotcore.hardware.DcMotorSimple;
+import com.qualcomm.robotcore.util.ElapsedTime;
 
 import org.firstinspires.ftc.teamcode.AutoMaster;
 import org.firstinspires.ftc.teamcode.XCYBoolean;
@@ -40,6 +41,8 @@ public class Solo_Ji extends AutoMaster {
     private DcMotor mSlideLeft = null;
     private DcMotor mSlideRight = null;
 
+    private ElapsedTime runtime = new ElapsedTime();
+
 
     @Override
     public void runOpMode() throws InterruptedException {
@@ -65,6 +68,7 @@ public class Solo_Ji extends AutoMaster {
             drive.update();
             upper.update();
             XCYBoolean.bulkRead();
+            telemetry.addData("Status", "Initialized");
             telemetry.update();
             drive.setGlobalPower(coe * upper.translation_coefficient() * gamepad1.left_stick_y, coe * upper.translation_coefficient() * gamepad1.left_stick_x, coe * upper.heading_coefficient() * (gamepad1.right_stick_x));
         };
@@ -104,8 +108,19 @@ public class Solo_Ji extends AutoMaster {
         intakeState = IntakeState.POST_NEAR;
         hangState = HangState.HANG;
         waitForStart();
+        runtime.reset();
 
         while (opModeIsActive()) {
+            double timeElapsed = runtime.seconds();
+            telemetry.addData("Runtime", timeElapsed);
+            telemetry.update();
+
+            if (runtime.seconds() >= 120.0) {
+                upper.setSlidePosition(0);
+                upper.setArmPosition(0);
+                return;
+            }
+
             Pose2d current_pos = drive.getPoseEstimate();
 
             if (resetHeading.toTrue()) {
